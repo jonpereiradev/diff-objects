@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -25,24 +25,20 @@ final class DiffReflections {
      * @param diffClass classe que será analisada.
      * @return metadata para realizar o diff.
      */
-    public static List<DiffMetadata> discover(Class<?> diffClass, String group) {
+    public static List<DiffMetadata> discover(Class<?> diffClass) {
         List<DiffMetadata> metadatas = new LinkedList<>();
 
         if (!CACHE_MAP.containsKey(diffClass.getName())) {
             try {
                 for (Method method : diffClass.getMethods()) {
-                    if (method.isAnnotationPresent(DiffProperty.class)) {
-                        DiffProperty property = method.getAnnotation(DiffProperty.class);
+                    if (method.isAnnotationPresent(Diff.class)) {
+                        Diff property = method.getAnnotation(Diff.class);
                         DiffStrategy strategy = method.getAnnotation(DiffStrategy.class);
 
-                        if (group == null || group.equals(property.group())) {
-                            metadatas.add(createMetadata(method, property, strategy));
-                        }
-                    } else if (method.isAnnotationPresent(DiffProperties.class)) {
-                        for (DiffProperty property : method.getAnnotation(DiffProperties.class).value()) {
-                            if (group == null || group.equals(property.group())) {
-                                metadatas.add(createMetadata(method, property, property.strategy()));
-                            }
+                        metadatas.add(createMetadata(method, property, strategy));
+                    } else if (method.isAnnotationPresent(DiffGroup.class)) {
+                        for (Diff property : method.getAnnotation(DiffGroup.class).value()) {
+                            metadatas.add(createMetadata(method, property, null));
                         }
                     }
                 }
@@ -93,16 +89,16 @@ final class DiffReflections {
      * Registra uma propriedade de diff como metadata.
      *
      * @param method       método com a anotação.
-     * @param diffProperty anotação declarada para o diff.
+     * @param diff anotação declarada para o diff.
      * @param diffStrategy estratégia de análise do diff.
      */
     private static DiffMetadata createMetadata(
             Method method,
-            DiffProperty diffProperty,
+            Diff diff,
             DiffStrategy diffStrategy) {
         DiffMetadata metadata = new DiffMetadata();
 
-        metadata.setAnnotation(diffProperty);
+        metadata.setAnnotation(diff);
         metadata.setStrategy(diffStrategy);
         metadata.setMethod(method);
 

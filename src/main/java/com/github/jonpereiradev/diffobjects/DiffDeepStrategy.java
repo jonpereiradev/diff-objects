@@ -1,23 +1,18 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.lang.reflect.Method;
 
 /**
  * @author jonpereiradev@gmail.com
  */
-public class DiffDeepStrategy implements DiffExecutable {
-
-    private static boolean isNotSameDiff(Method beforeMethod, Method afterMethod, Object beforeObject, Object afterObject) {
-        return (beforeMethod != null && !beforeMethod.equals(afterMethod) && beforeObject != afterObject)
-                || beforeObject != null && !beforeObject.equals(afterObject);
-    }
+public class DiffDeepStrategy implements DiffStrategable {
 
     @Override
-    public DiffObject diff(DiffProperty annotation, Object before, Object after) {
-        Method beforeMethod = null;
-        Method afterMethod = null;
+    public <T> DiffObject<T> diff(T before, T after, Method method) {
         Object beforeObject = before;
         Object afterObject = after;
+        Method beforeMethod = method;
+        Method afterMethod = method;
 
         if (before == null && after == null) {
             return null;
@@ -36,10 +31,17 @@ public class DiffDeepStrategy implements DiffExecutable {
         }
 
         if (isNotSameDiff(beforeMethod, afterMethod, beforeObject, afterObject)) {
-            return new DiffObject(annotation, beforeObject, afterObject);
+            return new DiffObject<T>(annotation, beforeObject, afterObject);
         }
 
-        return DiffStrategyType.SINGLE.getDiffExecutable().diff(annotation, beforeObject, afterObject);
+        return DiffStrategyType.SINGLE.getDiffExecutable().diff(beforeObject, afterObject, method);
     }
 
+    private static boolean isNotSameDiff(Method beforeMethod, Method afterMethod, Object beforeObject, Object afterObject) {
+        return (beforeMethod != null
+                && !beforeMethod.equals(afterMethod)
+                && beforeObject != afterObject)
+                || beforeObject != null
+                && !beforeObject.equals(afterObject);
+    }
 }

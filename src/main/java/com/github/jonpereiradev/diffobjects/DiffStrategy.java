@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

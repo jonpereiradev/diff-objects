@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class DiffResult {
     private final List<DiffObject> results = new LinkedList<DiffObject>();
 
     void diff(DiffMetadata metadata, Object before, Object after) {
-        DiffExecutable diffExecutable = DiffStrategyType.SINGLE.getDiffExecutable();
+        DiffStrategable diffExecutable = DiffStrategyType.SINGLE.getDiffExecutable();
 
         if (metadata.getStrategy() != null) {
             diffExecutable = metadata.getStrategy().type().getDiffExecutable();

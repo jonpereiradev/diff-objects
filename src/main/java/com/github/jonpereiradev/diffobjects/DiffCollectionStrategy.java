@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,10 +7,10 @@ import java.util.Iterator;
 /**
  * @author jonpereiradev@gmail.com
  */
-public class DiffCollectionDeepStrategy implements DiffExecutable {
+public class DiffCollectionStrategy implements DiffStrategable {
 
     @Override
-    public DiffObject diff(DiffProperty annotation, Object before, Object after) {
+    public DiffObject diff(Diff annotation, Object before, Object after) {
         Collection<?> beforeCollection = (Collection<?>) before;
         Collection<?> afterCollection = (Collection<?>) after;
 
@@ -27,7 +27,7 @@ public class DiffCollectionDeepStrategy implements DiffExecutable {
         if (beforeCollection.size() == afterCollection.size()) {
             Iterator<?> beforeIterator = beforeCollection.iterator();
             Iterator<?> afterIterator = afterCollection.iterator();
-            DiffExecutable diffExecutable = DiffStrategyType.DEEP_SEARCH.getDiffExecutable();
+            DiffStrategable diffExecutable = DiffStrategyType.DEEP_SEARCH.getDiffExecutable();
 
             while (beforeIterator.hasNext() && afterIterator.hasNext()) {
                 Object beforeObject = beforeIterator.next();

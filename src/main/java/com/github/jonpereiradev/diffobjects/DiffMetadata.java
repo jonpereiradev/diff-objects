@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.lang.reflect.Method;
 
@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  */
 final class DiffMetadata implements Comparable<DiffMetadata> {
 
-    private DiffProperty annotation;
+    private Diff annotation;
     private DiffStrategy strategy;
     private DiffOrder order;
     private Method method;
@@ -20,11 +20,11 @@ final class DiffMetadata implements Comparable<DiffMetadata> {
         return thisOrder.compareTo(otherOrder);
     }
 
-    public DiffProperty getAnnotation() {
+    public Diff getAnnotation() {
         return annotation;
     }
 
-    public void setAnnotation(DiffProperty annotation) {
+    public void setAnnotation(Diff annotation) {
         this.annotation = annotation;
     }
 

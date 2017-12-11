@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diff.objects;
+package com.github.jonpereiradev.diffobjects;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,11 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * @author jonpereiradev@gmail.com
+ * @see <a href="#">https://github.com/jonpereiradev/diff-objects</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
-public @interface DiffProperties {
+public @interface DiffOrder {
 
-    DiffProperty[] value();
+    int value();
 
 }
