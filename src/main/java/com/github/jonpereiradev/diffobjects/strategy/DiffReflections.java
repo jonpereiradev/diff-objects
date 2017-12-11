@@ -1,5 +1,10 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.strategy;
 
+import com.github.jonpereiradev.diffobjects.DiffObjects;
+import com.github.jonpereiradev.diffobjects.annotation.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.DiffGroup;
+import com.github.jonpereiradev.diffobjects.annotation.DiffOrder;
+import com.github.jonpereiradev.diffobjects.annotation.DiffStrategy;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -89,7 +94,7 @@ final class DiffReflections {
      * Registra uma propriedade de diff como metadata.
      *
      * @param method       método com a anotação.
-     * @param diff anotação declarada para o diff.
+     * @param diff         anotação declarada para o diff.
      * @param diffStrategy estratégia de análise do diff.
      */
     private static DiffMetadata createMetadata(

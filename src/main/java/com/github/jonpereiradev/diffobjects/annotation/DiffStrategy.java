@@ -1,4 +1,6 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.annotation;
+
+import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

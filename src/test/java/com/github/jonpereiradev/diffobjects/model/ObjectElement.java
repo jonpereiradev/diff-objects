@@ -1,6 +1,6 @@
 package com.github.jonpereiradev.diffobjects.model;
 
-import com.github.jonpereiradev.diffobjects.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.Diff;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 

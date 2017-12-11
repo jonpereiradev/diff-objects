@@ -1,4 +1,8 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.strategy;
+
+import com.github.jonpereiradev.diffobjects.annotation.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.DiffOrder;
+import com.github.jonpereiradev.diffobjects.annotation.DiffStrategy;
 
 import java.lang.reflect.Method;
 

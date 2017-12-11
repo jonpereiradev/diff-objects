@@ -1,35 +1,36 @@
 package com.github.jonpereiradev.diffobjects;
 
-import java.util.LinkedList;
-import java.util.List;
+import com.github.jonpereiradev.diffobjects.annotation.Diff;
 
 /**
  * @author jonpereiradev@gmail.com
  */
-public class DiffResult {
+public class DiffResult<T> {
 
-    private final List<DiffObject> results = new LinkedList<DiffObject>();
+    private T before;
+    private T after;
+    private boolean equals;
 
-    void diff(DiffMetadata metadata, Object before, Object after) {
-        DiffStrategable diffExecutable = DiffStrategyType.SINGLE.getDiffExecutable();
+    public DiffResult(T before, T after, boolean equals) {
+        this.before = before;
+        this.after = after;
+        this.equals = equals;
+    }
 
-        if (metadata.getStrategy() != null) {
-            diffExecutable = metadata.getStrategy().type().getDiffExecutable();
-        }
+    public DiffResult(Diff annotation, T before, T after) {
+        this.before = before;
+        this.after = after;
+    }
 
-        DiffObject diff = diffExecutable.diff(metadata.getAnnotation(), before, after);
+    public T getBefore() {
+        return before;
+    }
 
-        if (diff != null) {
-            results.add(diff);
-        }
+    public T getAfter() {
+        return after;
     }
 
     public boolean isEquals() {
-        return results.isEmpty();
+        return equals;
     }
-
-    public List<DiffObject> getResults() {
-        return results;
-    }
-
 }

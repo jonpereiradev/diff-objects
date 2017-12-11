@@ -1,6 +1,6 @@
 package com.github.jonpereiradev.diffobjects.model;
 
-import com.github.jonpereiradev.diffobjects.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.Diff;
 
 public class ComplexElement {
 
@@ -10,7 +10,7 @@ public class ComplexElement {
         this.objectElement = objectElement;
     }
 
-    @Diff
+    @Diff("name")
     public ObjectElement getObjectElement() {
         return objectElement;
     }

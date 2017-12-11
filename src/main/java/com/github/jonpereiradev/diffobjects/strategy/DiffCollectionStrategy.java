@@ -1,5 +1,8 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.strategy;
 
+import com.github.jonpereiradev.diffobjects.DiffResult;
+
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -7,10 +10,10 @@ import java.util.Iterator;
 /**
  * @author jonpereiradev@gmail.com
  */
-public class DiffCollectionStrategy implements DiffStrategable {
+final class DiffCollectionStrategy implements DiffStrategy {
 
     @Override
-    public DiffObject diff(Diff annotation, Object before, Object after) {
+    public <T> DiffResult<T> diff(Object before, Object after, Method method) {
         Collection<?> beforeCollection = (Collection<?>) before;
         Collection<?> afterCollection = (Collection<?>) after;
 
@@ -27,13 +30,13 @@ public class DiffCollectionStrategy implements DiffStrategable {
         if (beforeCollection.size() == afterCollection.size()) {
             Iterator<?> beforeIterator = beforeCollection.iterator();
             Iterator<?> afterIterator = afterCollection.iterator();
-            DiffStrategable diffExecutable = DiffStrategyType.DEEP_SEARCH.getDiffExecutable();
+            DiffStrategy diffExecutable = DiffStrategyType.DEEP.getStrategy();
 
             while (beforeIterator.hasNext() && afterIterator.hasNext()) {
                 Object beforeObject = beforeIterator.next();
                 Object afterObject = afterIterator.next();
 
-                isEquals = diffExecutable.diff(annotation, beforeObject, afterObject) == null;
+                isEquals = diffExecutable.diff(beforeObject, afterObject, null) == null;
 
                 if (!isEquals) {
                     break;
@@ -41,7 +44,7 @@ public class DiffCollectionStrategy implements DiffStrategable {
             }
         }
 
-        return isEquals ? null : new DiffObject(annotation, before, after);
+        return isEquals ? null : new DiffResult<T>(null, null, null);
     }
 
 }
