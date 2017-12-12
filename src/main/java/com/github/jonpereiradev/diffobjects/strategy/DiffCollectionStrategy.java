@@ -7,15 +7,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-/**
- * @author jonpereiradev@gmail.com
- */
 final class DiffCollectionStrategy implements DiffStrategy {
 
     @Override
     public <T> DiffResult<T> diff(Object before, Object after, Method method) {
-        Collection<?> beforeCollection = (Collection<?>) before;
-        Collection<?> afterCollection = (Collection<?>) after;
+        Collection<T> beforeCollection = DiffReflections.invoke(method, before);
+        Collection<T> afterCollection = DiffReflections.invoke(method, after);
 
         if (beforeCollection == null) {
             beforeCollection = Collections.emptyList();
@@ -30,13 +27,13 @@ final class DiffCollectionStrategy implements DiffStrategy {
         if (beforeCollection.size() == afterCollection.size()) {
             Iterator<?> beforeIterator = beforeCollection.iterator();
             Iterator<?> afterIterator = afterCollection.iterator();
-            DiffStrategy diffExecutable = DiffStrategyType.DEEP.getStrategy();
+            DiffStrategy diffStrategy = DiffStrategyType.DEEP.getStrategy();
 
             while (beforeIterator.hasNext() && afterIterator.hasNext()) {
                 Object beforeObject = beforeIterator.next();
                 Object afterObject = afterIterator.next();
 
-                isEquals = diffExecutable.diff(beforeObject, afterObject, null) == null;
+                isEquals = diffStrategy.diff(beforeObject, afterObject, method) == null;
 
                 if (!isEquals) {
                     break;
@@ -44,7 +41,6 @@ final class DiffCollectionStrategy implements DiffStrategy {
             }
         }
 
-        return isEquals ? null : new DiffResult<T>(null, null, null);
+        return isEquals ? null : new DiffResult<T>(null, null, false);
     }
-
 }

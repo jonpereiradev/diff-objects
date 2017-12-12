@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * <p>A property or object annotated with this will be checked for difference between two objects.</p>
- * <p>When annotated on a object, all the properties will be checked for difference.</p>
- * <p>When annotated on a property, this property will be checked for difference.</p>
+ * <p>When annotated on a object without value(), the equals method of this object will be executed.</p>
+ * <p>When annotated on a object with value(), the property will be evaluated for equality.</p>
  *
  * @author jonpereiradev@gmail.com
  */
@@ -16,6 +16,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Diff {
 
+    /**
+     * Defines the property that will be evaluated for equality. It can be nested property like user.address.id.
+     */
     String value() default "";
 
 }
