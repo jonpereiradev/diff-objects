@@ -1,7 +1,6 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -15,10 +14,19 @@ final class DiffDeepStrategy implements DiffStrategy {
 
     private static final String REGEX_PROPERTY_SEPARATOR = "\\.";
 
+    /**
+     * Check the difference between two objects for the diffMetadata configuration.
+     *
+     * @param before       object that is considered a state before the after object.
+     * @param after        object that is considered the before object updated.
+     * @param diffMetadata the diffMetadata that is mapped to make the builder.
+     * @param <T>          the type of object returned by the builder.
+     * @return the builder result between the two objects.
+     */
     @Override
-    public <T> DiffResult<T> diff(Object before, Object after, Method method) {
-        Method beforeMethod = method;
-        Method afterMethod = method;
+    public <T> DiffResult<T> diff(Object before, Object after, DiffMetadata diffMetadata) {
+        Method beforeMethod = diffMetadata.getMethod();
+        Method afterMethod = diffMetadata.getMethod();
         Object beforeObject = null;
         Object afterObject = null;
 
@@ -30,7 +38,7 @@ final class DiffDeepStrategy implements DiffStrategy {
         }
 
         if (beforeObject != null || afterObject != null) {
-            for (String property : method.getAnnotation(Diff.class).value().split(REGEX_PROPERTY_SEPARATOR)) {
+            for (String property : diffMetadata.getValue().split(REGEX_PROPERTY_SEPARATOR)) {
                 if (beforeObject != null) {
                     beforeMethod = DiffReflections.discoverGetter(beforeObject, property);
                     beforeObject = DiffReflections.invoke(beforeMethod, beforeObject);

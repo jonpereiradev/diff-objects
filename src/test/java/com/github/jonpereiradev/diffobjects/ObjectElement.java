@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diffobjects.model;
+package com.github.jonpereiradev.diffobjects;
 
 import com.github.jonpereiradev.diffobjects.annotation.Diff;
 import org.apache.commons.lang.builder.EqualsBuilder;

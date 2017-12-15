@@ -1,59 +1,43 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
-import com.github.jonpereiradev.diffobjects.annotation.DiffOrder;
-import com.github.jonpereiradev.diffobjects.annotation.DiffStrategy;
+import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
 
 /**
  * @author jonpereiradev@gmail.com
  */
-final class DiffMetadata implements Comparable<DiffMetadata> {
+public final class DiffMetadata implements Comparable<DiffMetadata> {
 
-    private Diff annotation;
-    private DiffStrategy strategy;
-    private DiffOrder order;
-    private Method method;
+    private int order;
+    private final String value;
+    private final Method method;
+    private final DiffStrategy strategy;
+
+    public DiffMetadata(String value, Method method, DiffStrategyType diffStrategyType) {
+        this.value = value == null ? StringUtils.EMPTY : value;
+        this.method = method;
+        this.strategy = diffStrategyType == null ? DiffStrategyType.SINGLE.getStrategy() : diffStrategyType.getStrategy();
+    }
 
     @Override
     public int compareTo(DiffMetadata o) {
-        Integer thisOrder = getOrder() == null ? Integer.MAX_VALUE : getOrder().value();
-        Integer otherOrder = o.getOrder() == null ? Integer.MAX_VALUE : o.getOrder().value();
-
-        return thisOrder.compareTo(otherOrder);
+        return Integer.compare(order, o.order);
     }
 
-    public Diff getAnnotation() {
-        return annotation;
-    }
-
-    public void setAnnotation(Diff annotation) {
-        this.annotation = annotation;
-    }
-
-    public DiffStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(DiffStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public DiffOrder getOrder() {
-        return order;
-    }
-
-    public void setOrder(DiffOrder order) {
+    public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public Method getMethod() {
         return method;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    public DiffStrategy getStrategy() {
+        return strategy;
     }
-
 }

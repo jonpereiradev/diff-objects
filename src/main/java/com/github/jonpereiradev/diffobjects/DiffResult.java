@@ -1,7 +1,5 @@
 package com.github.jonpereiradev.diffobjects;
 
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
-
 /**
  * @author jonpereiradev@gmail.com
  */
@@ -15,11 +13,6 @@ public class DiffResult<T> {
         this.before = before;
         this.after = after;
         this.equals = equals;
-    }
-
-    public DiffResult(Diff annotation, T before, T after) {
-        this.before = before;
-        this.after = after;
     }
 
     public T getBefore() {

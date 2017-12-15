@@ -20,15 +20,15 @@ import java.util.logging.Logger;
 /**
  * @author jonpereiradev@gmail.com
  */
-final class DiffReflections {
+public final class DiffReflections {
 
-    private static final Map<String, List<DiffMetadata>> CACHE_MAP = new ConcurrentHashMap<String, List<DiffMetadata>>();
+    private static final Map<String, List<DiffMetadata>> CACHE_MAP = new ConcurrentHashMap<>();
 
     /**
-     * Descobre os mapeamentos de diff na classe.
+     * Descobre os mapeamentos de builder na classe.
      *
      * @param diffClass classe que será analisada.
-     * @return metadata para realizar o diff.
+     * @return metadata para realizar o builder.
      */
     public static List<DiffMetadata> discover(Class<?> diffClass) {
         List<DiffMetadata> metadatas = new LinkedList<>();
@@ -77,13 +77,11 @@ final class DiffReflections {
         return null; // fail safe dummy
     }
 
-    private static Method discoverGetter(Class<?> diffClass, String property) {
+    public static Method discoverGetter(Class<?> diffClass, String property) {
         try {
             String possibleAccessMethodName = "get" + StringUtils.capitalize(property);
             return diffClass.getMethod(possibleAccessMethodName);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(DiffObjects.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(DiffObjects.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -91,24 +89,18 @@ final class DiffReflections {
     }
 
     /**
-     * Registra uma propriedade de diff como metadata.
+     * Registra uma propriedade de builder como metadata.
      *
      * @param method       método com a anotação.
-     * @param diff         anotação declarada para o diff.
-     * @param diffStrategy estratégia de análise do diff.
+     * @param diff         anotação declarada para o builder.
+     * @param diffStrategy estratégia de análise do builder.
      */
-    private static DiffMetadata createMetadata(
-            Method method,
-            Diff diff,
-            DiffStrategy diffStrategy) {
-        DiffMetadata metadata = new DiffMetadata();
-
-        metadata.setAnnotation(diff);
-        metadata.setStrategy(diffStrategy);
-        metadata.setMethod(method);
+    private static DiffMetadata createMetadata(Method method, Diff diff, DiffStrategy diffStrategy) {
+        DiffStrategyType diffStrategyType = diffStrategy != null ? diffStrategy.type() : null;
+        DiffMetadata metadata = new DiffMetadata(diff.value(), method, diffStrategyType);
 
         if (method.isAnnotationPresent(DiffOrder.class)) {
-            metadata.setOrder(method.getAnnotation(DiffOrder.class));
+            metadata.setOrder(method.getAnnotation(DiffOrder.class).value());
         }
 
         return metadata;

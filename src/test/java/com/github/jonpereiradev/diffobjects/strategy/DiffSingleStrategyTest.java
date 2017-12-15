@@ -1,29 +1,59 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
-import com.github.jonpereiradev.diffobjects.model.ObjectElement;
+import com.github.jonpereiradev.diffobjects.ObjectElement;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
-
-public class DiffSingleStrategyTest {
+public class DiffSingleStrategyTest extends BaseStrategyTest {
 
     private DiffStrategy diffStrategy;
-    private Method method;
+    private DiffMetadata diffMetadata;
 
     @Before
-    public void beforeTest() throws NoSuchMethodException {
+    public void beforeTest() {
         diffStrategy = DiffStrategyType.SINGLE.getStrategy();
-        method = ObjectElement.class.getMethod("getName");
+        diffMetadata = discoverByName(ObjectElement.class, "getName");
+        Assert.assertNotNull(diffStrategy);
+        Assert.assertNotNull(diffMetadata);
+    }
+
+    @Test
+    public void testSingleStrategyEqualsNullObjects() {
+        DiffResult<String> diffResult = diffStrategy.diff(null, null, diffMetadata);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertTrue(diffResult.isEquals());
+        Assert.assertNull(diffResult.getBefore());
+        Assert.assertNull(diffResult.getAfter());
+    }
+
+    @Test
+    public void testSingleStrategyDifferentNullObjectA() {
+        DiffResult<String> diffResult = diffStrategy.diff(null, new ObjectElement("Object B"), diffMetadata);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertFalse(diffResult.isEquals());
+        Assert.assertNull(diffResult.getBefore());
+        Assert.assertNotNull(diffResult.getAfter());
+    }
+
+    @Test
+    public void testSingleStrategyDifferentNullObjectB() {
+        DiffResult<String> diffResult = diffStrategy.diff(new ObjectElement("Object A"), null, diffMetadata);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertFalse(diffResult.isEquals());
+        Assert.assertNotNull(diffResult.getBefore());
+        Assert.assertNull(diffResult.getAfter());
     }
 
     @Test
     public void testSingleStrategyEquals() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object A");
-        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, method);
+        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -35,7 +65,7 @@ public class DiffSingleStrategyTest {
     public void testSingleStrategyDifferent() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, method);
+        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
