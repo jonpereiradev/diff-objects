@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class DiffResults {
 
-    private final List<DiffResult> results = new LinkedList<DiffResult>();
+    private final List<DiffResult> results = new LinkedList<>();
 
     public List<DiffResult> getResults() {
         return results;

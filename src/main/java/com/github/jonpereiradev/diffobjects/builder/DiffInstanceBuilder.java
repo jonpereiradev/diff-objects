@@ -4,7 +4,7 @@ interface DiffInstanceBuilder {
 
     DiffMappingBuilder mapper();
 
-    DiffConfiguration getConfiguration();
+    DiffConfigurationBuilder getConfiguration();
 
 }
 

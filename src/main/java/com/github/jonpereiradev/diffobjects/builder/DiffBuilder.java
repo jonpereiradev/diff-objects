@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfiguration {
+public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfigurationBuilder {
 
     private final Class<?> classMap;
     private final List<DiffMetadata> metadatas;
@@ -62,7 +62,7 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
     }
 
     @Override
-    public DiffConfiguration getConfiguration() {
+    public DiffConfigurationBuilder getConfiguration() {
         return this;
     }
 

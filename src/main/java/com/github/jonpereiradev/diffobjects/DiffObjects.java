@@ -1,6 +1,6 @@
 package com.github.jonpereiradev.diffobjects;
 
-import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
+import com.github.jonpereiradev.diffobjects.builder.DiffConfigurationBuilder;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
 
@@ -60,7 +60,7 @@ public final class DiffObjects {
      * @param after  objeto com as informaçnoes depois da alteração.
      * @return resultado do builder.
      */
-    public static <T> DiffResults diff(T before, T after, DiffConfiguration configuration) {
+    public static <T> DiffResults diff(T before, T after, DiffConfigurationBuilder configuration) {
         DiffResults result = new DiffResults();
 
         for (DiffMetadata metadata : configuration.getConfigurations()) {
@@ -78,7 +78,7 @@ public final class DiffObjects {
      * @param after  objeto com as informações depois da alteração.
      * @return resultado do builder.
      */
-    public static <T> boolean isEquals(T before, T after, DiffConfiguration configuration) {
+    public static <T> boolean isEquals(T before, T after, DiffConfigurationBuilder configuration) {
         for (DiffMetadata metadata : configuration.getConfigurations()) {
             DiffResult<T> result = metadata.getStrategy().diff(before, after, metadata);
 
