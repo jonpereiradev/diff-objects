@@ -1,16 +1,15 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffObjects;
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
-import com.github.jonpereiradev.diffobjects.annotation.DiffGroup;
-import com.github.jonpereiradev.diffobjects.annotation.DiffOrder;
-import com.github.jonpereiradev.diffobjects.annotation.DiffStrategy;
+import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
+import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
+import com.github.jonpereiradev.diffobjects.builder.DiffBuilder;
+import com.github.jonpereiradev.diffobjects.builder.DiffInstanceBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,25 +24,23 @@ public final class DiffReflections {
     private static final Map<String, List<DiffMetadata>> CACHE_MAP = new ConcurrentHashMap<>();
 
     /**
-     * Descobre os mapeamentos de builder na classe.
+     * Descobre os mapeamentos de instance na classe.
      *
      * @param diffClass classe que será analisada.
-     * @return metadata para realizar o builder.
+     * @return metadata para realizar o instance.
      */
-    public static List<DiffMetadata> discover(Class<?> diffClass) {
-        List<DiffMetadata> metadatas = new LinkedList<>();
-
+    public static List<DiffMetadata> mapAnnotations(Class<?> diffClass) {
         if (!CACHE_MAP.containsKey(diffClass.getName())) {
+            DiffInstanceBuilder builder = DiffBuilder.map(diffClass);
+
             try {
                 for (Method method : diffClass.getMethods()) {
-                    if (method.isAnnotationPresent(Diff.class)) {
-                        Diff property = method.getAnnotation(Diff.class);
-                        DiffStrategy strategy = method.getAnnotation(DiffStrategy.class);
-
-                        metadatas.add(createMetadata(method, property, strategy));
-                    } else if (method.isAnnotationPresent(DiffGroup.class)) {
-                        for (Diff property : method.getAnnotation(DiffGroup.class).value()) {
-                            metadatas.add(createMetadata(method, property, null));
+                    if (method.isAnnotationPresent(DiffMapping.class)) {
+                        DiffMapping property = method.getAnnotation(DiffMapping.class);
+                        builder.mapper().mapping(method.getName(), property.value());
+                    } else if (method.isAnnotationPresent(DiffMappings.class)) {
+                        for (DiffMapping property : method.getAnnotation(DiffMappings.class).value()) {
+                            builder.mapper().mapping(method.getName(), property.value());
                         }
                     }
                 }
@@ -51,8 +48,7 @@ public final class DiffReflections {
                 Logger.getLogger(DiffObjects.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Collections.sort(metadatas);
-            CACHE_MAP.put(diffClass.getName(), metadatas);
+            CACHE_MAP.put(diffClass.getName(), builder.configuration().build());
         }
 
 
@@ -66,11 +62,7 @@ public final class DiffReflections {
     public static <T> T invoke(Method method, Object instance) {
         try {
             return (T) method.invoke(instance);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DiffReflections.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(DiffReflections.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(DiffReflections.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -78,32 +70,13 @@ public final class DiffReflections {
     }
 
     public static Method discoverGetter(Class<?> diffClass, String property) {
-        try {
-            String possibleAccessMethodName = "get" + StringUtils.capitalize(property);
-            return diffClass.getMethod(possibleAccessMethodName);
-        } catch (NoSuchMethodException | SecurityException ex) {
-            Logger.getLogger(DiffObjects.class.getName()).log(Level.SEVERE, null, ex);
+        String possibleAccessMethodName = property;
+
+        if (!property.startsWith("get")) {
+            possibleAccessMethodName = "get" + StringUtils.capitalize(property);
         }
 
-        return null;
-    }
-
-    /**
-     * Registra uma propriedade de builder como metadata.
-     *
-     * @param method       método com a anotação.
-     * @param diff         anotação declarada para o builder.
-     * @param diffStrategy estratégia de análise do builder.
-     */
-    private static DiffMetadata createMetadata(Method method, Diff diff, DiffStrategy diffStrategy) {
-        DiffStrategyType diffStrategyType = diffStrategy != null ? diffStrategy.type() : null;
-        DiffMetadata metadata = new DiffMetadata(diff.value(), method, diffStrategyType);
-
-        if (method.isAnnotationPresent(DiffOrder.class)) {
-            metadata.setOrder(method.getAnnotation(DiffOrder.class).value());
-        }
-
-        return metadata;
+        return MethodUtils.getMatchingAccessibleMethod(diffClass, possibleAccessMethodName, null);
     }
 
 }

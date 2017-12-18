@@ -1,10 +1,10 @@
 package com.github.jonpereiradev.diffobjects;
 
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class ObjectElement {
+public class ObjectElement extends ParentObjectElement {
 
     private final String name;
 
@@ -12,7 +12,7 @@ public class ObjectElement {
         this.name = name;
     }
 
-    @Diff
+    @DiffMapping
     public String getName() {
         return name;
     }

@@ -1,11 +1,11 @@
 package com.github.jonpereiradev.diffobjects;
 
-import com.github.jonpereiradev.diffobjects.annotation.Diff;
+import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComplexElement {
+public class ComplexElement extends ParentObjectElement {
 
     private final ObjectElement objectElement;
     private final List<ObjectElement> objectElementList;
@@ -20,12 +20,12 @@ public class ComplexElement {
         this.objectElementList = objectElementList;
     }
 
-    @Diff("name")
+    @DiffMapping("name")
     public ObjectElement getObjectElement() {
         return objectElement;
     }
 
-    @Diff
+    @DiffMapping
     public List<ObjectElement> getObjectElementList() {
         return objectElementList;
     }

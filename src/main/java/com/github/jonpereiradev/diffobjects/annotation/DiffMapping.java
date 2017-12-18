@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface Diff {
+public @interface DiffMapping {
 
     /**
      * Defines the property that will be evaluated for equality. It can be nested property like user.address.id.

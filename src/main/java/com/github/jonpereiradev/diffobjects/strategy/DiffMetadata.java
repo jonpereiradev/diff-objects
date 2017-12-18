@@ -3,6 +3,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * @author jonpereiradev@gmail.com
@@ -23,6 +24,19 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
     @Override
     public int compareTo(DiffMetadata o) {
         return Integer.compare(order, o.order);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiffMetadata that = (DiffMetadata) o;
+        return Objects.equals(method, that.method);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(method);
     }
 
     public void setOrder(int order) {
