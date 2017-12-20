@@ -31,22 +31,22 @@ final class DiffDeepStrategy implements DiffStrategy {
         Object afterObject = null;
 
         if (before != null) {
-            beforeObject = DiffReflections.invoke(beforeMethod, before);
+            beforeObject = DiffReflections.invoke(before, beforeMethod);
         }
         if (after != null) {
-            afterObject = DiffReflections.invoke(afterMethod, after);
+            afterObject = DiffReflections.invoke(after, afterMethod);
         }
 
         if (beforeObject != null || afterObject != null) {
             for (String property : diffMetadata.getValue().split(REGEX_PROPERTY_SEPARATOR)) {
                 if (beforeObject != null) {
-                    beforeMethod = DiffReflections.discoverGetter(beforeObject, property);
-                    beforeObject = DiffReflections.invoke(beforeMethod, beforeObject);
+                    beforeMethod = DiffReflections.discoverGetter(beforeObject.getClass(), property);
+                    beforeObject = DiffReflections.invoke(beforeObject, beforeMethod);
                 }
 
                 if (afterObject != null) {
-                    afterMethod = DiffReflections.discoverGetter(afterObject, property);
-                    afterObject = DiffReflections.invoke(afterMethod, afterObject);
+                    afterMethod = DiffReflections.discoverGetter(afterObject.getClass(), property);
+                    afterObject = DiffReflections.invoke(afterObject, afterMethod);
                 }
             }
         }

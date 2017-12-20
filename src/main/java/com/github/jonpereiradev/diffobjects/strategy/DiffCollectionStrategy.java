@@ -70,7 +70,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
         Collection<T> collection = null;
 
         if (object != null) {
-            collection = DiffReflections.invoke(method, object);
+            collection = DiffReflections.invoke(object, method);
         }
 
         if (collection != null && collection.isEmpty()) {

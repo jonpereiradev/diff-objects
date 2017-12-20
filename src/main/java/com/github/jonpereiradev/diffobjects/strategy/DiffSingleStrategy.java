@@ -26,11 +26,11 @@ final class DiffSingleStrategy implements DiffStrategy {
         T afterValue = null;
 
         if (before != null) {
-            beforeValue = DiffReflections.invoke(diffMetadata.getMethod(), before);
+            beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
         }
 
         if (after != null) {
-            afterValue = DiffReflections.invoke(diffMetadata.getMethod(), after);
+            afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
         }
 
         return new DiffResult<>(beforeValue, afterValue, Objects.deepEquals(beforeValue, afterValue));

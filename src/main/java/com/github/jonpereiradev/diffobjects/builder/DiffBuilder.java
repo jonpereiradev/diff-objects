@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
@@ -7,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -89,6 +91,7 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      * @param field name of the field that will me used to find the getter method.
      * @param value the nested property of the object to make the diff.
      * @return the instance of this mapping instance.
+     * @throws DiffException throw if the field doesn't have a public no args method for the field.
      */
     @Override
     public DiffMappingBuilder mapping(String field, String value) {
@@ -96,7 +99,11 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
 
         if (method == null) {
-            throw new IllegalArgumentException("Method " + field + " not found in class " + classMap.getName());
+            throw new DiffException("Method " + field + " not found in class " + classMap.getName());
+        }
+
+        if (!Modifier.isPublic(method.getModifiers()) || method.getParameterTypes().length > 0) {
+            throw new DiffException("Method " + method.getName() + " must be public and no-args.");
         }
 
         if (value != null && !value.isEmpty()) {
@@ -110,7 +117,7 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
         DiffMetadata diffMetadata = new DiffMetadata(value, method, diffStrategyType);
 
         if (metadatas.contains(diffMetadata)) {
-            throw new IllegalStateException("Field \"" + field + "\" already mapped in this builder.");
+            throw new DiffException("Field \"" + field + "\" already mapped in this builder.");
         }
 
         metadatas.add(diffMetadata);

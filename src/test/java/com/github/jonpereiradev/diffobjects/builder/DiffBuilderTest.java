@@ -1,6 +1,7 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
 import com.github.jonpereiradev.diffobjects.ComplexElement;
+import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
@@ -75,12 +76,12 @@ public class DiffBuilderTest {
         Assert.assertEquals("getParent", metadata.get(0).getMethod().getName());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = DiffException.class)
     public void testDiffBuilderMappingDuplicated() {
         DiffBuilder.map(ObjectElement.class).mapper().mapping("name").mapping("name");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = DiffException.class)
     public void testDiffBuilderMappingNotFound() {
         DiffBuilder.map(ObjectElement.class).mapper().mapping("notExists");
     }
