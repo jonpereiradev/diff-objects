@@ -21,4 +21,8 @@ public @interface DiffMapping {
      */
     String value() default "";
 
+    /**
+     * Aditional properties that will be on result for identification.
+     */
+    DiffProperty[] properties() default {};
 }

@@ -3,8 +3,9 @@ package com.github.jonpereiradev.diffobjects.strategy;
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
+import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
 import com.github.jonpereiradev.diffobjects.builder.DiffBuilder;
-import com.github.jonpereiradev.diffobjects.builder.DiffConfigurationBuilder;
+import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import com.github.jonpereiradev.diffobjects.builder.DiffInstanceBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.reflect.MethodUtils;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DiffReflections {
 
-    private static final Map<String, DiffConfigurationBuilder> CACHE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, DiffConfiguration> CACHE_MAP = new ConcurrentHashMap<>();
 
     /**
      * Map the methods of the object that has the annotations for diff and stores in cache.
@@ -29,7 +30,7 @@ public final class DiffReflections {
      * @param diffClass class that have the diff annotations.
      * @return the diff mappings of the class.
      */
-    public static DiffConfigurationBuilder mapAnnotations(Class<?> diffClass) {
+    public static DiffConfiguration mapAnnotations(Class<?> diffClass) {
         if (!CACHE_MAP.containsKey(diffClass.getName())) {
             DiffInstanceBuilder builder = DiffBuilder.map(diffClass);
 
@@ -37,9 +38,17 @@ public final class DiffReflections {
                 if (method.isAnnotationPresent(DiffMapping.class)) {
                     DiffMapping diffMapping = method.getAnnotation(DiffMapping.class);
                     builder.mapper().mapping(method.getName(), diffMapping.value());
+
+                    for (DiffProperty diffProperty : diffMapping.properties()) {
+                        builder.mapper().property(diffProperty.key(), diffProperty.value());
+                    }
                 } else if (method.isAnnotationPresent(DiffMappings.class)) {
                     for (DiffMapping diffMapping : method.getAnnotation(DiffMappings.class).value()) {
                         builder.mapper().mapping(method.getName(), diffMapping.value());
+
+                        for (DiffProperty diffProperty : diffMapping.properties()) {
+                            builder.mapper().property(diffProperty.key(), diffProperty.value());
+                        }
                     }
                 }
             }

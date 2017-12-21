@@ -11,7 +11,7 @@ import java.util.List;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  */
-public interface DiffConfigurationBuilder {
+public interface DiffConfiguration {
 
     /**
      * Gets the configuration for the instance instance.

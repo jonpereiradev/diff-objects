@@ -17,9 +17,9 @@ import java.util.*;
  * @author jonpereiradev@gmail.com
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
- * @see DiffConfigurationBuilder
+ * @see DiffConfiguration
  */
-public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfigurationBuilder {
+public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfiguration {
 
     private final Class<?> classMap;
     private final List<DiffMetadata> metadatas;
@@ -120,7 +120,27 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
             throw new DiffException("Field \"" + field + "\" already mapped in this builder.");
         }
 
+        diffMetadata.getProperties().put("field", field);
+
         metadatas.add(diffMetadata);
+
+        return this;
+    }
+
+    /**
+     * Define a property for the last mapping.
+     *
+     * @param key   the identifier of the property.
+     * @param value the value of the property.
+     * @return the instance of this mapping.
+     */
+    @Override
+    public DiffMappingBuilder property(String key, String value) {
+        if (metadatas.isEmpty()) {
+            throw new DiffException("A mapping field is required to associate the property.");
+        }
+
+        metadatas.get(metadatas.size() - 1).getProperties().put(key, value);
 
         return this;
     }
@@ -141,7 +161,7 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      * @return a configuration instance instance.
      */
     @Override
-    public DiffConfigurationBuilder configuration() {
+    public DiffConfiguration configuration() {
         return this;
     }
 

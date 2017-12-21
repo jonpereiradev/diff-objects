@@ -6,7 +6,7 @@ package com.github.jonpereiradev.diffobjects.builder;
  * @author jonpereiradev@gmail.com
  * @see DiffBuilder
  * @see DiffMappingBuilder
- * @see DiffConfigurationBuilder
+ * @see DiffConfiguration
  */
 public interface DiffInstanceBuilder {
 
@@ -22,7 +22,7 @@ public interface DiffInstanceBuilder {
      *
      * @return a configuration instance instance.
      */
-    DiffConfigurationBuilder configuration();
+    DiffConfiguration configuration();
 
 }
 

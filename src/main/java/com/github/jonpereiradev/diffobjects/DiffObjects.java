@@ -1,9 +1,10 @@
 package com.github.jonpereiradev.diffobjects;
 
-import com.github.jonpereiradev.diffobjects.builder.DiffConfigurationBuilder;
+import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +52,7 @@ public final class DiffObjects {
      * @param afterState  objeto com as informaçnoes depois da alteração.
      * @return resultado do instance.
      */
-    public static <T> List<DiffResult<?>> diff(T beforeState, T afterState, DiffConfigurationBuilder configuration) {
+    public static <T> List<DiffResult<?>> diff(T beforeState, T afterState, DiffConfiguration configuration) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
@@ -59,7 +60,9 @@ public final class DiffObjects {
         List<DiffResult<?>> results = new LinkedList<>();
 
         for (DiffMetadata metadata : configuration.build()) {
-            results.add(metadata.getStrategy().diff(beforeState, afterState, metadata));
+            DiffResult<Object> diff = metadata.getStrategy().diff(beforeState, afterState, metadata);
+            diff.setProperties(Collections.unmodifiableMap(metadata.getProperties()));
+            results.add(diff);
         }
 
         return results;
@@ -73,7 +76,7 @@ public final class DiffObjects {
      * @param afterState  objeto com as informações depois da alteração.
      * @return resultado do instance.
      */
-    public static <T> boolean isEquals(T beforeState, T afterState, DiffConfigurationBuilder configuration) {
+    public static <T> boolean isEquals(T beforeState, T afterState, DiffConfiguration configuration) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
