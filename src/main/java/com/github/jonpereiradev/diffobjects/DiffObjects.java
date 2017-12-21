@@ -25,14 +25,7 @@ public final class DiffObjects {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
 
-        List<DiffResult<?>> results = new LinkedList<>();
-        List<DiffMetadata> metadatas = DiffReflections.mapAnnotations(beforeState.getClass());
-
-        for (DiffMetadata metadata : metadatas) {
-            results.add(metadata.getStrategy().diff(beforeState, afterState, metadata));
-        }
-
-        return results;
+        return diff(beforeState, afterState, DiffReflections.mapAnnotations(beforeState.getClass()));
     }
 
     /**
@@ -46,17 +39,8 @@ public final class DiffObjects {
     public static <T> boolean isEquals(T beforeState, T afterState) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
-        List<DiffMetadata> metadatas = DiffReflections.mapAnnotations(beforeState.getClass());
 
-        for (DiffMetadata metadata : metadatas) {
-            DiffResult<T> result = metadata.getStrategy().diff(beforeState, afterState, metadata);
-
-            if (!result.isEquals()) {
-                return false;
-            }
-        }
-
-        return true;
+        return isEquals(beforeState, afterState, DiffReflections.mapAnnotations(beforeState.getClass()));
     }
 
     /**

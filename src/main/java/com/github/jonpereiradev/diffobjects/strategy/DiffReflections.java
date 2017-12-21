@@ -4,13 +4,13 @@ import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
 import com.github.jonpereiradev.diffobjects.builder.DiffBuilder;
+import com.github.jonpereiradev.diffobjects.builder.DiffConfigurationBuilder;
 import com.github.jonpereiradev.diffobjects.builder.DiffInstanceBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DiffReflections {
 
-    private static final Map<String, List<DiffMetadata>> CACHE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, DiffConfigurationBuilder> CACHE_MAP = new ConcurrentHashMap<>();
 
     /**
      * Map the methods of the object that has the annotations for diff and stores in cache.
@@ -29,7 +29,7 @@ public final class DiffReflections {
      * @param diffClass class that have the diff annotations.
      * @return the diff mappings of the class.
      */
-    public static List<DiffMetadata> mapAnnotations(Class<?> diffClass) {
+    public static DiffConfigurationBuilder mapAnnotations(Class<?> diffClass) {
         if (!CACHE_MAP.containsKey(diffClass.getName())) {
             DiffInstanceBuilder builder = DiffBuilder.map(diffClass);
 
@@ -44,7 +44,7 @@ public final class DiffReflections {
                 }
             }
 
-            CACHE_MAP.put(diffClass.getName(), builder.configuration().build());
+            CACHE_MAP.put(diffClass.getName(), builder.configuration());
         }
 
         return CACHE_MAP.get(diffClass.getName());
