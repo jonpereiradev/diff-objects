@@ -57,7 +57,7 @@ public class DiffObjectsWithBuilderTest {
     public void testDiffObjectsWithEqualsObjectElementMustReturnResultWithEquals() {
         ObjectElement objectA = new ObjectElement("Object");
         ObjectElement objectB = new ObjectElement("Object");
-        List<DiffResult<?>> results = DiffObjects.diff(objectA, objectB, configuration);
+        List<DiffResult> results = DiffObjects.diff(objectA, objectB, configuration);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
@@ -70,7 +70,7 @@ public class DiffObjectsWithBuilderTest {
     public void testDiffObjectsWithDifferentObjectElementMustReturnResultWithDifference() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        List<DiffResult<?>> results = DiffObjects.diff(objectA, objectB, configuration);
+        List<DiffResult> results = DiffObjects.diff(objectA, objectB, configuration);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());

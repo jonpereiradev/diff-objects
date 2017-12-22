@@ -24,7 +24,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyEquals() {
         ComplexElement objectA = new ComplexElement(new ObjectElement("Object A"));
         ComplexElement objectB = new ComplexElement(new ObjectElement("Object A"));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertTrue(diffObject.isEquals());
@@ -36,7 +36,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyDifferent() {
         ComplexElement objectA = new ComplexElement(new ObjectElement("Object A"));
         ComplexElement objectB = new ComplexElement(new ObjectElement("Object B"));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -47,7 +47,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     @Test
     public void testDeepStrategyDifferentComplexBNull() {
         ComplexElement objectA = new ComplexElement(new ObjectElement("Object A"));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, null, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, null, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -59,7 +59,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyDifferentObjectBNull() {
         ComplexElement objectA = new ComplexElement(new ObjectElement("Object A"));
         ComplexElement objectB = new ComplexElement((ObjectElement) null);
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -71,7 +71,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyDifferentObjectBValueNull() {
         ComplexElement objectA = new ComplexElement(new ObjectElement("Object A"));
         ComplexElement objectB = new ComplexElement(new ObjectElement(null));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -82,7 +82,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     @Test
     public void testDeepStrategyDifferentComplexANull() {
         ComplexElement objectB = new ComplexElement(new ObjectElement("Object B"));
-        DiffResult<String> diffObject = diffStrategy.diff(null, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(null, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -94,7 +94,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyDifferentObjecANull() {
         ComplexElement objectA = new ComplexElement((ObjectElement) null);
         ComplexElement objectB = new ComplexElement(new ObjectElement("Object B"));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -106,7 +106,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyDifferentObjectAValueNull() {
         ComplexElement objectA = new ComplexElement(new ObjectElement(null));
         ComplexElement objectB = new ComplexElement(new ObjectElement("Object B"));
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
@@ -118,7 +118,7 @@ public class DiffDeepStrategyTest extends BaseStrategyTest {
     public void testDeepStrategyEqualsObjectStructureNullValues() {
         ComplexElement objectA = new ComplexElement(new ObjectElement(null));
         ComplexElement objectB = new ComplexElement((ObjectElement) null);
-        DiffResult<String> diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffObject = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffObject);
         Assert.assertTrue(diffObject.isEquals());

@@ -20,11 +20,10 @@ final class DiffDeepStrategy implements DiffStrategy {
      * @param before       object that is considered a state before the after object.
      * @param after        object that is considered the before object updated.
      * @param diffMetadata the diffMetadata that is mapped to make the instance.
-     * @param <T>          the type of object returned by the instance.
      * @return the instance result between the two objects.
      */
     @Override
-    public <T> DiffResult<T> diff(Object before, Object after, DiffMetadata diffMetadata) {
+    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
         Method beforeMethod = diffMetadata.getMethod();
         Method afterMethod = diffMetadata.getMethod();
         Object beforeObject = null;
@@ -51,6 +50,6 @@ final class DiffDeepStrategy implements DiffStrategy {
             }
         }
 
-        return new DiffResult<>((T) beforeObject, (T) afterObject, Objects.deepEquals(beforeObject, afterObject));
+        return new DiffResult(beforeObject, afterObject, Objects.deepEquals(beforeObject, afterObject));
     }
 }

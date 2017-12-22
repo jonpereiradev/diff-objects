@@ -22,7 +22,7 @@ public final class DiffObjects {
      * @param afterState  objeto com as informaçnoes depois da alteração.
      * @return resultado do instance.
      */
-    public static <T> List<DiffResult<?>> diff(T beforeState, T afterState) {
+    public static <T> List<DiffResult> diff(T beforeState, T afterState) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
 
@@ -52,15 +52,15 @@ public final class DiffObjects {
      * @param afterState  objeto com as informaçnoes depois da alteração.
      * @return resultado do instance.
      */
-    public static <T> List<DiffResult<?>> diff(T beforeState, T afterState, DiffConfiguration configuration) {
+    public static <T> List<DiffResult> diff(T beforeState, T afterState, DiffConfiguration configuration) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
 
-        List<DiffResult<?>> results = new LinkedList<>();
+        List<DiffResult> results = new LinkedList<>();
 
         for (DiffMetadata metadata : configuration.build()) {
-            DiffResult<Object> diff = metadata.getStrategy().diff(beforeState, afterState, metadata);
+            DiffResult diff = metadata.getStrategy().diff(beforeState, afterState, metadata);
             diff.setProperties(Collections.unmodifiableMap(metadata.getProperties()));
             results.add(diff);
         }
@@ -82,7 +82,7 @@ public final class DiffObjects {
         Objects.requireNonNull(configuration, "Configuration is required.");
 
         for (DiffMetadata metadata : configuration.build()) {
-            DiffResult<T> result = metadata.getStrategy().diff(beforeState, afterState, metadata);
+            DiffResult result = metadata.getStrategy().diff(beforeState, afterState, metadata);
 
             if (!result.isEquals()) {
                 return false;

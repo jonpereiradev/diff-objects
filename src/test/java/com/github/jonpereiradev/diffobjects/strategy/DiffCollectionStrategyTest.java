@@ -28,7 +28,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyEqualsNullObjects() {
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(null, null, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(null, null, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -40,7 +40,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     public void testCollectionStrategyEqualsObjectsNullLists() {
         ComplexElement complexA = new ComplexElement((List<ObjectElement>) null);
         ComplexElement complexB = new ComplexElement((List<ObjectElement>) null);
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -52,7 +52,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     public void testCollectionStrategyEqualsObjectsEmptyLists() {
         ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
         ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -64,7 +64,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     public void testCollectionStrategyDifferentObjectsNullListA() {
         ComplexElement complexA = new ComplexElement((List<ObjectElement>) null);
         ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -76,7 +76,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     public void testCollectionStrategyDifferentObjectsNullListB() {
         ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
         ComplexElement complexB = new ComplexElement((List<ObjectElement>) null);
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -93,17 +93,19 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         complexB.getObjectElementList().add(new ObjectElement("Object B.A"));
         complexB.getObjectElementList().add(new ObjectElement("Object B.B"));
 
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        List<ObjectElement> beforeCollection = (List<ObjectElement>) diffResult.getBefore();
+        List<ObjectElement> afterCollection = (List<ObjectElement>) diffResult.getAfter();
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
-        Assert.assertNotNull(diffResult.getBefore());
+        Assert.assertNotNull(beforeCollection);
         Assert.assertNotNull(diffResult.getAfter());
-        Assert.assertTrue(diffResult.getBefore().size() == 1);
-        Assert.assertEquals("Object A.A", diffResult.getBefore().get(0).getName());
-        Assert.assertTrue(diffResult.getAfter().size() == 2);
-        Assert.assertEquals("Object B.A", diffResult.getAfter().get(0).getName());
-        Assert.assertEquals("Object B.B", diffResult.getAfter().get(1).getName());
+        Assert.assertEquals(1, beforeCollection.size());
+        Assert.assertEquals("Object A.A", beforeCollection.get(0).getName());
+        Assert.assertTrue(afterCollection.size() == 2);
+        Assert.assertEquals("Object B.A", afterCollection.get(0).getName());
+        Assert.assertEquals("Object B.B", afterCollection.get(1).getName());
     }
 
     @Test
@@ -114,16 +116,18 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         complexA.getObjectElementList().add(new ObjectElement("Object A.A"));
         complexB.getObjectElementList().add(new ObjectElement("Object B.A"));
 
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        List<ObjectElement> beforeCollection = (List<ObjectElement>) diffResult.getBefore();
+        List<ObjectElement> afterCollection = (List<ObjectElement>) diffResult.getAfter();
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
-        Assert.assertTrue(diffResult.getBefore().size() == 1);
-        Assert.assertEquals("Object A.A", diffResult.getBefore().get(0).getName());
-        Assert.assertTrue(diffResult.getAfter().size() == 1);
-        Assert.assertEquals("Object B.A", diffResult.getAfter().get(0).getName());
+        Assert.assertEquals(1, beforeCollection.size());
+        Assert.assertEquals("Object A.A", beforeCollection.get(0).getName());
+        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals("Object B.A", afterCollection.get(0).getName());
     }
 
     @Test
@@ -135,16 +139,18 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         complexA.getObjectElementList().add(objectElement);
         complexB.getObjectElementList().add(objectElement);
 
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+        List<ObjectElement> beforeCollection = (List<ObjectElement>) diffResult.getBefore();
+        List<ObjectElement> afterCollection = (List<ObjectElement>) diffResult.getAfter();
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
-        Assert.assertTrue(diffResult.getBefore().size() == 1);
-        Assert.assertEquals("Object", diffResult.getBefore().get(0).getName());
-        Assert.assertTrue(diffResult.getAfter().size() == 1);
-        Assert.assertEquals("Object", diffResult.getAfter().get(0).getName());
+        Assert.assertEquals(1, beforeCollection.size());
+        Assert.assertEquals("Object", beforeCollection.get(0).getName());
+        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 
     @Test
@@ -155,16 +161,18 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         complexA.getObjectElementListByName().add(new ObjectElement("Object"));
         complexB.getObjectElementListByName().add(new ObjectElement("Object"));
 
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+        List<ObjectElement> beforeCollection = (List<ObjectElement>) diffResult.getBefore();
+        List<ObjectElement> afterCollection = (List<ObjectElement>) diffResult.getAfter();
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
-        Assert.assertTrue(diffResult.getBefore().size() == 1);
-        Assert.assertEquals("Object", diffResult.getBefore().get(0).getName());
-        Assert.assertTrue(diffResult.getAfter().size() == 1);
-        Assert.assertEquals("Object", diffResult.getAfter().get(0).getName());
+        Assert.assertEquals(1, beforeCollection.size());
+        Assert.assertEquals("Object", beforeCollection.get(0).getName());
+        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 
     @Test
@@ -175,15 +183,17 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         complexA.getObjectElementListByName().add(new ObjectElement("Object A"));
         complexB.getObjectElementListByName().add(new ObjectElement("Object B"));
 
-        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+        DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+        List<ObjectElement> beforeCollection = (List<ObjectElement>) diffResult.getBefore();
+        List<ObjectElement> afterCollection = (List<ObjectElement>) diffResult.getAfter();
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
-        Assert.assertTrue(diffResult.getBefore().size() == 1);
-        Assert.assertEquals("Object A", diffResult.getBefore().get(0).getName());
-        Assert.assertTrue(diffResult.getAfter().size() == 1);
-        Assert.assertEquals("Object B", diffResult.getAfter().get(0).getName());
+        Assert.assertEquals(1, beforeCollection.size());
+        Assert.assertEquals("Object A", beforeCollection.get(0).getName());
+        Assert.assertEquals(1, afterCollection.size());
+        Assert.assertEquals("Object B", afterCollection.get(0).getName());
     }
 }

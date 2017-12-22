@@ -12,6 +12,6 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
  */
 public interface DiffStrategy {
 
-    <T> DiffResult<T> diff(Object before, Object after, DiffMetadata diffMetadata);
+    DiffResult diff(Object before, Object after, DiffMetadata diffMetadata);
 
 }

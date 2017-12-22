@@ -21,7 +21,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testSingleStrategyEqualsNullObjects() {
-        DiffResult<String> diffResult = diffStrategy.diff(null, null, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(null, null, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -31,7 +31,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testSingleStrategyDifferentNullObjectA() {
-        DiffResult<String> diffResult = diffStrategy.diff(null, new ObjectElement("Object B"), diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(null, new ObjectElement("Object B"), diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
@@ -41,7 +41,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testSingleStrategyDifferentNullObjectB() {
-        DiffResult<String> diffResult = diffStrategy.diff(new ObjectElement("Object A"), null, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(new ObjectElement("Object A"), null, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
@@ -53,7 +53,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
     public void testSingleStrategyEquals() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object A");
-        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
@@ -65,7 +65,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
     public void testSingleStrategyDifferent() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        DiffResult<String> diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
+        DiffResult diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());

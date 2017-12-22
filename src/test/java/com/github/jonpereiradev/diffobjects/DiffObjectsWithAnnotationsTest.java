@@ -35,7 +35,7 @@ public class DiffObjectsWithAnnotationsTest {
     public void testDiffObjectsWithEqualsObjectElementMustReturnDiffWithEquals() {
         ObjectElement objectA = new ObjectElement("Object");
         ObjectElement objectB = new ObjectElement("Object");
-        List<DiffResult<?>> results = DiffObjects.diff(objectA, objectB);
+        List<DiffResult> results = DiffObjects.diff(objectA, objectB);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
@@ -48,7 +48,7 @@ public class DiffObjectsWithAnnotationsTest {
     public void testDiffObjectsWithDifferentObjectElementMustReturnDiffWithDifference() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        List<DiffResult<?>> results = DiffObjects.diff(objectA, objectB);
+        List<DiffResult> results = DiffObjects.diff(objectA, objectB);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
