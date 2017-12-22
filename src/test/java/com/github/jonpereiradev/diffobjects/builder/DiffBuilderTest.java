@@ -23,6 +23,7 @@ public class DiffBuilderTest {
             .map(ObjectElement.class)
             .mapper()
             .mappingAll()
+            .instance()
             .configuration()
             .build();
 
@@ -40,6 +41,7 @@ public class DiffBuilderTest {
             .mapper()
             .mapping("name")
             .mappingAll()
+            .instance()
             .configuration()
             .build();
     }
@@ -74,11 +76,6 @@ public class DiffBuilderTest {
         Assert.assertFalse(metadata.isEmpty());
         Assert.assertEquals(1, metadata.size());
         Assert.assertEquals("getParent", metadata.get(0).getMethod().getName());
-    }
-
-    @Test(expected = DiffException.class)
-    public void testDiffBuilderMappingDuplicated() {
-        DiffBuilder.map(ObjectElement.class).mapper().mapping("name").mapping("name");
     }
 
     @Test(expected = DiffException.class)

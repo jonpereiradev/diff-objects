@@ -31,19 +31,27 @@ final class DiffCollectionStrategy implements DiffStrategy {
             return new DiffResult<>(null, null, true);
         }
 
-        if (isEqualsSize(beforeCollection, afterCollection)) {
-            Iterator<?> beforeIterator = beforeCollection.iterator();
-            Iterator<?> afterIterator = afterCollection.iterator();
+        if (!isEqualsSize(beforeCollection, afterCollection)) {
+            return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
+        }
 
-            while (beforeIterator.hasNext() && afterIterator.hasNext()) {
-                if (diffMetadata.getValue().isEmpty()) {
-                    Object beforeObject = beforeIterator.next();
-                    Object afterObject = afterIterator.next();
+        Iterator<?> beforeIterator = beforeCollection.iterator();
+        Iterator<?> afterIterator = afterCollection.iterator();
 
-                    if (!beforeObject.equals(afterObject)) {
-                        return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
-                    }
+        while (beforeIterator.hasNext() && afterIterator.hasNext()) {
+            Object beforeObject = beforeIterator.next();
+            Object afterObject = afterIterator.next();
+
+            if (!diffMetadata.getValue().isEmpty()) {
+                Method method = DiffReflections.discoverGetter(beforeObject.getClass(), diffMetadata.getValue());
+                DiffMetadata metadata = new DiffMetadata(null, method, DiffStrategyType.SINGLE);
+                DiffResult<Object> single = DiffStrategyType.SINGLE.getStrategy().diff(beforeObject, afterObject, metadata);
+
+                if (!single.isEquals()) {
+                    return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
                 }
+            } else if (!beforeObject.equals(afterObject)) {
+                return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
             }
         }
 
@@ -51,11 +59,15 @@ final class DiffCollectionStrategy implements DiffStrategy {
     }
 
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
-        if (beforeCollection == null && !afterCollection.isEmpty()) {
+        if (beforeCollection == null && afterCollection != null) {
             return false;
         }
 
-        return beforeCollection != null && afterCollection != null && beforeCollection.isEmpty();
+        if (beforeCollection != null && afterCollection == null) {
+            return false;
+        }
+
+        return beforeCollection.size() == afterCollection.size();
     }
 
     /**

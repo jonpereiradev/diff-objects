@@ -1,7 +1,7 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
-import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ComplexElement;
+import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,13 +14,16 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     private DiffStrategy diffStrategy;
     private DiffMetadata diffMetadata;
+    private DiffMetadata diffMetadataByName;
 
     @Before
     public void beforeTest() {
         diffStrategy = DiffStrategyType.COLLECTION.getStrategy();
-        diffMetadata = discoverByName(ComplexElement.class,"getObjectElementList");
+        diffMetadata = discoverByName(ComplexElement.class, "getObjectElementList");
+        diffMetadataByName = discoverByName(ComplexElement.class, "getObjectElementListByName");
         Assert.assertNotNull(diffStrategy);
         Assert.assertNotNull(diffMetadata);
+        Assert.assertNotNull(diffMetadataByName);
     }
 
     @Test
@@ -93,7 +96,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
-        Assert.assertTrue(diffResult.isEquals());
+        Assert.assertFalse(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertTrue(diffResult.getBefore().size() == 1);
@@ -114,12 +117,73 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
-        Assert.assertTrue(diffResult.isEquals());
+        Assert.assertFalse(diffResult.isEquals());
         Assert.assertNotNull(diffResult.getBefore());
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertTrue(diffResult.getBefore().size() == 1);
         Assert.assertEquals("Object A.A", diffResult.getBefore().get(0).getName());
         Assert.assertTrue(diffResult.getAfter().size() == 1);
         Assert.assertEquals("Object B.A", diffResult.getAfter().get(0).getName());
+    }
+
+    @Test
+    public void testCollectionStrategySameObjectsSameSizeList() {
+        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ObjectElement objectElement = new ObjectElement("Object");
+
+        complexA.getObjectElementList().add(objectElement);
+        complexB.getObjectElementList().add(objectElement);
+
+        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertTrue(diffResult.isEquals());
+        Assert.assertNotNull(diffResult.getBefore());
+        Assert.assertNotNull(diffResult.getAfter());
+        Assert.assertTrue(diffResult.getBefore().size() == 1);
+        Assert.assertEquals("Object", diffResult.getBefore().get(0).getName());
+        Assert.assertTrue(diffResult.getAfter().size() == 1);
+        Assert.assertEquals("Object", diffResult.getAfter().get(0).getName());
+    }
+
+    @Test
+    public void testCollectionStrategySameObjectsByNameSameSizeList() {
+        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+
+        complexA.getObjectElementListByName().add(new ObjectElement("Object"));
+        complexB.getObjectElementListByName().add(new ObjectElement("Object"));
+
+        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertTrue(diffResult.isEquals());
+        Assert.assertNotNull(diffResult.getBefore());
+        Assert.assertNotNull(diffResult.getAfter());
+        Assert.assertTrue(diffResult.getBefore().size() == 1);
+        Assert.assertEquals("Object", diffResult.getBefore().get(0).getName());
+        Assert.assertTrue(diffResult.getAfter().size() == 1);
+        Assert.assertEquals("Object", diffResult.getAfter().get(0).getName());
+    }
+
+    @Test
+    public void testCollectionStrategyDifferentObjectsByNameSameSizeList() {
+        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+
+        complexA.getObjectElementListByName().add(new ObjectElement("Object A"));
+        complexB.getObjectElementListByName().add(new ObjectElement("Object B"));
+
+        DiffResult<List<ObjectElement>> diffResult = diffStrategy.diff(complexA, complexB, diffMetadataByName);
+
+        Assert.assertNotNull(diffResult);
+        Assert.assertFalse(diffResult.isEquals());
+        Assert.assertNotNull(diffResult.getBefore());
+        Assert.assertNotNull(diffResult.getAfter());
+        Assert.assertTrue(diffResult.getBefore().size() == 1);
+        Assert.assertEquals("Object A", diffResult.getBefore().get(0).getName());
+        Assert.assertTrue(diffResult.getAfter().size() == 1);
+        Assert.assertEquals("Object B", diffResult.getAfter().get(0).getName());
     }
 }

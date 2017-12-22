@@ -22,7 +22,7 @@ public interface DiffMappingBuilder {
      *
      * @return the instance instance responsible for this mapping.
      */
-    DiffInstanceBuilder mappingAll();
+    DiffMappingBuilder mappingAll();
 
     /**
      * Maps the getter of the field for the class.

@@ -22,11 +22,11 @@ import java.util.*;
 public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfiguration {
 
     private final Class<?> classMap;
-    private final List<DiffMetadata> metadatas;
+    private final Map<String, DiffMetadata> metadatas;
 
     private DiffBuilder(Class<?> classMap) {
         this.classMap = classMap;
-        this.metadatas = new LinkedList<>();
+        this.metadatas = new LinkedHashMap<>();
     }
 
     /**
@@ -56,7 +56,7 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      * @return the instance instance responsible for this mapping.
      */
     @Override
-    public DiffInstanceBuilder mappingAll() {
+    public DiffMappingBuilder mappingAll() {
         Class<?> clazz = classMap;
 
         if (!metadatas.isEmpty()) {
@@ -115,14 +115,9 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
         }
 
         DiffMetadata diffMetadata = new DiffMetadata(value, method, diffStrategyType);
-
-        if (metadatas.contains(diffMetadata)) {
-            throw new DiffException("Field \"" + field + "\" already mapped in this builder.");
-        }
-
         diffMetadata.getProperties().put("field", field);
 
-        metadatas.add(diffMetadata);
+        metadatas.put(field, diffMetadata);
 
         return this;
     }
@@ -172,6 +167,6 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      */
     @Override
     public List<DiffMetadata> build() {
-        return Collections.unmodifiableList(metadatas);
+        return new ArrayList<>(metadatas.values());
     }
 }
