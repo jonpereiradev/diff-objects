@@ -1,11 +1,11 @@
-#Diff Objects
+# Diff Objects
 
 This project helps you to build functionalities that needs to show the differences between two objects.
 
 You can use this project in two ways, using annotations or a Builder to map the properties of the object that will be
 checked for difference.
 
-##DiffBuilder
+## DiffBuilder
 
 The DiffBuilder provide an API to map an object without the use of annotations:
 
@@ -64,7 +64,7 @@ public class Main {
 }
 ```
 
-##Annotations
+## Annotations
 
 The annotations provided by the diff objects are:
 
@@ -129,7 +129,7 @@ public class Main {
 }
 ```
 
-###@DiffProperty
+### @DiffProperty
 
 This annotations is used to provide information in the DiffResult about the field. All objects already have the 
 property "field" with the field name as value.
@@ -177,7 +177,7 @@ public class Main {
 }
 ```
 
-##Future implementations
+## Future implementations
 
 - Order of the result using @DiffOrder not implemented yet;
 - Disable mapped fields after calling DiffBuilder.map(User.class).mapper().mappingAll();
