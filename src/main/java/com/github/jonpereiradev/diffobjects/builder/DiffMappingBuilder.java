@@ -11,18 +11,18 @@ package com.github.jonpereiradev.diffobjects.builder;
 public interface DiffMappingBuilder {
 
     /**
-     * Returns to the instance instance to allow the fluent interface.
+     * Returns to the instance to allow the fluent interface.
      *
-     * @return the instance instance responsible for this mapping.
+     * @return the instance responsible for this mapping.
      */
     DiffInstanceBuilder instance();
 
     /**
      * Maps all the field of a class.
      *
-     * @return the instance instance responsible for this mapping.
+     * @return the instance responsible for this mapping.
      */
-    DiffMappingBuilder mappingAll();
+    DiffInstanceBuilder mappingAll();
 
     /**
      * Maps the getter of the field for the class.
@@ -30,7 +30,7 @@ public interface DiffMappingBuilder {
      * @param field name of the field that will me used to find the getter method.
      * @return the instance of this mapping.
      */
-    DiffMappingBuilder mapping(String field);
+    DiffQueryBuilder mapping(String field);
 
     /**
      * Maps the getter of the field for the class with the value property to allow deep diff.
@@ -39,15 +39,15 @@ public interface DiffMappingBuilder {
      * @param value the nested property of the object to make the diff.
      * @return the instance of this mapping.
      */
-    DiffMappingBuilder mapping(String field, String value);
+    DiffQueryBuilder mapping(String field, String value);
 
     /**
-     * Define a property for the last mapping.
+     * Remove a mapping of the field for the class.
      *
-     * @param key   the identifier of the property.
-     * @param value the value of the property.
+     * @param field name of the field that will me used to remove.
      * @return the instance of this mapping.
      */
-    DiffMappingBuilder property(String key, String value);
+    DiffMappingBuilder unmapping(String field);
+
 }
 

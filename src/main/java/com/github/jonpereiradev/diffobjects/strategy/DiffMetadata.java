@@ -13,7 +13,7 @@ import java.util.Objects;
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     private int order;
-    private final String value;
+    private String value;
     private final Method method;
     private final DiffStrategy strategy;
     private final Map<String, String> properties;
@@ -49,6 +49,10 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Method getMethod() {
