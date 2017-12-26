@@ -180,6 +180,5 @@ public class Main {
 
 ## Future implementations
 
-- Order of the result using @DiffOrder not implemented yet;
 - Enable only different object for diff result;
 - Collection with value working with navigate properties like "emails.principal.description";
