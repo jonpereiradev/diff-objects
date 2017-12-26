@@ -81,10 +81,6 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
         Method method = DiffReflections.discoverGetter(classMap, field);
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
 
-        if (method == null) {
-            throw new DiffException("Method " + field + " not found in class " + classMap.getName());
-        }
-
         if (!Modifier.isPublic(method.getModifiers()) || method.getParameterTypes().length > 0) {
             throw new DiffException("Method " + method.getName() + " must be public and no-args.");
         }

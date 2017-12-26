@@ -75,7 +75,13 @@ public final class DiffReflections {
             possibleAccessMethodName = "get" + StringUtils.capitalize(fieldOrMethodName);
         }
 
-        return MethodUtils.getMatchingAccessibleMethod(diffClass, possibleAccessMethodName, null);
+        Method method = MethodUtils.getMatchingAccessibleMethod(diffClass, possibleAccessMethodName, null);
+
+        if (method == null) {
+            throw new DiffException("Method " + possibleAccessMethodName + " not found in class " + diffClass.getName());
+        }
+
+        return method;
     }
 
     /**
