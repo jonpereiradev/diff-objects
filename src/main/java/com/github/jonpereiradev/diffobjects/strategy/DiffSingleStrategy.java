@@ -21,9 +21,9 @@ final class DiffSingleStrategy implements DiffStrategy {
      * @return the instance result between the two objects.
      */
     @Override
-    public <T> DiffResult<T> diff(Object before, Object after, DiffMetadata diffMetadata) {
-        T beforeValue = null;
-        T afterValue = null;
+    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
+        Object beforeValue = null;
+        Object afterValue = null;
 
         if (before != null) {
             beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
@@ -33,6 +33,6 @@ final class DiffSingleStrategy implements DiffStrategy {
             afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
         }
 
-        return new DiffResult<>(beforeValue, afterValue, Objects.deepEquals(beforeValue, afterValue));
+        return new DiffResult(beforeValue, afterValue, Objects.deepEquals(beforeValue, afterValue));
     }
 }

@@ -47,13 +47,14 @@ public class Main {
         DiffConfiguration configuration = DiffBuilder.map(User.class)
             .mapper()
             .mappingAll()
+            .mapper()
             .mapping("emails", "description")
             .instance()
             .configuration();
         
-        List<DiffResult<?>> diffs = DiffObjects.diff(u1, u2, configuration);
+        List<DiffResult> diffs = DiffObjects.diff(u1, u2, configuration);
         
-        for (DiffResult<?> diff : diffs) {
+        for (DiffResult diff : diffs) {
             if (!diff.isEquals()) {
                 System.out.println("Field: " + diff.getProperties().get("field"));
                 System.out.println("Before: " + diff.getBefore());
@@ -116,9 +117,9 @@ public class Main {
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
         
-        List<DiffResult<?>> diffs = DiffObjects.diff(u1, u2);
+        List<DiffResult> diffs = DiffObjects.diff(u1, u2);
         
-        for (DiffResult<?> diff : diffs) {
+        for (DiffResult diff : diffs) {
             if (!diff.isEquals()) {
                 System.out.println("Field: " + diff.getProperties().get("field"));
                 System.out.println("Before: " + diff.getBefore());
@@ -159,9 +160,9 @@ public class Main {
     public static void main(String[] args) {
         // code omitted ...
         
-        List<DiffResult<?>> diffs = DiffObjects.diff(u1, u2);
+        List<DiffResult> diffs = DiffObjects.diff(u1, u2);
         
-        for (DiffResult<?> diff : diffs) {
+        for (DiffResult diff : diffs) {
             if (diff.getProperties().containsKey("id")) {
                 String id = diff.getProperties().get("id");
                 String maxlength = diff.getProperties().get("maxlength");
@@ -180,7 +181,5 @@ public class Main {
 ## Future implementations
 
 - Order of the result using @DiffOrder not implemented yet;
-- Disable mapped fields after calling DiffBuilder.map(User.class).mapper().mappingAll();
 - Enable only different object for diff result;
 - Collection with value working with navigate properties like "emails.principal.description";
-- Remove wildcard from DiffResult class;

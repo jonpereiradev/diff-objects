@@ -5,24 +5,24 @@ import java.util.Map;
 /**
  * @author jonpereiradev@gmail.com
  */
-public class DiffResult<T> {
+public class DiffResult {
 
-    private T before;
-    private T after;
+    private Object before;
+    private Object after;
     private boolean equals;
     private Map<String, String> properties;
 
-    public DiffResult(T before, T after, boolean equals) {
+    public DiffResult(Object before, Object after, boolean equals) {
         this.before = before;
         this.after = after;
         this.equals = equals;
     }
 
-    public T getBefore() {
+    public Object getBefore() {
         return before;
     }
 
-    public T getAfter() {
+    public Object getAfter() {
         return after;
     }
 

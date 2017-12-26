@@ -19,20 +19,19 @@ final class DiffCollectionStrategy implements DiffStrategy {
      * @param before       object that is considered a state before the after object.
      * @param after        object that is considered the before object updated.
      * @param diffMetadata the diffMetadata that is mapped to make the instance.
-     * @param <T>          the type of object returned by the instance.
      * @return the instance result between the two objects.
      */
     @Override
-    public <T> DiffResult<T> diff(Object before, Object after, DiffMetadata diffMetadata) {
+    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
         Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
         Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
 
         if (beforeCollection == null && afterCollection == null) {
-            return new DiffResult<>(null, null, true);
+            return new DiffResult(null, null, true);
         }
 
         if (!isEqualsSize(beforeCollection, afterCollection)) {
-            return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
+            return new DiffResult(beforeCollection, afterCollection, false);
         }
 
         Iterator<?> beforeIterator = beforeCollection.iterator();
@@ -45,17 +44,17 @@ final class DiffCollectionStrategy implements DiffStrategy {
             if (!diffMetadata.getValue().isEmpty()) {
                 Method method = DiffReflections.discoverGetter(beforeObject.getClass(), diffMetadata.getValue());
                 DiffMetadata metadata = new DiffMetadata(null, method, DiffStrategyType.SINGLE);
-                DiffResult<Object> single = DiffStrategyType.SINGLE.getStrategy().diff(beforeObject, afterObject, metadata);
+                DiffResult single = DiffStrategyType.SINGLE.getStrategy().diff(beforeObject, afterObject, metadata);
 
                 if (!single.isEquals()) {
-                    return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
+                    return new DiffResult(beforeCollection, afterCollection, false);
                 }
             } else if (!beforeObject.equals(afterObject)) {
-                return new DiffResult<>((T) beforeCollection, (T) afterCollection, false);
+                return new DiffResult(beforeCollection, afterCollection, false);
             }
         }
 
-        return new DiffResult<>((T) beforeCollection, (T) afterCollection, true);
+        return new DiffResult(beforeCollection, afterCollection, true);
     }
 
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {

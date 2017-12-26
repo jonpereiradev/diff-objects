@@ -2,14 +2,10 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
-import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
-import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.apache.commons.lang.StringUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Responsible to map a class and fields to be able to generate diffs.
@@ -19,14 +15,14 @@ import java.util.*;
  * @see DiffMappingBuilder
  * @see DiffConfiguration
  */
-public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilder, DiffConfiguration {
+public final class DiffBuilder implements DiffInstanceBuilder {
 
-    private final Class<?> classMap;
     private final Map<String, DiffMetadata> metadatas;
+    private final DiffMappingBuilder diffMappingBuilder;
 
     private DiffBuilder(Class<?> classMap) {
-        this.classMap = classMap;
         this.metadatas = new LinkedHashMap<>();
+        this.diffMappingBuilder = new DiffMappingBuilderImpl(classMap, metadatas, this);
     }
 
     /**
@@ -47,107 +43,24 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      */
     @Override
     public DiffMappingBuilder mapper() {
-        return this;
+        return diffMappingBuilder;
     }
 
     /**
-     * Maps all the field of a class.
+     * Finds a mapping in the builder to make operations.
      *
-     * @return the instance instance responsible for this mapping.
-     */
-    @Override
-    public DiffMappingBuilder mappingAll() {
-        Class<?> clazz = classMap;
-
-        if (!metadatas.isEmpty()) {
-            throw new IllegalStateException("The mappingAll cannot be used after a mapping(field) call.");
-        }
-
-        while (clazz != null && !clazz.equals(Object.class)) {
-            for (Field parentField : clazz.getDeclaredFields()) {
-                mapping(parentField.getName());
-            }
-
-            clazz = clazz.getSuperclass();
-        }
-
-        return this;
-    }
-
-    /**
-     * Maps the getter of the field for the class.
-     *
-     * @param field name of the field that will me used to find the getter method.
-     * @return the instance of this mapping instance.
-     */
-    @Override
-    public DiffMappingBuilder mapping(String field) {
-        return mapping(field, StringUtils.EMPTY);
-    }
-
-    /**
-     * Maps the getter of the field for the class with the value property to allow deep diff.
-     *
-     * @param field name of the field that will me used to find the getter method.
-     * @param value the nested property of the object to make the diff.
-     * @return the instance of this mapping instance.
-     * @throws DiffException throw if the field doesn't have a public no args method for the field.
-     */
-    @Override
-    public DiffMappingBuilder mapping(String field, String value) {
-        Method method = DiffReflections.discoverGetter(classMap, field);
-        DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
-
-        if (method == null) {
-            throw new DiffException("Method " + field + " not found in class " + classMap.getName());
-        }
-
-        if (!Modifier.isPublic(method.getModifiers()) || method.getParameterTypes().length > 0) {
-            throw new DiffException("Method " + method.getName() + " must be public and no-args.");
-        }
-
-        if (value != null && !value.isEmpty()) {
-            diffStrategyType = DiffStrategyType.DEEP;
-        }
-
-        if (Collection.class.isAssignableFrom(method.getReturnType())) {
-            diffStrategyType = DiffStrategyType.COLLECTION;
-        }
-
-        DiffMetadata diffMetadata = new DiffMetadata(value, method, diffStrategyType);
-        diffMetadata.getProperties().put("field", field);
-
-        metadatas.put(field, diffMetadata);
-
-        return this;
-    }
-
-    /**
-     * Define a property for the last mapping.
-     *
-     * @param key   the identifier of the property.
-     * @param value the value of the property.
+     * @param field the name of the field mapped in the builder.
      * @return the instance of this mapping.
      */
     @Override
-    public DiffMappingBuilder property(String key, String value) {
-        if (metadatas.isEmpty()) {
-            throw new DiffException("A mapping field is required to associate the property.");
+    public DiffQueryBuilder query(String field) {
+        DiffMetadata diffMetadata = metadatas.get(field);
+
+        if (diffMetadata == null) {
+            throw new DiffException("No field \"" + field + "\" mapped in builder. You need to map the field before query.");
         }
 
-        metadatas.get(metadatas.size() - 1).getProperties().put(key, value);
-
-        return this;
-    }
-
-    /**
-     * Returns to the instance instance to allow the fluent interface.
-     *
-     * @return the instance instance responsible for this mapping.
-     */
-    @Override
-    public DiffInstanceBuilder instance() {
-        return this;
+        return new DiffQueryBuilderImpl(diffMetadata, this);
     }
 
     /**
@@ -157,16 +70,6 @@ public final class DiffBuilder implements DiffInstanceBuilder, DiffMappingBuilde
      */
     @Override
     public DiffConfiguration configuration() {
-        return this;
-    }
-
-    /**
-     * Gets the configuration for the instance instance.
-     *
-     * @return the metadata generated by the instance instance.
-     */
-    @Override
-    public List<DiffMetadata> build() {
-        return new ArrayList<>(metadatas.values());
+        return new DiffConfigurationImpl(metadatas);
     }
 }

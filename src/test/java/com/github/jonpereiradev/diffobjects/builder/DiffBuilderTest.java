@@ -23,7 +23,6 @@ public class DiffBuilderTest {
             .map(ObjectElement.class)
             .mapper()
             .mappingAll()
-            .instance()
             .configuration()
             .build();
 
@@ -34,16 +33,9 @@ public class DiffBuilderTest {
         Assert.assertEquals("getParent", metadata.get(1).getMethod().getName());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testDiffBuilderMappingAllInvalidState() {
-        DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mapping("name")
-            .mappingAll()
-            .instance()
-            .configuration()
-            .build();
+    @Test(expected = DiffException.class)
+    public void testDiffBuilderMappingNotFound() {
+        DiffBuilder.map(ObjectElement.class).mapper().mapping("notExists");
     }
 
     @Test
@@ -78,9 +70,26 @@ public class DiffBuilderTest {
         Assert.assertEquals("getParent", metadata.get(0).getMethod().getName());
     }
 
-    @Test(expected = DiffException.class)
-    public void testDiffBuilderMappingNotFound() {
-        DiffBuilder.map(ObjectElement.class).mapper().mapping("notExists");
+    @Test
+    public void testDiffBuilderMappingWithQueryProperty() {
+        List<DiffMetadata> metadata = DiffBuilder
+            .map(ObjectElement.class)
+            .mapper()
+            .mappingAll()
+            .mapper()
+            .unmapping("name")
+            .instance()
+            .query("parent")
+            .property("query", "true")
+            .instance()
+            .configuration()
+            .build();
+
+        Assert.assertNotNull(metadata);
+        Assert.assertFalse(metadata.isEmpty());
+        Assert.assertEquals(1, metadata.size());
+        Assert.assertTrue(metadata.get(0).getProperties().containsKey("query"));
+        Assert.assertEquals("true", metadata.get(0).getProperties().get("query"));
     }
 
     @Test
