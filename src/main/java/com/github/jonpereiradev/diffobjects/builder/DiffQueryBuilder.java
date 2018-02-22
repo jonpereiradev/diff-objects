@@ -4,6 +4,7 @@ package com.github.jonpereiradev.diffobjects.builder;
  * Builder responsible for modify the queried field of a class to create a configuration of diff.
  *
  * @author jonpereiradev@gmail.com
+ *
  * @see DiffBuilder
  * @see DiffInstanceBuilder
  * @see DiffConfiguration
@@ -11,17 +12,11 @@ package com.github.jonpereiradev.diffobjects.builder;
 public interface DiffQueryBuilder extends DiffMappingBuilder {
 
     /**
-     * Returns to the instance instance to allow the fluent interface.
-     *
-     * @return the instance instance responsible for this mapping.
-     */
-    DiffInstanceBuilder instance();
-
-    /**
      * Define a property for the last mapping.
      *
-     * @param key   the identifier of the property.
+     * @param key the identifier of the property.
      * @param value the value of the property.
+     *
      * @return the instance of this builder.
      */
     DiffQueryBuilder property(String key, String value);
@@ -33,4 +28,3 @@ public interface DiffQueryBuilder extends DiffMappingBuilder {
      */
     DiffInstanceBuilder unmapping();
 }
-

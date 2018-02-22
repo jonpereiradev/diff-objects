@@ -15,12 +15,12 @@ import java.lang.annotation.Target;
 public @interface DiffProperty {
 
     /**
-     * Identifier of the property.
+     * @return identifier of the property.
      */
     String key();
 
     /**
-     * Value of the property.
+     * @return value of the property.
      */
     String value();
 

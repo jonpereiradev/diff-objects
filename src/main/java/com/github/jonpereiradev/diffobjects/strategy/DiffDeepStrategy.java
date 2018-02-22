@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
- * Responsible for check the difference between two objects where @Diff navigates into object properties.
+ * Responsible for check the difference between two objects where value navigates into object properties.
  *
  * @author jonpereiradev@gmail.com
  */

@@ -4,6 +4,7 @@ package com.github.jonpereiradev.diffobjects.builder;
  * Builder with the methods of a instance instance.
  *
  * @author jonpereiradev@gmail.com
+ * 
  * @see DiffBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
@@ -33,4 +34,3 @@ public interface DiffInstanceBuilder {
     DiffConfiguration configuration();
 
 }
-

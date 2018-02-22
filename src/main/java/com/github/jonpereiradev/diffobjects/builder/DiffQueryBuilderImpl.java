@@ -6,6 +6,7 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
  * Responsible to map a class and fields to be able to generate diffs.
  *
  * @author jonpereiradev@gmail.com
+ *
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
@@ -34,6 +35,7 @@ final class DiffQueryBuilderImpl implements DiffQueryBuilder {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -46,6 +48,7 @@ final class DiffQueryBuilderImpl implements DiffQueryBuilder {
      *
      * @param field name of the field that will me used to find the getter method.
      * @param value the nested property of the object to make the diff.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -57,6 +60,7 @@ final class DiffQueryBuilderImpl implements DiffQueryBuilder {
      * Remove a mapping of the field for the class.
      *
      * @param field name of the field that will me used to remove.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -67,8 +71,9 @@ final class DiffQueryBuilderImpl implements DiffQueryBuilder {
     /**
      * Define a property for the last mapping.
      *
-     * @param key   the identifier of the property.
+     * @param key the identifier of the property.
      * @param value the value of the property.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -88,7 +93,7 @@ final class DiffQueryBuilderImpl implements DiffQueryBuilder {
     }
 
     /**
-     * Remove o mapeamento da propriedade gerenciada pelo query.
+     * Removes the property from the mapping.
      *
      * @return the instance of this builder.
      */

@@ -6,12 +6,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to group multiple mappings on a method or to enable all methods if is used on a class.
+ *
  * @author jonpereiradev@gmail.com
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DiffMappings {
 
-    DiffMapping[] value();
+    /**
+     * @return a group of mappings to make multiple diffs on a single method.
+     */
+    DiffMapping[] value() default {};
 
 }

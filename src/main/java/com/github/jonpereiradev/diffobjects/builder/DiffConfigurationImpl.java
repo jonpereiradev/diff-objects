@@ -8,6 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Responsible for generate the configuration of the instance.
+ *
+ * @see DiffBuilder
+ * @see DiffInstanceBuilder
+ * @see DiffMappingBuilder
+ */
 final class DiffConfigurationImpl implements DiffConfiguration {
 
     private final Map<String, DiffMetadata> metadatas;
