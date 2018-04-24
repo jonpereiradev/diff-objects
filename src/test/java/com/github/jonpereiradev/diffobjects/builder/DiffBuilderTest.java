@@ -20,11 +20,11 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderMappingAll() {
         List<DiffMetadata> metadata = DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mappingAll()
-            .configuration()
-            .build();
+                .map(ObjectElement.class)
+                .mapper()
+                .mappingAll()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(metadata);
         Assert.assertFalse(metadata.isEmpty());
@@ -41,12 +41,12 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderMappingFieldName() {
         List<DiffMetadata> metadata = DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mapping("name")
-            .instance()
-            .configuration()
-            .build();
+                .map(ObjectElement.class)
+                .mapper()
+                .mapping("name")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(metadata);
         Assert.assertFalse(metadata.isEmpty());
@@ -57,12 +57,12 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderMappingFieldParent() {
         List<DiffMetadata> metadata = DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mapping("parent")
-            .instance()
-            .configuration()
-            .build();
+                .map(ObjectElement.class)
+                .mapper()
+                .mapping("parent")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(metadata);
         Assert.assertFalse(metadata.isEmpty());
@@ -73,17 +73,17 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderMappingWithQueryProperty() {
         List<DiffMetadata> metadata = DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mappingAll()
-            .mapper()
-            .unmapping("name")
-            .instance()
-            .query("parent")
-            .property("query", "true")
-            .instance()
-            .configuration()
-            .build();
+                .map(ObjectElement.class)
+                .mapper()
+                .mappingAll()
+                .mapper()
+                .unmapping("name")
+                .instance()
+                .query("parent")
+                .property("query", "true")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(metadata);
         Assert.assertFalse(metadata.isEmpty());
@@ -95,13 +95,13 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderSingleStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
-            .map(ObjectElement.class)
-            .mapper()
-            .mapping("name")
-            .mapping("parent")
-            .instance()
-            .configuration()
-            .build();
+                .map(ObjectElement.class)
+                .mapper()
+                .mapping("name")
+                .mapping("parent")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(diffMetadatas);
         Assert.assertFalse(diffMetadatas.isEmpty());
@@ -115,12 +115,12 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderDeepStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
-            .map(ComplexElement.class)
-            .mapper()
-            .mapping("objectElement", "name")
-            .instance()
-            .configuration()
-            .build();
+                .map(ComplexElement.class)
+                .mapper()
+                .mapping("objectElement", "name")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(diffMetadatas);
         Assert.assertFalse(diffMetadatas.isEmpty());
@@ -132,12 +132,12 @@ public class DiffBuilderTest {
     @Test
     public void testDiffBuilderCollectionStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
-            .map(ComplexElement.class)
-            .mapper()
-            .mapping("objectElementList", "name")
-            .instance()
-            .configuration()
-            .build();
+                .map(ComplexElement.class)
+                .mapper()
+                .mapping("objectElementList", "name")
+                .instance()
+                .configuration()
+                .build();
 
         Assert.assertNotNull(diffMetadatas);
         Assert.assertFalse(diffMetadatas.isEmpty());

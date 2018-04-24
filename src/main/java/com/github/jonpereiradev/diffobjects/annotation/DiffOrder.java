@@ -6,13 +6,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author jonpereiradev@gmail.com
- * @see <a href="#">https://github.com/jonpereiradev/diff-objects</a>
+ * Defines an order for the method if necessary.
+ *
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface DiffOrder {
 
+    /**
+     * @return a number order for the method.
+     */
     int value();
 
 }

@@ -3,24 +3,33 @@ package com.github.jonpereiradev.diffobjects;
 import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
+import com.github.jonpereiradev.diffobjects.strategy.DiffStrategy;
+import java.util.ArrayList;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * @author jonpereiradev@gmail.com
+ * Responsible for execute the diff between two objects.
+ *
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public final class DiffObjects {
 
+    private DiffObjects() {
+        throw new UnsupportedOperationException("No need to create an instance of this class.");
+    }
+
     /**
-     * Executa o instance entre o antes e o depois.
+     * Execute the diff between two objects using annotations.
      *
-     * @param <T>         tipo do objeto comparado.
-     * @param beforeState objeto com as informações antes da alteração.
-     * @param afterState  objeto com as informaçnoes depois da alteração.
-     * @return resultado do instance.
+     * @param <T> type of object been compared.
+     * @param beforeState the before object state to compare with after object.
+     * @param afterState the after object state to compare with befor object.
+     *
+     * @return a list with the results of the diff.
      */
     public static <T> List<DiffResult> diff(T beforeState, T afterState) {
         Objects.requireNonNull(beforeState, "Before state is required.");
@@ -30,12 +39,43 @@ public final class DiffObjects {
     }
 
     /**
-     * Verifica se os objetos são iguais no instance.
+     * Execute the diff between two objects using a configuration.
      *
-     * @param <T>         tipo do objeto comparado.
-     * @param beforeState objeto com as informações antes da alteração.
-     * @param afterState  objeto com as informações depois da alteração.
-     * @return resultado do instance.
+     * @param <T> type of object been compared.
+     * @param beforeState the before object state to compare with after object.
+     * @param afterState the after object state to compare with befor object.
+     * @param configuration the configuration of the diff.
+     *
+     * @return a list with the results of the diff.
+     */
+    public static <T> List<DiffResult> diff(T beforeState, T afterState, DiffConfiguration configuration) {
+        Objects.requireNonNull(beforeState, "Before state is required.");
+        Objects.requireNonNull(afterState, "After state is required.");
+        Objects.requireNonNull(configuration, "Configuration is required.");
+
+        List<DiffMetadata> metadatas = configuration.build();
+        List<DiffResult> results = new ArrayList<>(metadatas.size());
+
+        for (DiffMetadata metadata : metadatas) {
+            DiffStrategy strategy = metadata.getStrategy();
+            DiffResult diff = strategy.diff(beforeState, afterState, metadata);
+
+            diff.setProperties(Collections.unmodifiableMap(metadata.getProperties()));
+
+            results.add(diff);
+        }
+
+        return results;
+    }
+
+    /**
+     * Check if exists any difference between the two objects using annotations.
+     *
+     * @param <T> type of object been compared.
+     * @param beforeState the before object state to compare with after object.
+     * @param afterState the after object state to compare with befor object.
+     *
+     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
     public static <T> boolean isEquals(T beforeState, T afterState) {
         Objects.requireNonNull(beforeState, "Before state is required.");
@@ -45,36 +85,14 @@ public final class DiffObjects {
     }
 
     /**
-     * Executa o instance entre o antes e o depois.
+     * Check if exists any difference between the two objects.
      *
-     * @param <T>         tipo do objeto comparado.
-     * @param beforeState objeto com as informações antes da alteração.
-     * @param afterState  objeto com as informaçnoes depois da alteração.
-     * @return resultado do instance.
-     */
-    public static <T> List<DiffResult> diff(T beforeState, T afterState, DiffConfiguration configuration) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
-        Objects.requireNonNull(configuration, "Configuration is required.");
-
-        List<DiffResult> results = new LinkedList<>();
-
-        for (DiffMetadata metadata : configuration.build()) {
-            DiffResult diff = metadata.getStrategy().diff(beforeState, afterState, metadata);
-            diff.setProperties(Collections.unmodifiableMap(metadata.getProperties()));
-            results.add(diff);
-        }
-
-        return results;
-    }
-
-    /**
-     * Verifica se os objetos são iguais no instance.
+     * @param <T> type of object been compared.
+     * @param beforeState the before object state to compare with after object.
+     * @param afterState the after object state to compare with befor object.
+     * @param configuration the configuration of the diff.
      *
-     * @param <T>         tipo do objeto comparado.
-     * @param beforeState objeto com as informações antes da alteração.
-     * @param afterState  objeto com as informações depois da alteração.
-     * @return resultado do instance.
+     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
     public static <T> boolean isEquals(T beforeState, T afterState, DiffConfiguration configuration) {
         Objects.requireNonNull(beforeState, "Before state is required.");
@@ -82,7 +100,8 @@ public final class DiffObjects {
         Objects.requireNonNull(configuration, "Configuration is required.");
 
         for (DiffMetadata metadata : configuration.build()) {
-            DiffResult result = metadata.getStrategy().diff(beforeState, afterState, metadata);
+            DiffStrategy strategy = metadata.getStrategy();
+            DiffResult result = strategy.diff(beforeState, afterState, metadata);
 
             if (!result.isEquals()) {
                 return false;

@@ -126,7 +126,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object A.A", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object B.A", afterCollection.get(0).getName());
     }
 
@@ -149,7 +149,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 
@@ -171,7 +171,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 

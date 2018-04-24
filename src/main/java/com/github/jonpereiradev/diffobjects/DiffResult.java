@@ -3,13 +3,16 @@ package com.github.jonpereiradev.diffobjects;
 import java.util.Map;
 
 /**
- * @author jonpereiradev@gmail.com
+ * Result of a diff with the before and after state.
+ *
+ * @author Jonathan Pereira
+ * @since 1.0
  */
-public class DiffResult {
+public final class DiffResult {
 
-    private Object before;
-    private Object after;
-    private boolean equals;
+    private final Object before;
+    private final Object after;
+    private final boolean equals;
     private Map<String, String> properties;
 
     public DiffResult(Object before, Object after, boolean equals) {
@@ -34,7 +37,7 @@ public class DiffResult {
         return properties;
     }
 
-    public void setProperties(Map<String, String> properties) {
+    void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 }
