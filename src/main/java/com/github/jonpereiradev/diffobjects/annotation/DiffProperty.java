@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Maps a property on a mapping to be used on result.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE})

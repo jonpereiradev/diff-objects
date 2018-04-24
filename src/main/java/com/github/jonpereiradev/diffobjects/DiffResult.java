@@ -5,7 +5,8 @@ import java.util.Map;
 /**
  * Result of a diff with the before and after state.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public final class DiffResult {
 

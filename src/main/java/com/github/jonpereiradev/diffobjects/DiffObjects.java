@@ -13,7 +13,8 @@ import java.util.Objects;
 /**
  * Responsible for execute the diff between two objects.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public final class DiffObjects {
 

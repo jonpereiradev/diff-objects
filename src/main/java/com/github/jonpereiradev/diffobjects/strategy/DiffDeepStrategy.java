@@ -8,7 +8,8 @@ import java.util.Objects;
 /**
  * Responsible for check the difference between two objects where value navigates into object properties.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 final class DiffDeepStrategy implements DiffStrategy {
 
@@ -17,8 +18,8 @@ final class DiffDeepStrategy implements DiffStrategy {
     /**
      * Check the difference between two objects for the diffMetadata configuration.
      *
-     * @param before       object that is considered a state before the after object.
-     * @param after        object that is considered the before object updated.
+     * @param before object that is considered a state before the after object.
+     * @param after object that is considered the before object updated.
      * @param diffMetadata the diffMetadata that is mapped to make the instance.
      * @return the instance result between the two objects.
      */

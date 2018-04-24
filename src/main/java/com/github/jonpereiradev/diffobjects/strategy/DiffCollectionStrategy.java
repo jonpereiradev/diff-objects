@@ -9,7 +9,8 @@ import java.util.Iterator;
 /**
  * Responsible for check the difference between two collections.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 final class DiffCollectionStrategy implements DiffStrategy {
 

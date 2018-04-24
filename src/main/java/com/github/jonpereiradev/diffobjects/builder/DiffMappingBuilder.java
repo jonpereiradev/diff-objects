@@ -3,7 +3,8 @@ package com.github.jonpereiradev.diffobjects.builder;
 /**
  * Builder responsible for mapping the fields of a class to create a configuration of diff.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  *
  * @see DiffBuilder
  * @see DiffInstanceBuilder

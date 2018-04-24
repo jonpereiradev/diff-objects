@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * Responsible for generate the configuration of the instance.
  *
+ * @author Jonathan Pereira
+ * @since 1.0
+ *
  * @see DiffBuilder
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder

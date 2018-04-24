@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Common reflections operations to execute the diff.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public final class DiffReflections {
 

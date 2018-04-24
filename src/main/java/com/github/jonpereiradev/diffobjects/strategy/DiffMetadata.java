@@ -10,7 +10,8 @@ import java.util.Objects;
 /**
  * Metadata with the information of a field/method to compare on diff execution.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 

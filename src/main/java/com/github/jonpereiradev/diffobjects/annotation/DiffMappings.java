@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Annotation to group multiple mappings on a method or to enable all methods if is used on a class.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})

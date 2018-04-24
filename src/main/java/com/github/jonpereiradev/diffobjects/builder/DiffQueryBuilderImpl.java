@@ -5,7 +5,8 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 /**
  * Responsible to map a class and fields to be able to generate diffs.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  *
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder

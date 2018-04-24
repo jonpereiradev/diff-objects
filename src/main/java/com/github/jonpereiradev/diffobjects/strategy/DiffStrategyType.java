@@ -5,7 +5,8 @@ import org.apache.commons.lang.StringUtils;
 /**
  * The strategies types provided for the API to execute the diff operation.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 public enum DiffStrategyType {
 

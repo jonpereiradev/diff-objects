@@ -10,7 +10,9 @@ import java.util.Objects;
 /**
  * Responsible to map a class and fields to be able to generate diffs.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
+ *
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration

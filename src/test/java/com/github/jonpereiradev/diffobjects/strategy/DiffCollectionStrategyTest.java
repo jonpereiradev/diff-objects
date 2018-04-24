@@ -3,7 +3,6 @@ package com.github.jonpereiradev.diffobjects.strategy;
 import com.github.jonpereiradev.diffobjects.ComplexElement;
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
-import com.github.jonpereiradev.diffobjects.builder.DiffBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +126,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object A.A", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object B.A", afterCollection.get(0).getName());
     }
 
@@ -150,7 +149,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 
@@ -172,7 +171,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
         Assert.assertNotNull(diffResult.getAfter());
         Assert.assertEquals(1, beforeCollection.size());
         Assert.assertEquals("Object", beforeCollection.get(0).getName());
-        Assert.assertEquals(1,afterCollection.size());
+        Assert.assertEquals(1, afterCollection.size());
         Assert.assertEquals("Object", afterCollection.get(0).getName());
     }
 

@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Defines an order for the method if necessary.
  *
- * @author jonpereiradev@gmail.com
+ * @author Jonathan Pereira
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
