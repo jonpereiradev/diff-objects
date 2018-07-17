@@ -1,10 +1,12 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffResult;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
+
 
 /**
  * Responsible for check the difference between two collections.

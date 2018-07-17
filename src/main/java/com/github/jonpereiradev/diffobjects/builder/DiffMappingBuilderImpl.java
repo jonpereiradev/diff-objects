@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
@@ -12,6 +13,7 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * Responsible to map a class and fields to be able to generate diffs.

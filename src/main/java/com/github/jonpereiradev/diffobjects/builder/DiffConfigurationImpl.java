@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 import com.github.jonpereiradev.diffobjects.annotation.DiffOrder;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Responsible for generate the configuration of the instance.

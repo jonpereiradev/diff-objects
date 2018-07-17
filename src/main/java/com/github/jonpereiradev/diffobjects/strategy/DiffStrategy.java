@@ -1,6 +1,8 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffResult;
+
 
 /**
  * Defines a strategy to compare two objects and create the result of the diff.

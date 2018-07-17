@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Common reflections operations to execute the diff.

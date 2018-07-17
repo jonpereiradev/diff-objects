@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.ComplexElement;
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DiffCollectionStrategyTest extends BaseStrategyTest {
 

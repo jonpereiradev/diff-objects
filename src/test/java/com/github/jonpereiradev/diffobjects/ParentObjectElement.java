@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 public abstract class ParentObjectElement {
 
     private String parent;

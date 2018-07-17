@@ -1,11 +1,13 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ComplexElement;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class DiffDeepStrategyTest extends BaseStrategyTest {
 

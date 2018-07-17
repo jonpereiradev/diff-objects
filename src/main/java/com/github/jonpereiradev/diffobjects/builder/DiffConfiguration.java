@@ -1,8 +1,10 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
 import java.util.List;
+
 
 /**
  * Responsible for generate the configuration of the instance.

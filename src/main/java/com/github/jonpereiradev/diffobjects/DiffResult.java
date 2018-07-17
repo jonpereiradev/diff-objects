@@ -1,6 +1,8 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 import java.util.Map;
+
 
 /**
  * Result of a diff with the before and after state.

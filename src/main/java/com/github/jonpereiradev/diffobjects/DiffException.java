@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 /**
  * Exception for any generic error found in the diff execution.
  *

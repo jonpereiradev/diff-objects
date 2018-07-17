@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 import com.github.jonpereiradev.diffobjects.builder.DiffBuilder;
 import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import org.junit.Assert;
@@ -7,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
 
 public class DiffObjectsWithBuilderTest {
 

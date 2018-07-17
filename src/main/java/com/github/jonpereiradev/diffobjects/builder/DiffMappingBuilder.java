@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 /**
  * Builder responsible for mapping the fields of a class to create a configuration of diff.
  *

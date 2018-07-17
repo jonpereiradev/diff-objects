@@ -1,11 +1,13 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * Responsible to map a class and fields to be able to generate diffs.

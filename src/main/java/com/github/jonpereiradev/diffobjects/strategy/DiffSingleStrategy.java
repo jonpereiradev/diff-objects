@@ -1,8 +1,10 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffResult;
 
 import java.util.Objects;
+
 
 /**
  * Responsible for check the difference between two simple objects (with no nested property).

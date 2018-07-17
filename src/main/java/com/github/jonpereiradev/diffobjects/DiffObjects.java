@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffReflections;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * Responsible for execute the diff between two objects.

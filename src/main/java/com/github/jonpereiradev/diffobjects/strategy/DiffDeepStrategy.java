@@ -1,9 +1,11 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 import com.github.jonpereiradev.diffobjects.DiffResult;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
+
 
 /**
  * Responsible for check the difference between two objects where value navigates into object properties.

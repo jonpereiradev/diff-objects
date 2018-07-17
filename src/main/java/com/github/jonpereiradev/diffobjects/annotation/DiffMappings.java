@@ -1,9 +1,11 @@
 package com.github.jonpereiradev.diffobjects.annotation;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 
 /**
  * Annotation to group multiple mappings on a method or to enable all methods if is used on a class.

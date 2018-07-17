@@ -1,9 +1,11 @@
 package com.github.jonpereiradev.diffobjects.annotation;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 
 /**
  * Maps a property on a mapping to be used on result.

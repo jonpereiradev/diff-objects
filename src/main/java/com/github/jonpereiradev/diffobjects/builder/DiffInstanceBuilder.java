@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 /**
  * Builder with the methods of a instance instance.
  *

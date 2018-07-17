@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
+
 public abstract class BaseStrategyTest {
 
     protected DiffMetadata discoverByName(Class<?> classMap, String name) {

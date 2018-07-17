@@ -1,6 +1,8 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
+
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
+
 
 /**
  * Responsible to map a class and fields to be able to generate diffs.

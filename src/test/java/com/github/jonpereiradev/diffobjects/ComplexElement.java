@@ -1,9 +1,11 @@
 package com.github.jonpereiradev.diffobjects;
 
+
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ComplexElement extends ParentObjectElement {
 
