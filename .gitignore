@@ -1,6 +1,12 @@
-**/.iml
-**/.idea
-**/target
-**/.DS_Store
-**/.project
 **/bin
+**/target/
+**/.idea
+**/*.iml
+**/nbactions.xml
+**/nb-configuration.xml
+**/context.xml
+**/.classpath
+**/.project
+**/.settings
+**/.DS_Store
+**/.factorypath
