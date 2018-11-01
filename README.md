@@ -1,13 +1,14 @@
 # Diff Objects
 
-This project helps you to build functionalities that needs to show the differences between two objects.
+This project helps you to build functionalities that needs to show the differences between two objects. You can use 
+this project in two ways:
 
-You can use this project in two ways, using annotations or a Builder to map the properties of the object that will be
-checked for difference.
+- using the annotations @DiffMappings, @DiffMapping and @DiffProperty;
+- using the DiffBuilder to map the properties of a class;
 
 ## DiffBuilder
 
-The DiffBuilder provide an API to map an object without the use of annotations:
+The DiffBuilder provides an API to map an object without the use of annotations:
 
 **Example**
 
@@ -44,12 +45,11 @@ public class Main {
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
         
-        DiffConfiguration configuration = DiffBuilder.map(User.class)
-            .mapper()
-            .mappingAll()
-            .mapper()
+        DiffConfiguration configuration = DiffBuilder
+            .map(User.class)
+            .mapping("login")
+            .mapping("password")
             .mapping("emails", "description")
-            .instance()
             .configuration();
         
         List<DiffResult> diffs = DiffObjects.diff(u1, u2, configuration);
@@ -69,9 +69,9 @@ public class Main {
 
 The annotations provided by the diff objects are:
 
-- DiffMapping - to map a method of the object;
-- DiffMappings - to map multiple properties of an object relationship;
-- DiffProperty - to add properties that will be on the diff result for access;
+- __DiffMappings:__ to map multiple properties of an object relationship;
+- __DiffMapping:__ to map a method of an object;
+- __DiffProperty:__ to add properties that will be on the diff result for access;
 
 **Example**
 
@@ -181,4 +181,4 @@ public class Main {
 ## Future implementations
 
 - Enable only different object for diff result;
-- Collection with value working with navigate properties like "emails.principal.description";
+- Collection with value working with nested fields (Ex: "emails.principal.description");

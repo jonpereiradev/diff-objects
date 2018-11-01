@@ -23,7 +23,6 @@ public class DiffBuilderTest {
     public void testDiffBuilderMappingAll() {
         List<DiffMetadata> metadata = DiffBuilder
             .map(ObjectElement.class)
-            .mapper()
             .mappingAll()
             .configuration()
             .build();
@@ -37,16 +36,14 @@ public class DiffBuilderTest {
 
     @Test(expected = DiffException.class)
     public void testDiffBuilderMappingNotFound() {
-        DiffBuilder.map(ObjectElement.class).mapper().mapping("notExists");
+        DiffBuilder.map(ObjectElement.class).mapping("notExists");
     }
 
     @Test
     public void testDiffBuilderMappingFieldName() {
         List<DiffMetadata> metadata = DiffBuilder
             .map(ObjectElement.class)
-            .mapper()
             .mapping("name")
-            .instance()
             .configuration()
             .build();
 
@@ -60,9 +57,7 @@ public class DiffBuilderTest {
     public void testDiffBuilderMappingFieldParent() {
         List<DiffMetadata> metadata = DiffBuilder
             .map(ObjectElement.class)
-            .mapper()
             .mapping("parent")
-            .instance()
             .configuration()
             .build();
 
@@ -76,14 +71,11 @@ public class DiffBuilderTest {
     public void testDiffBuilderMappingWithQueryProperty() {
         List<DiffMetadata> metadata = DiffBuilder
             .map(ObjectElement.class)
-            .mapper()
             .mappingAll()
-            .mapper()
-            .unmapping("name")
-            .instance()
+            .query("name")
+            .unmapping()
             .query("parent")
             .property("query", "true")
-            .instance()
             .configuration()
             .build();
 
@@ -98,10 +90,8 @@ public class DiffBuilderTest {
     public void testDiffBuilderSingleStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
             .map(ObjectElement.class)
-            .mapper()
             .mapping("name")
             .mapping("parent")
-            .instance()
             .configuration()
             .build();
 
@@ -118,9 +108,7 @@ public class DiffBuilderTest {
     public void testDiffBuilderDeepStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
             .map(ComplexElement.class)
-            .mapper()
             .mapping("objectElement", "name")
-            .instance()
             .configuration()
             .build();
 
@@ -135,9 +123,7 @@ public class DiffBuilderTest {
     public void testDiffBuilderCollectionStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
             .map(ComplexElement.class)
-            .mapper()
             .mapping("objectElementList", "name")
-            .instance()
             .configuration()
             .build();
 
