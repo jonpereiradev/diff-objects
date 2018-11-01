@@ -1,6 +1,7 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
+import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

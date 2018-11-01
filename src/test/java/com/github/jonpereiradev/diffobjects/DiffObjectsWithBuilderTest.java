@@ -14,7 +14,7 @@ public class DiffObjectsWithBuilderTest {
 
     @Before
     public void beforeTest() {
-        configuration = DiffBuilder.map(ObjectElement.class).mapper().mapping("name").instance().configuration();
+        configuration = DiffBuilder.map(ObjectElement.class).mapping("name").configuration();
     }
 
     @Test(expected = NullPointerException.class)
