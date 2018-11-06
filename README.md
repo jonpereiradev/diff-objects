@@ -1,5 +1,7 @@
 # Diff Objects
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/353f1180b49a4a219205b01ac30ac938)](https://app.codacy.com/app/jonpereiradev/diff-objects?utm_source=github.com&utm_medium=referral&utm_content=jonpereiradev/diff-objects&utm_campaign=Badge_Grade_Settings)
+
 This project helps you to build functionalities that needs to show the differences between two objects. You can use 
 this project in two ways:
 
