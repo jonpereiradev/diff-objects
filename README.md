@@ -14,7 +14,7 @@ The DiffBuilder provides an API to map an object without the use of annotations:
 
 **Example**
 
-```
+```java
 public class User {
     
     private final String login;
@@ -27,7 +27,7 @@ public class User {
 }
 ```
 
-```
+```java
 public class Email {
     
     private final String description;
@@ -37,7 +37,7 @@ public class Email {
 }
 ```
 
-```
+```java
 public class Main {
     
     public static void main(String[] args) {
@@ -77,7 +77,7 @@ The annotations provided by the diff objects are:
 
 **Example**
 
-```
+```java
 public class User {
     
     // fields and constructor ommited ...
@@ -109,7 +109,7 @@ public class User {
 }
 ```
 
-```
+```java
 public class Main {
     
     public static void main(String[] args) {
@@ -141,7 +141,7 @@ property "field" with the field name as value.
 
 **Example**
 
-```
+```java
 public class User {
     
     // code ommited ...
@@ -156,7 +156,7 @@ public class User {
 }
 ```
 
-```
+```java
 public class Main {
     
     public static void main(String[] args) {
