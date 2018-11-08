@@ -8,7 +8,7 @@ this project in two ways:
 - using the annotations @DiffMappings, @DiffMapping and @DiffProperty;
 - using the DiffBuilder to map the properties of a class;
 
-# Installation
+## Installation
 
 ```xml
 <dependency>
