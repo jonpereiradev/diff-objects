@@ -184,3 +184,7 @@ public class Main {
 
 - Enable only different object for diff result;
 - Collection with value working with nested fields (Ex: "emails.principal.description");
+
+# License
+
+Diff-Objects is available under the [MIT license](https://tldrlegal.com/license/mit-license).
