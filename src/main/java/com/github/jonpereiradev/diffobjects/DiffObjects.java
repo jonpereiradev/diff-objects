@@ -29,7 +29,7 @@ public final class DiffObjects {
      *
      * @param <T> type of object been compared.
      * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with befor object.
+     * @param afterState the after object state to compare with before object.
      *
      * @return a list with the results of the diff.
      */
@@ -45,7 +45,7 @@ public final class DiffObjects {
      *
      * @param <T> type of object been compared.
      * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with befor object.
+     * @param afterState the after object state to compare with before object.
      * @param configuration the configuration of the diff.
      *
      * @return a list with the results of the diff.
@@ -75,7 +75,7 @@ public final class DiffObjects {
      *
      * @param <T> type of object been compared.
      * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with befor object.
+     * @param afterState the after object state to compare with before object.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
@@ -91,7 +91,7 @@ public final class DiffObjects {
      *
      * @param <T> type of object been compared.
      * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with befor object.
+     * @param afterState the after object state to compare with before object.
      * @param configuration the configuration of the diff.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.

@@ -8,8 +8,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * A method annotated with this will be checked for difference between two objects. When annotated on a method without value(), the equals method of this object
- * will be executed. When annotated on a method with value(), the property will be evaluated for equality.
+ * A method annotated with this will be checked for difference between two objects. When annotated on a method without
+ * value(), the equals method of this object will be executed. When annotated on a method with value(), the property
+ * will be evaluated for equality.
  *
  * @author Jonathan Pereira
  * @since 1.0
