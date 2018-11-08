@@ -8,6 +8,16 @@ this project in two ways:
 - using the annotations @DiffMappings, @DiffMapping and @DiffProperty;
 - using the DiffBuilder to map the properties of a class;
 
+# Installation
+
+```xml
+<dependency>
+    <groupId>com.github.jonpereiradev</groupId>
+    <artifactId>diff-objects</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 ## DiffBuilder
 
 The DiffBuilder provides an API to map an object without the use of annotations:
