@@ -24,6 +24,7 @@ public final class DiffReflections {
      * Map the methods of the object that has the annotations for diff and stores in cache.
      *
      * @param diffClass class that have the diff annotations.
+     *
      * @return the diff mappings of the class.
      */
     public static DiffConfiguration mapAnnotations(Class<?> diffClass) {
@@ -43,6 +44,7 @@ public final class DiffReflections {
      *
      * @param diffClass the class that has the getter method.
      * @param fieldOrMethodName the name of the field for discover or the name of the getter method.
+     *
      * @return the getter method to get the value.
      */
     public static Method discoverGetter(Class<?> diffClass, String fieldOrMethodName) {
@@ -67,6 +69,7 @@ public final class DiffReflections {
      * @param instance the object instance that have the method.
      * @param method the getter method to get the value.
      * @param <T> the type of value returned by the method.
+     *
      * @return the value returned by the getter method.
      */
     @SuppressWarnings("unchecked")
@@ -120,5 +123,23 @@ public final class DiffReflections {
         }
 
         return new DiffConfigurationImpl(builder.getMetadatas());
+    }
+
+    /**
+     * Create a class instance.
+     *
+     * @param clazz class that will be used for create an instance.
+     * @param <T> object type that will be returned by the class.
+     *
+     * @return created object.
+     *
+     * @throws UnsupportedOperationException if no default constructor exists.
+     */
+    public static <T> T newInstance(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new UnsupportedOperationException(e);
+        }
     }
 }

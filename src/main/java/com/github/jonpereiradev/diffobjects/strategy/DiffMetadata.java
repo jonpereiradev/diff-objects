@@ -1,6 +1,7 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
@@ -18,17 +19,18 @@ import java.util.Objects;
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     private static final DiffStrategy DEFAULT_STRATEGY = DiffStrategyType.SINGLE.getStrategy();
-
-    private int order;
     private final String value;
     private final Method method;
     private final DiffStrategy strategy;
+    private final DiffComparator comparator;
     private final Map<String, String> properties;
+    private int order;
 
-    public DiffMetadata(String value, Method method, DiffStrategyType diffStrategyType) {
+    public DiffMetadata(String value, Method method, DiffStrategyType diffStrategyType, DiffComparator comparator) {
         this.value = StringUtils.trimToEmpty(value);
-        this.method = method;
+        this.method = Objects.requireNonNull(method);
         this.strategy = diffStrategyType == null ? DEFAULT_STRATEGY : diffStrategyType.getStrategy();
+        this.comparator = Objects.requireNonNull(comparator);
         this.properties = new HashMap<>();
     }
 
@@ -68,6 +70,10 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     public DiffStrategy getStrategy() {
         return strategy;
+    }
+
+    public DiffComparator getComparator() {
+        return comparator;
     }
 
     public Map<String, String> getProperties() {

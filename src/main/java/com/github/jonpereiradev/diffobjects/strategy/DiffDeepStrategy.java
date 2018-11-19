@@ -3,9 +3,9 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 
 /**
@@ -24,10 +24,12 @@ final class DiffDeepStrategy implements DiffStrategy {
      * @param before object that is considered a state before the after object.
      * @param after object that is considered the before object updated.
      * @param diffMetadata the diffMetadata that is mapped to make the instance.
+     *
      * @return the instance result between the two objects.
      */
     @Override
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
+        DiffComparator comparator = diffMetadata.getComparator();
         Method beforeMethod = diffMetadata.getMethod();
         Method afterMethod = diffMetadata.getMethod();
         Object beforeObject = null;
@@ -54,6 +56,6 @@ final class DiffDeepStrategy implements DiffStrategy {
             }
         }
 
-        return new DiffResult(beforeObject, afterObject, Objects.deepEquals(beforeObject, afterObject));
+        return new DiffResult(beforeObject, afterObject, comparator.isEquals(beforeObject, afterObject));
     }
 }

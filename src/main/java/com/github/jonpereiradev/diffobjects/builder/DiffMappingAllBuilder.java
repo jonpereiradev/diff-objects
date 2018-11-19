@@ -16,6 +16,7 @@ public interface DiffMappingAllBuilder {
      * Gets the object responsible for query mappings for change.
      *
      * @param field the name of the field mapped in the builder.
+     *
      * @return the instance of the builder.
      */
     DiffQueryBuilder query(String field);

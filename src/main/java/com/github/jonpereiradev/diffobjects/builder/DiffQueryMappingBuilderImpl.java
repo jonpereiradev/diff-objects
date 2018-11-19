@@ -1,6 +1,7 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
 
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
 import java.util.Map;
@@ -32,6 +33,7 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      *
      * @param key the identifier of the property.
      * @param value the value of the property.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -55,6 +57,7 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
+     *
      * @return the instance of this mapping.
      */
     @Override
@@ -63,15 +66,43 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
     }
 
     /**
-     * Maps the getter of the field for the class with the value property to allow deep diff.
+     * Maps a new getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param value the nested property of the object to make the diff.
+     * @param comparator class the define how two objects will be check for equality.
+     *
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, String value) {
-        return diffMappingBuilder.mapping(field, value);
+    public DiffQueryMappingBuilder mapping(String field, Class<? extends DiffComparator> comparator) {
+        return diffMappingBuilder.mapping(field, comparator);
+    }
+
+    /**
+     * Maps the getter of the field for the class with the value property to allow deep diff.
+     *
+     * @param field name of the field that will me used to find the getter method.
+     * @param nestedField the nested property of the object to make the diff.
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public DiffQueryMappingBuilder mapping(String field, String nestedField) {
+        return diffMappingBuilder.mapping(field, nestedField);
+    }
+
+    /**
+     * Maps a new getter of the field for the class with the value property to allow deep diff.
+     *
+     * @param field name of the field that will me used to find the getter method.
+     * @param nestedField the nested property of the object to make the diff.
+     * @param comparator class the define how two objects will be check for equality.
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public DiffQueryMappingBuilder mapping(String field, String nestedField, Class<? extends DiffComparator> comparator) {
+        return diffMappingBuilder.mapping(field, nestedField, comparator);
     }
 
     /**

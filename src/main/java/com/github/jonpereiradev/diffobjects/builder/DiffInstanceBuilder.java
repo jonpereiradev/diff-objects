@@ -1,6 +1,8 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
 
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
+
 /**
  * Builder with the methods of a instance instance.
  *
@@ -23,17 +25,40 @@ public interface DiffInstanceBuilder {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
+     *
      * @return the instance of this mapping.
      */
     DiffQueryMappingBuilder mapping(String field);
 
     /**
+     * Maps the getter of the field for the class.
+     *
+     * @param field name of the field that will me used to find the getter method.
+     * @param comparator class the define how two objects will be check for equality.
+     *
+     * @return the instance of this mapping.
+     */
+    DiffQueryMappingBuilder mapping(String field, Class<? extends DiffComparator> comparator);
+
+    /**
      * Maps the getter of the field for the class with the value property to allow deep diff.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param value the nested property of the object to make the diff.
+     * @param nestedField the nested property of the object to make the diff.
+     *
      * @return the instance of this mapping.
      */
-    DiffQueryMappingBuilder mapping(String field, String value);
+    DiffQueryMappingBuilder mapping(String field, String nestedField);
+
+    /**
+     * Maps the getter of the field for the class with the value property to allow deep diff.
+     *
+     * @param field name of the field that will me used to find the getter method.
+     * @param nestedField the nested property of the object to make the diff.
+     * @param comparator class the define how two objects will be check for equality.
+     *
+     * @return the instance of this mapping.
+     */
+    DiffQueryMappingBuilder mapping(String field, String nestedField, Class<? extends DiffComparator> comparator);
 
 }

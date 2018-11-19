@@ -38,6 +38,7 @@ class DiffQueryBuilderImpl implements DiffQueryBuilder {
      *
      * @param key the identifier of the property.
      * @param value the value of the property.
+     *
      * @return the instance of this mapping.
      */
     @Override

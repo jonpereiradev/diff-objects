@@ -3,6 +3,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -28,6 +29,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
      */
     @Override
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
+        DiffComparator comparator = diffMetadata.getComparator();
         Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
         Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
 
@@ -53,7 +55,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
                 String nextValue = value.contains(".") ? value.substring(value.indexOf(".")) : null;
                 DiffStrategyType diffStrategyType = DiffStrategyType.defineByValue(nextValue);
                 Method method = DiffReflections.discoverGetter(beforeObject.getClass(), value);
-                DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType);
+                DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator);
                 DiffStrategy strategy = metadata.getStrategy();
                 DiffResult single = strategy.diff(beforeObject, afterObject, metadata);
 

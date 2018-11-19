@@ -3,6 +3,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ final class DiffSingleStrategy implements DiffStrategy {
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
         Object beforeValue = null;
         Object afterValue = null;
+        DiffComparator comparator = diffMetadata.getComparator();
 
         if (before != null) {
             beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
@@ -37,6 +39,6 @@ final class DiffSingleStrategy implements DiffStrategy {
             afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
         }
 
-        return new DiffResult(beforeValue, afterValue, Objects.deepEquals(beforeValue, afterValue));
+        return new DiffResult(beforeValue, afterValue, comparator.isEquals(beforeValue, afterValue));
     }
 }

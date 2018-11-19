@@ -2,11 +2,11 @@ package com.github.jonpereiradev.diffobjects;
 
 
 import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
-import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
+import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategy;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

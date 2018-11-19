@@ -17,6 +17,7 @@ public interface DiffQueryBuilder {
      *
      * @param key the identifier of the property.
      * @param value the value of the property.
+     *
      * @return the instance of this builder.
      */
     DiffQueryBuilder property(String key, String value);

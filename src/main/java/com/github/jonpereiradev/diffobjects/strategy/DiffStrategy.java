@@ -8,11 +8,10 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
  * Defines a strategy to compare two objects and create the result of the diff.
  *
  * @author Jonathan Pereira
- * @since 1.0
- *
  * @see DiffSingleStrategy
  * @see DiffDeepStrategy
  * @see DiffCollectionStrategy
+ * @since 1.0
  */
 public interface DiffStrategy {
 

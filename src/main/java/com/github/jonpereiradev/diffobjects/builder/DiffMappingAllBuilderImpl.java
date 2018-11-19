@@ -27,6 +27,7 @@ final class DiffMappingAllBuilderImpl implements DiffMappingAllBuilder {
      * Finds a mapping in the builder to make operations.
      *
      * @param field the name of the field mapped in the builder.
+     *
      * @return the instance of this mapping.
      */
     @Override
