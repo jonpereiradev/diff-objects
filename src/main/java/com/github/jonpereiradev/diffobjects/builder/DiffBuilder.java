@@ -3,6 +3,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
+import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import org.apache.commons.lang.StringUtils;
 
@@ -74,7 +75,7 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field) {
-        return mapping(field, StringUtils.EMPTY);
+        return mapping(field, EqualsComparator.class);
     }
 
     /**
@@ -102,7 +103,7 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field, String nestedField) {
-        return new DiffMappingBuilderImpl(classMap, metadatas).mapping(field, nestedField);
+        return mapping(field, nestedField, EqualsComparator.class);
     }
 
     /**
