@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class DiffDeepStrategyTest extends BaseStrategyTest {
+public class DiffNestedStrategyTest extends BaseStrategyTest {
 
     private DiffStrategy diffStrategy;
     private DiffMetadata diffMetadata;
 
     @Before
     public void beforeTest() {
-        diffStrategy = DiffStrategyType.DEEP.getStrategy();
+        diffStrategy = DiffStrategyType.NESTED.getStrategy();
         diffMetadata = discoverByName(ComplexElement.class, "getObjectElement");
         Assert.assertNotNull(diffStrategy);
         Assert.assertNotNull(diffMetadata);

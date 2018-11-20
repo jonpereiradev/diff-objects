@@ -76,6 +76,10 @@ public final class DiffReflections {
      */
     @SuppressWarnings("unchecked")
     public static <T> T invoke(Object instance, Method method) {
+        if (instance == null) {
+            return null;
+        }
+        
         try {
             return (T) method.invoke(instance);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {

@@ -25,17 +25,9 @@ final class DiffSingleStrategy implements DiffStrategy {
      */
     @Override
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
-        Object beforeValue = null;
-        Object afterValue = null;
+        Object beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
+        Object afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
         DiffComparator comparator = diffMetadata.getComparator();
-
-        if (before != null) {
-            beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
-        }
-
-        if (after != null) {
-            afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
-        }
 
         return new DiffResult(beforeValue, afterValue, comparator.equals(beforeValue, afterValue));
     }

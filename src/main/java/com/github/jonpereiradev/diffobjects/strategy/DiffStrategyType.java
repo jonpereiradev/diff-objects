@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 public enum DiffStrategyType {
 
     SINGLE(new DiffSingleStrategy()),
-    DEEP(new DiffDeepStrategy()),
+    NESTED(new DiffNestedStrategy()),
     COLLECTION(new DiffCollectionStrategy());
 
     private final DiffStrategy strategy;
@@ -24,7 +24,7 @@ public enum DiffStrategyType {
 
     static DiffStrategyType defineByValue(String value) {
         if (StringUtils.contains(value, ".")) {
-            return DEEP;
+            return NESTED;
         }
 
         return SINGLE;

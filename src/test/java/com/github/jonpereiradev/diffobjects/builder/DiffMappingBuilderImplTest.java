@@ -36,7 +36,7 @@ public class DiffMappingBuilderImplTest {
 
         DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
 
-        assertSame(DiffStrategyType.DEEP.getStrategy(), diffMetadata.getStrategy());
+        assertSame(DiffStrategyType.NESTED.getStrategy(), diffMetadata.getStrategy());
         assertEquals(EqualsComparator.class, diffMetadata.getComparator().getClass());
         assertEquals("getObjectElement", diffMetadata.getMethod().getName());
     }

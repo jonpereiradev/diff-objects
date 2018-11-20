@@ -9,7 +9,7 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
  *
  * @author Jonathan Pereira
  * @see DiffSingleStrategy
- * @see DiffDeepStrategy
+ * @see DiffNestedStrategy
  * @see DiffCollectionStrategy
  * @since 1.0
  */

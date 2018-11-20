@@ -118,7 +118,7 @@ public class DiffBuilderTest {
         assertFalse(diffMetadatas.isEmpty());
         assertEquals(1, diffMetadatas.size());
         assertEquals("getObjectElement", diffMetadatas.get(0).getMethod().getName());
-        assertSame(DiffStrategyType.DEEP.getStrategy(), diffMetadatas.get(0).getStrategy());
+        assertSame(DiffStrategyType.NESTED.getStrategy(), diffMetadatas.get(0).getStrategy());
     }
 
     @Test

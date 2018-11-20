@@ -79,11 +79,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
      * @return the collection value from object.
      */
     private Collection<?> initializeCollection(Object object, Method method) {
-        Collection<?> collection = null;
-
-        if (object != null) {
-            collection = DiffReflections.invoke(object, method);
-        }
+        Collection<?> collection = DiffReflections.invoke(object, method);
 
         if (collection != null && collection.isEmpty()) {
             return null;

@@ -64,7 +64,7 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
 
         if (fields.length > 1) {
-            diffStrategyType = DiffStrategyType.DEEP;
+            diffStrategyType = DiffStrategyType.NESTED;
             nestedField = field.substring(field.indexOf(".") + 1);
         }
 

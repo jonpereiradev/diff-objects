@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * @author Jonathan Pereira
  * @since 1.0
  */
-final class DiffDeepStrategy implements DiffStrategy {
+final class DiffNestedStrategy implements DiffStrategy {
 
     private static final String REGEX_PROPERTY_SEPARATOR = "\\.";
 
@@ -32,15 +32,8 @@ final class DiffDeepStrategy implements DiffStrategy {
         DiffComparator comparator = diffMetadata.getComparator();
         Method beforeMethod = diffMetadata.getMethod();
         Method afterMethod = diffMetadata.getMethod();
-        Object beforeObject = null;
-        Object afterObject = null;
-
-        if (before != null) {
-            beforeObject = DiffReflections.invoke(before, beforeMethod);
-        }
-        if (after != null) {
-            afterObject = DiffReflections.invoke(after, afterMethod);
-        }
+        Object beforeObject = DiffReflections.invoke(before, beforeMethod);
+        Object afterObject = DiffReflections.invoke(after, afterMethod);
 
         if (beforeObject != null || afterObject != null) {
             for (String property : diffMetadata.getValue().split(REGEX_PROPERTY_SEPARATOR)) {
