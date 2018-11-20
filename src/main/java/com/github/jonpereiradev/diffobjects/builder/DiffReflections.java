@@ -2,6 +2,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 import com.github.jonpereiradev.diffobjects.DiffException;
+import com.github.jonpereiradev.diffobjects.annotation.DiffIgnore;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
 import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
@@ -90,7 +91,9 @@ public final class DiffReflections {
      */
     private static DiffConfiguration mapAllMethods(Class<?> diffClass, DiffBuilder builder) {
         for (Method method : diffClass.getMethods()) {
-            builder.mapping(method.getName());
+            if (method.isAnnotationPresent(DiffIgnore.class)) {
+                builder.mapping(method.getName());
+            }
         }
 
         return new DiffConfigurationImpl(builder.getMetadatas());
