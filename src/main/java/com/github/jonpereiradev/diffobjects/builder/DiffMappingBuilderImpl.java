@@ -9,7 +9,6 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -43,19 +42,19 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field) {
-        return mapping(field, EqualsComparator.class);
+        return mapping(field, new EqualsComparator());
     }
 
     /**
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param comparator class the define how two objects will be check for equality.
+     * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, Class<? extends DiffComparator> comparator) {
+    public DiffQueryMappingBuilder mapping(String field, DiffComparator comparator) {
         return mapping(field, StringUtils.EMPTY, comparator);
     }
 
@@ -71,7 +70,7 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field, String nestedField) {
-        return mapping(field, nestedField, EqualsComparator.class);
+        return mapping(field, nestedField, new EqualsComparator());
     }
 
     /**
@@ -84,16 +83,11 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, String nestedField, Class<? extends DiffComparator> comparator) {
+    public DiffQueryMappingBuilder mapping(String field, String nestedField, DiffComparator comparator) {
         Objects.requireNonNull(field, "Field name is required.");
 
         Method method = DiffReflections.discoverGetter(classMap, field);
-        DiffComparator diffComparator = DiffReflections.newInstance(comparator);
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
-
-        if (!Modifier.isPublic(method.getModifiers()) || method.getParameterTypes().length > 0) {
-            throw new DiffException("Method " + method.getName() + " must be public and no-args.");
-        }
 
         if (nestedField != null && !nestedField.isEmpty()) {
             diffStrategyType = DiffStrategyType.DEEP;
@@ -103,7 +97,7 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
             diffStrategyType = DiffStrategyType.COLLECTION;
         }
 
-        DiffMetadata diffMetadata = new DiffMetadata(nestedField, method, diffStrategyType, diffComparator);
+        DiffMetadata diffMetadata = new DiffMetadata(nestedField, method, diffStrategyType, comparator);
         diffMetadata.getProperties().put("field", field);
 
         metadatas.put(field, diffMetadata);

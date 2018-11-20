@@ -56,6 +56,6 @@ final class DiffDeepStrategy implements DiffStrategy {
             }
         }
 
-        return new DiffResult(beforeObject, afterObject, comparator.isEquals(beforeObject, afterObject));
+        return new DiffResult(beforeObject, afterObject, comparator.equals(beforeObject, afterObject));
     }
 }

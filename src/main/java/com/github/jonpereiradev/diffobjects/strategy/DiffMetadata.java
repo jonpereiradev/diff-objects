@@ -19,6 +19,7 @@ import java.util.Objects;
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     private static final DiffStrategy DEFAULT_STRATEGY = DiffStrategyType.SINGLE.getStrategy();
+
     private final String value;
     private final Method method;
     private final DiffStrategy strategy;

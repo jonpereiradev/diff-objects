@@ -37,20 +37,20 @@ final class DiffConfigurationImpl implements DiffConfiguration {
     @Override
     public List<DiffMetadata> build() {
         if (diffMetadatas.isEmpty()) {
-            boolean isSortable = false;
+            boolean sortable = false;
 
             for (Map.Entry<String, DiffMetadata> entry : metadatas.entrySet()) {
                 DiffOrder annotation = entry.getValue().getMethod().getAnnotation(DiffOrder.class);
 
                 if (annotation != null) {
                     entry.getValue().setOrder(annotation.value());
-                    isSortable = true;
+                    sortable = true;
                 }
 
                 diffMetadatas.add(entry.getValue());
             }
 
-            if (isSortable) {
+            if (sortable) {
                 Collections.sort(diffMetadatas);
             }
         }

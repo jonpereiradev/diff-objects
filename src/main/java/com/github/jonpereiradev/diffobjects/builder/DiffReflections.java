@@ -5,6 +5,7 @@ import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
 import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.reflect.MethodUtils;
 
@@ -57,7 +58,7 @@ public final class DiffReflections {
         Method method = MethodUtils.getMatchingAccessibleMethod(diffClass, possibleAccessMethodName, null);
 
         if (method == null) {
-            throw new DiffException("Method " + possibleAccessMethodName + " not found in class " + diffClass.getName());
+            throw new DiffException("Method " + possibleAccessMethodName + " not found or is not public and non-args in class " + diffClass.getName());
         }
 
         return method;
@@ -105,15 +106,16 @@ public final class DiffReflections {
         for (Method method : diffClass.getMethods()) {
             if (method.isAnnotationPresent(DiffMapping.class)) {
                 DiffMapping diffMapping = method.getAnnotation(DiffMapping.class);
-                DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value());
+                DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
+                DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value(), diffComparator);
 
                 for (DiffProperty diffProperty : diffMapping.properties()) {
                     query.property(diffProperty.key(), diffProperty.value());
                 }
             } else if (method.isAnnotationPresent(DiffMappings.class)) {
                 for (DiffMapping diffMapping : method.getAnnotation(DiffMappings.class).value()) {
-                    builder.mapping(method.getName(), diffMapping.value());
-                    DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value());
+                    DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
+                    DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value(), diffComparator);
 
                     for (DiffProperty diffProperty : diffMapping.properties()) {
                         query.property(diffProperty.key(), diffProperty.value());

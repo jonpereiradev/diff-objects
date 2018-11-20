@@ -5,8 +5,6 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
-import java.util.Objects;
-
 
 /**
  * Responsible for check the difference between two simple objects (with no nested property).
@@ -39,6 +37,6 @@ final class DiffSingleStrategy implements DiffStrategy {
             afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
         }
 
-        return new DiffResult(beforeValue, afterValue, comparator.isEquals(beforeValue, afterValue));
+        return new DiffResult(beforeValue, afterValue, comparator.equals(beforeValue, afterValue));
     }
 }

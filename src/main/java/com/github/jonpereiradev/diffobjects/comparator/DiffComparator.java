@@ -3,8 +3,10 @@ package com.github.jonpereiradev.diffobjects.comparator;
 /**
  * Contract to compare the equality from two objects of same type. Must have a public no args constructor.
  *
- * @param <T> type of objects for check for equality.
+ * @author Jonathan Pereira
+ * @since 1.1
  */
+@FunctionalInterface
 public interface DiffComparator {
 
     /**
@@ -15,6 +17,6 @@ public interface DiffComparator {
      *
      * @return {@code true} if the two objects are equals.
      */
-    boolean isEquals(Object o1, Object o2);
+    boolean equals(Object o1, Object o2);
 
 }

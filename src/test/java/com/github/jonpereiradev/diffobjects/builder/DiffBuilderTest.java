@@ -4,12 +4,14 @@ package com.github.jonpereiradev.diffobjects.builder;
 import com.github.jonpereiradev.diffobjects.ComplexElement;
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
+import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class DiffBuilderTest {
@@ -27,11 +29,11 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(metadata);
-        Assert.assertFalse(metadata.isEmpty());
-        Assert.assertEquals(2, metadata.size());
-        Assert.assertEquals("getName", metadata.get(0).getMethod().getName());
-        Assert.assertEquals("getParent", metadata.get(1).getMethod().getName());
+        assertNotNull(metadata);
+        assertFalse(metadata.isEmpty());
+        assertEquals(2, metadata.size());
+        assertEquals("getName", metadata.get(0).getMethod().getName());
+        assertEquals("getParent", metadata.get(1).getMethod().getName());
     }
 
     @Test(expected = DiffException.class)
@@ -47,10 +49,10 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(metadata);
-        Assert.assertFalse(metadata.isEmpty());
-        Assert.assertEquals(1, metadata.size());
-        Assert.assertEquals("getName", metadata.get(0).getMethod().getName());
+        assertNotNull(metadata);
+        assertFalse(metadata.isEmpty());
+        assertEquals(1, metadata.size());
+        assertEquals("getName", metadata.get(0).getMethod().getName());
     }
 
     @Test
@@ -61,10 +63,10 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(metadata);
-        Assert.assertFalse(metadata.isEmpty());
-        Assert.assertEquals(1, metadata.size());
-        Assert.assertEquals("getParent", metadata.get(0).getMethod().getName());
+        assertNotNull(metadata);
+        assertFalse(metadata.isEmpty());
+        assertEquals(1, metadata.size());
+        assertEquals("getParent", metadata.get(0).getMethod().getName());
     }
 
     @Test
@@ -79,11 +81,11 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(metadata);
-        Assert.assertFalse(metadata.isEmpty());
-        Assert.assertEquals(1, metadata.size());
-        Assert.assertTrue(metadata.get(0).getProperties().containsKey("query"));
-        Assert.assertEquals("true", metadata.get(0).getProperties().get("query"));
+        assertNotNull(metadata);
+        assertFalse(metadata.isEmpty());
+        assertEquals(1, metadata.size());
+        assertTrue(metadata.get(0).getProperties().containsKey("query"));
+        assertEquals("true", metadata.get(0).getProperties().get("query"));
     }
 
     @Test
@@ -95,13 +97,13 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(diffMetadatas);
-        Assert.assertFalse(diffMetadatas.isEmpty());
-        Assert.assertEquals(2, diffMetadatas.size());
-        Assert.assertEquals("getName", diffMetadatas.get(0).getMethod().getName());
-        Assert.assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadatas.get(0).getStrategy());
-        Assert.assertEquals("getParent", diffMetadatas.get(1).getMethod().getName());
-        Assert.assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadatas.get(1).getStrategy());
+        assertNotNull(diffMetadatas);
+        assertFalse(diffMetadatas.isEmpty());
+        assertEquals(2, diffMetadatas.size());
+        assertEquals("getName", diffMetadatas.get(0).getMethod().getName());
+        assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadatas.get(0).getStrategy());
+        assertEquals("getParent", diffMetadatas.get(1).getMethod().getName());
+        assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadatas.get(1).getStrategy());
     }
 
     @Test
@@ -112,11 +114,11 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(diffMetadatas);
-        Assert.assertFalse(diffMetadatas.isEmpty());
-        Assert.assertEquals(1, diffMetadatas.size());
-        Assert.assertEquals("getObjectElement", diffMetadatas.get(0).getMethod().getName());
-        Assert.assertSame(DiffStrategyType.DEEP.getStrategy(), diffMetadatas.get(0).getStrategy());
+        assertNotNull(diffMetadatas);
+        assertFalse(diffMetadatas.isEmpty());
+        assertEquals(1, diffMetadatas.size());
+        assertEquals("getObjectElement", diffMetadatas.get(0).getMethod().getName());
+        assertSame(DiffStrategyType.DEEP.getStrategy(), diffMetadatas.get(0).getStrategy());
     }
 
     @Test
@@ -127,10 +129,21 @@ public class DiffBuilderTest {
             .configuration()
             .build();
 
-        Assert.assertNotNull(diffMetadatas);
-        Assert.assertFalse(diffMetadatas.isEmpty());
-        Assert.assertEquals(1, diffMetadatas.size());
-        Assert.assertEquals("getObjectElementList", diffMetadatas.get(0).getMethod().getName());
-        Assert.assertSame(DiffStrategyType.COLLECTION.getStrategy(), diffMetadatas.get(0).getStrategy());
+        assertNotNull(diffMetadatas);
+        assertFalse(diffMetadatas.isEmpty());
+        assertEquals(1, diffMetadatas.size());
+        assertEquals("getObjectElementList", diffMetadatas.get(0).getMethod().getName());
+        assertSame(DiffStrategyType.COLLECTION.getStrategy(), diffMetadatas.get(0).getStrategy());
+    }
+
+    @Test
+    public void testDiffBuilderDefaultEqualsComparator() {
+        List<DiffMetadata> diffMetadata = DiffBuilder.map(ObjectElement.class).mapping("name").configuration().build();
+
+        assertNotNull(diffMetadata);
+        assertFalse(diffMetadata.isEmpty());
+        assertEquals(1, diffMetadata.size());
+        assertEquals("getName", diffMetadata.get(0).getMethod().getName());
+        assertTrue(diffMetadata.get(0).getComparator() instanceof EqualsComparator);
     }
 }

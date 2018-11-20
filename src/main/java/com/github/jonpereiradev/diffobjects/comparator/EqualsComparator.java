@@ -4,6 +4,9 @@ import java.util.Objects;
 
 /**
  * Check two objects for equality using the equals method implementation.
+ *
+ * @author Jonathan Pereira
+ * @since 1.1
  */
 public class EqualsComparator implements DiffComparator {
 
@@ -16,7 +19,7 @@ public class EqualsComparator implements DiffComparator {
      * @return {@code true} if the two objects are equals.
      */
     @Override
-    public boolean isEquals(Object o1, Object o2) {
+    public boolean equals(Object o1, Object o2) {
         return Objects.equals(o1, o2);
     }
 }

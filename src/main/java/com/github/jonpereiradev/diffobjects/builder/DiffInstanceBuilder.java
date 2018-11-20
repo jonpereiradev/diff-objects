@@ -34,11 +34,11 @@ public interface DiffInstanceBuilder {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param comparator class the define how two objects will be check for equality.
+     * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
-    DiffQueryMappingBuilder mapping(String field, Class<? extends DiffComparator> comparator);
+    DiffQueryMappingBuilder mapping(String field, DiffComparator comparator);
 
     /**
      * Maps the getter of the field for the class with the value property to allow deep diff.
@@ -55,10 +55,10 @@ public interface DiffInstanceBuilder {
      *
      * @param field name of the field that will me used to find the getter method.
      * @param nestedField the nested property of the object to make the diff.
-     * @param comparator class the define how two objects will be check for equality.
+     * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
-    DiffQueryMappingBuilder mapping(String field, String nestedField, Class<? extends DiffComparator> comparator);
+    DiffQueryMappingBuilder mapping(String field, String nestedField, DiffComparator comparator);
 
 }

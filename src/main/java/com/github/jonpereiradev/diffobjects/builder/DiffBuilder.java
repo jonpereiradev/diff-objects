@@ -75,19 +75,19 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field) {
-        return mapping(field, EqualsComparator.class);
+        return mapping(field, new EqualsComparator());
     }
 
     /**
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param comparator class the define how two objects will be check for equality.
+     * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, Class<? extends DiffComparator> comparator) {
+    public DiffQueryMappingBuilder mapping(String field, DiffComparator comparator) {
         return mapping(field, StringUtils.EMPTY, comparator);
     }
 
@@ -103,7 +103,7 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      */
     @Override
     public DiffQueryMappingBuilder mapping(String field, String nestedField) {
-        return mapping(field, nestedField, EqualsComparator.class);
+        return mapping(field, nestedField, new EqualsComparator());
     }
 
     /**
@@ -111,14 +111,14 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      *
      * @param field name of the field that will me used to find the getter method.
      * @param nestedField the nested property of the object to make the diff.
-     * @param comparator class the define how two objects will be check for equality.
+     * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping instance.
      *
      * @throws DiffException throw if the field doesn't have a public no args method for the field.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, String nestedField, Class<? extends DiffComparator> comparator) {
+    public DiffQueryMappingBuilder mapping(String field, String nestedField, DiffComparator comparator) {
         return new DiffMappingBuilderImpl(classMap, metadatas).mapping(field, nestedField, comparator);
     }
 
