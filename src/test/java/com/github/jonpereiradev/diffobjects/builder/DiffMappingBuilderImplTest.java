@@ -32,7 +32,7 @@ public class DiffMappingBuilderImplTest {
         HashMap<String, DiffMetadata> metadatas = new HashMap<>();
         DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, metadatas);
 
-        diffMappingBuilder.mapping("objectElement", "name");
+        diffMappingBuilder.mapping("objectElement.name");
 
         DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
 
@@ -46,7 +46,7 @@ public class DiffMappingBuilderImplTest {
         HashMap<String, DiffMetadata> metadatas = new HashMap<>();
         DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, metadatas);
 
-        diffMappingBuilder.mapping("objectElementList", "name");
+        diffMappingBuilder.mapping("objectElementList.name");
 
         DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
 

@@ -110,7 +110,13 @@ public final class DiffReflections {
             if (method.isAnnotationPresent(DiffMapping.class)) {
                 DiffMapping diffMapping = method.getAnnotation(DiffMapping.class);
                 DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
-                DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value(), diffComparator);
+                String field = method.getName();
+
+                if (!diffMapping.value().isEmpty()) {
+                    field += "." + diffMapping.value();
+                }
+
+                DiffQueryMappingBuilder query = builder.mapping(field, diffComparator);
 
                 for (DiffProperty diffProperty : diffMapping.properties()) {
                     query.property(diffProperty.key(), diffProperty.value());
@@ -118,7 +124,13 @@ public final class DiffReflections {
             } else if (method.isAnnotationPresent(DiffMappings.class)) {
                 for (DiffMapping diffMapping : method.getAnnotation(DiffMappings.class).value()) {
                     DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
-                    DiffQueryMappingBuilder query = builder.mapping(method.getName(), diffMapping.value(), diffComparator);
+                    String field = method.getName();
+
+                    if (!diffMapping.value().isEmpty()) {
+                        field += "." + diffMapping.value();
+                    }
+
+                    DiffQueryMappingBuilder query = builder.mapping(field, diffComparator);
 
                     for (DiffProperty diffProperty : diffMapping.properties()) {
                         query.property(diffProperty.key(), diffProperty.value());

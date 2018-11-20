@@ -52,8 +52,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyEqualsObjectsEmptyLists() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
         DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
@@ -65,7 +65,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     @Test
     public void testCollectionStrategyDifferentObjectsNullListA() {
         ComplexElement complexA = new ComplexElement((List<ObjectElement>) null);
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
         DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
         Assert.assertNotNull(diffResult);
@@ -76,7 +76,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyDifferentObjectsNullListB() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement((List<ObjectElement>) null);
         DiffResult diffResult = diffStrategy.diff(complexA, complexB, diffMetadata);
 
@@ -88,8 +88,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyDifferentObjectsDifferentSizeList() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
 
         complexA.getObjectElementList().add(new ObjectElement("Object A.A"));
         complexB.getObjectElementList().add(new ObjectElement("Object B.A"));
@@ -112,8 +112,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyDifferentObjectsSameSizeList() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
 
         complexA.getObjectElementList().add(new ObjectElement("Object A.A"));
         complexB.getObjectElementList().add(new ObjectElement("Object B.A"));
@@ -134,8 +134,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategySameObjectsSameSizeList() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
         ObjectElement objectElement = new ObjectElement("Object");
 
         complexA.getObjectElementList().add(objectElement);
@@ -157,8 +157,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategySameObjectsByNameSameSizeList() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
 
         complexA.getObjectElementListByName().add(new ObjectElement("Object"));
         complexB.getObjectElementListByName().add(new ObjectElement("Object"));
@@ -179,8 +179,8 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
 
     @Test
     public void testCollectionStrategyDifferentObjectsByNameSameSizeList() {
-        ComplexElement complexA = new ComplexElement(new ArrayList<ObjectElement>());
-        ComplexElement complexB = new ComplexElement(new ArrayList<ObjectElement>());
+        ComplexElement complexA = new ComplexElement(new ArrayList<>());
+        ComplexElement complexB = new ComplexElement(new ArrayList<>());
 
         complexA.getObjectElementListByName().add(new ObjectElement("Object A"));
         complexB.getObjectElementListByName().add(new ObjectElement("Object B"));
