@@ -32,6 +32,7 @@ public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
     /**
      * Creates a diff instance instance to map the diff elements of a class.
      *
+     * @param <T> the type of class the builder will create the mappings.
      * @param clazz the class that will be registry to make diffs.
      *
      * @return the diff instance instance.

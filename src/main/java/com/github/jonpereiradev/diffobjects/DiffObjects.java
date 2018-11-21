@@ -92,6 +92,7 @@ public final class DiffObjects<T> {
      *
      * @param beforeState the before object state to compare with after object.
      * @param afterState the after object state to compare with before object.
+     * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return a list with the results of the diff.
      */
@@ -108,7 +109,7 @@ public final class DiffObjects<T> {
      * @param beforeState the before object state to compare with after object.
      * @param afterState the after object state to compare with before object.
      * @param configuration the configuration of the diff.
-     * @param matcher
+     * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return a list with the results of the diff.
      */
@@ -204,6 +205,7 @@ public final class DiffObjects<T> {
      *
      * @param beforeState the before object state to compare with after object.
      * @param afterState the after object state to compare with before object.
+     * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
@@ -220,6 +222,7 @@ public final class DiffObjects<T> {
      * @param beforeState the before object state to compare with after object.
      * @param afterState the after object state to compare with before object.
      * @param configuration the configuration of the diff.
+     * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
