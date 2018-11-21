@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,10 +30,12 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
 
     private final Class<T> classMap;
     private final Map<String, DiffMetadata> metadatas;
+    private final Map<String, DiffMetadata> collections;
 
     DiffMappingBuilderImpl(Class<T> classMap, Map<String, DiffMetadata> metadatas) {
         this.classMap = classMap;
         this.metadatas = metadatas;
+        this.collections = new HashMap<>();
     }
 
     /**
@@ -44,7 +47,14 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
      */
     @Override
     public DiffQueryMappingBuilder<T> mapping(String field) {
-        return mapping(field, null, new EqualsComparator<>());
+        String[] fields = field.split(REGEX_PROPERTY_SEPARATOR);
+        Method method = DiffReflections.discoverGetter(classMap, fields[0]);
+
+        if (Collection.class.isAssignableFrom(method.getReturnType()) && fields.length == 1) {
+            return mapping(field, method.getReturnType(), new IndexComparator<>());
+        }
+
+        return mapping(field, method.getReturnType(), new EqualsComparator<>());
     }
 
     /**
@@ -63,6 +73,7 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
         String[] fields = field.split(REGEX_PROPERTY_SEPARATOR);
         Method method = DiffReflections.discoverGetter(classMap, fields[0]);
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
+        DiffComparator<?> collection = collections.containsKey(fields[0]) ? collections.get(fields[0]).getComparator() : null;
 
         if (fields.length > 1) {
             diffStrategyType = DiffStrategyType.NESTED;
@@ -71,40 +82,23 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
 
         if (Collection.class.isAssignableFrom(method.getReturnType())) {
             diffStrategyType = DiffStrategyType.COLLECTION;
+            collection = collection != null ? collection : new IndexComparator<>();
         }
 
-        DiffMetadata diffMetadata = new DiffMetadata(nestedField, method, diffStrategyType, comparator);
+        DiffMetadata diffMetadata = new DiffMetadata(nestedField, method, diffStrategyType, comparator, collection);
         diffMetadata.getProperties().put("field", field);
+
+        if (Collection.class.isAssignableFrom(method.getReturnType())) {
+            if (nestedField.isEmpty()) {
+                collections.put(fields[0], diffMetadata);
+            } else {
+                metadatas.remove(fields[0]);
+            }
+        }
 
         metadatas.put(field, diffMetadata);
 
-        return new DiffQueryMappingBuilderImpl<>(diffMetadata, this, metadatas);
-    }
-
-    /**
-     * Maps the getter of the field for the class.
-     *
-     * @param fieldCollection name of the field that will me used to find the getter method.
-     *
-     * @return the instance of this mapping.
-     */
-    @Override
-    public DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection) {
-        return mappingCollection(fieldCollection, null, new IndexComparator<>());
-    }
-
-    /**
-     * Maps the getter of the field for the class.
-     *
-     * @param fieldCollection name of the field that will me used to find the getter method.
-     * @param elementClass implementation that define how two objects will be check for equality.
-     * @param comparator
-     *
-     * @return the instance of this mapping.
-     */
-    @Override
-    public <E> DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection, Class<E> elementClass, DiffComparator<E> comparator) {
-        return new DiffMappingCollectionBuilderImpl<>(classMap, fieldCollection, comparator, metadatas);
+        return new DiffQueryMappingBuilderImpl<>(diffMetadata, this);
     }
 
     /**
@@ -116,4 +110,9 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
     public DiffConfiguration configuration() {
         return new DiffConfigurationImpl(metadatas);
     }
+
+    Map<String, DiffMetadata> getMetadatas() {
+        return metadatas;
+    }
+
 }

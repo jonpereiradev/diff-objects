@@ -150,16 +150,11 @@ public final class DiffReflections {
     private static void mappingCollection(DiffBuilder builder, Method method, DiffMapping diffMapping) {
         DiffComparator collection = DiffReflections.newInstance(diffMapping.collection());
         DiffComparator comparator = DiffReflections.newInstance(diffMapping.comparator());
-        DiffMappingCollectionBuilder collectionBuilder = builder.mappingCollection(method.getName(), method.getReturnType(), collection);
+        DiffQueryMappingBuilder collectionBuilder = builder.mapping(method.getName(), method.getReturnType(), collection);
 
         if (!diffMapping.value().isEmpty()) {
-            collectionBuilder.mapping(diffMapping.value(), method.getReturnType(), comparator);
+            collectionBuilder.mapping(method.getName() + "." + diffMapping.value(), method.getReturnType(), comparator);
         }
-
-        collectionBuilder.apply();
-//        for (DiffProperty diffProperty : diffMapping.properties()) {
-//            query.property(diffProperty.key(), diffProperty.value());
-//        }
     }
 
     /**

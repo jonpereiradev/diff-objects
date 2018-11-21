@@ -34,7 +34,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
     @Override
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
         DiffComparator comparator = diffMetadata.getComparator();
-        DiffComparator collection = diffMetadata.getCollection();
+        DiffComparator collection = diffMetadata.getCollectionComparator();
         Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
         Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
 

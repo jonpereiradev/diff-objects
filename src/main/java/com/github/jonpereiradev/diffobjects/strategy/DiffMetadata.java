@@ -24,8 +24,9 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
     private final Method method;
     private final DiffStrategy strategy;
     private final DiffComparator<?> comparator;
-    private final DiffComparator<?> collection;
     private final Map<String, String> properties;
+    private final DiffComparator<?> collectionComparator;
+
     private int order;
 
     public DiffMetadata(
@@ -41,12 +42,12 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
         Method method,
         DiffStrategyType diffStrategyType,
         DiffComparator<?> comparator,
-        DiffComparator<?> collection) {
+        DiffComparator<?> collectionComparator) {
         this.value = StringUtils.trimToEmpty(value);
         this.method = Objects.requireNonNull(method);
         this.strategy = diffStrategyType == null ? DEFAULT_STRATEGY : diffStrategyType.getStrategy();
         this.comparator = Objects.requireNonNull(comparator);
-        this.collection = collection;
+        this.collectionComparator = collectionComparator;
         this.properties = new HashMap<>();
     }
 
@@ -92,8 +93,8 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
         return comparator;
     }
 
-    public DiffComparator<?> getCollection() {
-        return collection;
+    public DiffComparator<?> getCollectionComparator() {
+        return collectionComparator;
     }
 
     public Map<String, String> getProperties() {
