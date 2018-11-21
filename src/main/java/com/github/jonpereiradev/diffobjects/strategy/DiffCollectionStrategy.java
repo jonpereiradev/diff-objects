@@ -62,13 +62,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
 
             // check the elements that exist on both collections
             if (!diffMetadata.getValue().isEmpty()) {
-                String value = diffMetadata.getValue();
-                String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : null;
-                DiffStrategyType diffStrategyType = DiffStrategyType.defineByValue(nextValue);
-                Method method = DiffReflections.discoverGetter(currentBefore.getClass(), value);
-                DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator, collection);
-                DiffStrategy strategy = metadata.getStrategy();
-                DiffResult single = strategy.diff(currentBefore, currentAfter, metadata);
+                DiffResult single = getDiffResult(diffMetadata, comparator, collection, currentBefore, currentAfter);
 
                 if (!single.isEquals()) {
                     return new DiffResult(beforeCollection, afterCollection, false);
@@ -139,5 +133,15 @@ final class DiffCollectionStrategy implements DiffStrategy {
      */
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
         return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
+    }
+
+    private DiffResult getDiffResult(DiffMetadata diffMetadata, DiffComparator comparator, DiffComparator collection, Object currentBefore, Object currentAfter) {
+        String value = diffMetadata.getValue();
+        String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : null;
+        DiffStrategyType diffStrategyType = DiffStrategyType.defineByValue(nextValue);
+        Method method = DiffReflections.discoverGetter(currentBefore.getClass(), value);
+        DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator, collection);
+        DiffStrategy strategy = metadata.getStrategy();
+        return strategy.diff(currentBefore, currentAfter, metadata);
     }
 }

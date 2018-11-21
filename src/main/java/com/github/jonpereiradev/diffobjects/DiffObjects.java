@@ -25,11 +25,9 @@ import java.util.stream.Stream;
  */
 public final class DiffObjects<T> {
 
-    private final Class<T> clazz;
     private final DiffConfiguration annotations;
 
     private DiffObjects(Class<T> clazz) {
-        this.clazz = Objects.requireNonNull(clazz);
         this.annotations = DiffReflections.mapAnnotations(clazz);
     }
 

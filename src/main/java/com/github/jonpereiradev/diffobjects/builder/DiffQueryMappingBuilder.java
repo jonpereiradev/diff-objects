@@ -38,7 +38,7 @@ public interface DiffQueryMappingBuilder<T> {
      *
      * @return the instance of this mapping.
      */
-    <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass);
+    DiffQueryMappingBuilder<T> mapping(String field);
 
     /**
      * Maps a new getter of the field for the class.
