@@ -14,7 +14,7 @@ this project in two ways:
 <dependency>
     <groupId>com.github.jonpereiradev</groupId>
     <artifactId>diff-objects</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
