@@ -7,51 +7,110 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
 public class DiffObjectsWithBuilderTest {
 
+    private DiffObjects<ObjectElement> diffObjects;
     private DiffConfiguration configuration;
 
     @Before
     public void beforeTest() {
+        diffObjects = DiffObjects.forClass(ObjectElement.class);
         configuration = DiffBuilder.map(ObjectElement.class).mapping("name").configuration();
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullBeforeStateMustThrowNullPointerException() {
-        DiffObjects.diff(null, new ObjectElement(null), null);
+        diffObjects.diff(null, new ObjectElement(null), null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullBeforeStateMustThrowNullPointerException() {
+        Collection<ObjectElement> a = null;
+        Collection<ObjectElement> b = new ArrayList<>();
+
+        diffObjects.diff(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullAfterStateMustThrowNullPointerException() {
-        DiffObjects.diff(new ObjectElement(null), null, null);
+        diffObjects.diff(new ObjectElement(null), null, null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullAfterStateMustThrowNullPointerException() {
+        Collection<ObjectElement> a = new ArrayList<>();
+        Collection<ObjectElement> b = null;
+
+        diffObjects.diff(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullConfigurationStateMustThrowNullPointerException() {
-        DiffObjects.diff(new ObjectElement(null), new ObjectElement(null), null);
+        diffObjects.diff(new ObjectElement(null), new ObjectElement(null), null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullConfigurationStateMustThrowNullPointerException() {
+        Collection<ObjectElement> a = new ArrayList<>();
+        Collection<ObjectElement> b = new ArrayList<>();
+
+        diffObjects.diff(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullBeforeStateEqualsMustThrowNullPointerException() {
-        DiffObjects.isEquals(null, new ObjectElement(null), null);
+        diffObjects.isEquals(null, new ObjectElement(null), null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullBeforeStateEqualsMustThrowNullPointerException() {
+        Collection<ObjectElement> a = null;
+        Collection<ObjectElement> b = new ArrayList<>();
+
+        diffObjects.isEquals(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullAfterStateEqualsMustThrowNullPointerException() {
-        DiffObjects.isEquals(new ObjectElement(null), null, null);
+        diffObjects.isEquals(new ObjectElement(null), null, null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullAfterStateEqualsMustThrowNullPointerException() {
+        Collection<ObjectElement> a = new ArrayList<>();
+        Collection<ObjectElement> b = null;
+
+        diffObjects.isEquals(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
     @Test(expected = NullPointerException.class)
     public void testDiffObjectsWithNullConfigurationEqualsStateMustThrowNullPointerException() {
-        DiffObjects.isEquals(new ObjectElement(null), new ObjectElement(null), null);
+        diffObjects.isEquals(new ObjectElement(null), new ObjectElement(null), null);
+        Assert.fail("Must throw NullPointerException");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDiffObjectsCollectionWithNullConfigurationEqualsStateMustThrowNullPointerException() {
+        Collection<ObjectElement> a = new ArrayList<>();
+        Collection<ObjectElement> b = new ArrayList<>();
+
+        diffObjects.isEquals(a, b, null, (o1, o2) -> o1.getName().equals(o2.getName()));
         Assert.fail("Must throw NullPointerException");
     }
 
@@ -59,7 +118,7 @@ public class DiffObjectsWithBuilderTest {
     public void testDiffObjectsWithEqualsObjectElementMustReturnResultWithEquals() {
         ObjectElement objectA = new ObjectElement("Object");
         ObjectElement objectB = new ObjectElement("Object");
-        List<DiffResult> results = DiffObjects.diff(objectA, objectB, configuration);
+        List<DiffResult> results = diffObjects.diff(objectA, objectB, configuration);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
@@ -69,10 +128,27 @@ public class DiffObjectsWithBuilderTest {
     }
 
     @Test
+    public void testDiffObjectsCollectionWithEqualsObjectElementMustReturnResultWithEquals() {
+        ObjectElement objectA = new ObjectElement("Object");
+        ObjectElement objectB = new ObjectElement("Object");
+        Collection<ObjectElement> a = Collections.singletonList(objectA);
+        Collection<ObjectElement> b = Collections.singletonList(objectB);
+
+        DiffObjects<ObjectElement> diffObjects = DiffObjects.forClass(ObjectElement.class);
+        DiffBuilder diffBuilder = DiffBuilder.map(ObjectElement.class);
+        DiffConfiguration configuration = diffBuilder.mapping("name").configuration();
+
+        List<DiffResult> results = diffObjects.diff(a, b, configuration, (o1, o2) -> o1.getName().equals(o2.getName()));
+
+        Assert.assertFalse(results.isEmpty());
+        Assert.assertTrue(results.get(0).isEquals());
+    }
+
+    @Test
     public void testDiffObjectsWithDifferentObjectElementMustReturnResultWithDifference() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        List<DiffResult> results = DiffObjects.diff(objectA, objectB, configuration);
+        List<DiffResult> results = diffObjects.diff(objectA, objectB, configuration);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
@@ -82,11 +158,28 @@ public class DiffObjectsWithBuilderTest {
     }
 
     @Test
+    public void testDiffObjectsCollectionWithDifferentObjectElementMustReturnResultWithDifference() {
+        ObjectElement2 objectA = new ObjectElement2("Object", "name1");
+        ObjectElement2 objectB = new ObjectElement2("Object", "name2");
+        Collection<ObjectElement2> a = Collections.singletonList(objectA);
+        Collection<ObjectElement2> b = Collections.singletonList(objectB);
+
+        DiffObjects<ObjectElement2> diffObjects = DiffObjects.forClass(ObjectElement2.class);
+        DiffBuilder diffBuilder = DiffBuilder.map(ObjectElement2.class);
+        DiffConfiguration configuration = diffBuilder.mapping("name").mapping("name2").configuration();
+
+        List<DiffResult> results = diffObjects.diff(a, b, configuration, (o1, o2) -> o1.getName().equals(o2.getName()));
+
+        Assert.assertFalse(results.isEmpty());
+        Assert.assertFalse(results.get(0).isEquals());
+    }
+
+    @Test
     public void testDiffObjectsWithEqualsObjectElementMustReturnEqualsTrue() {
         ObjectElement objectA = new ObjectElement("Object");
         ObjectElement objectB = new ObjectElement("Object");
 
-        Assert.assertTrue(DiffObjects.isEquals(objectA, objectB, configuration));
+        Assert.assertTrue(diffObjects.isEquals(objectA, objectB, configuration));
     }
 
     @Test
@@ -94,6 +187,6 @@ public class DiffObjectsWithBuilderTest {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
 
-        Assert.assertFalse(DiffObjects.isEquals(objectA, objectB, configuration));
+        Assert.assertFalse(diffObjects.isEquals(objectA, objectB, configuration));
     }
 }
