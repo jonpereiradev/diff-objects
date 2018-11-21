@@ -8,7 +8,7 @@ import java.util.Objects;
  * @author Jonathan Pereira
  * @since 1.1
  */
-public class EqualsComparator implements DiffComparator {
+public class EqualsComparator<T> implements DiffComparator<T> {
 
     /**
      * Check the equality of two objects.
@@ -19,7 +19,7 @@ public class EqualsComparator implements DiffComparator {
      * @return {@code true} if the two objects are equals.
      */
     @Override
-    public boolean equals(Object o1, Object o2) {
+    public boolean equals(T o1, T o2) {
         return Objects.equals(o1, o2);
     }
 }

@@ -3,6 +3,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
+import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
 import org.apache.commons.lang.StringUtils;
@@ -22,14 +23,14 @@ import java.util.Objects;
  * @see DiffConfiguration
  * @since 1.0
  */
-final class DiffMappingBuilderImpl implements DiffMappingBuilder {
+final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
 
     private static final String REGEX_PROPERTY_SEPARATOR = "\\.";
 
-    private final Class<?> classMap;
+    private final Class<T> classMap;
     private final Map<String, DiffMetadata> metadatas;
 
-    DiffMappingBuilderImpl(Class<?> classMap, Map<String, DiffMetadata> metadatas) {
+    DiffMappingBuilderImpl(Class<T> classMap, Map<String, DiffMetadata> metadatas) {
         this.classMap = classMap;
         this.metadatas = metadatas;
     }
@@ -42,8 +43,8 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
      * @return the instance of this mapping instance.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field) {
-        return mapping(field, new EqualsComparator());
+    public DiffQueryMappingBuilder<T> mapping(String field) {
+        return mapping(field, null, new EqualsComparator<>());
     }
 
     /**
@@ -55,7 +56,7 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, DiffComparator comparator) {
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
         Objects.requireNonNull(field, "Field name is required.");
 
         String nestedField = StringUtils.EMPTY;
@@ -77,7 +78,33 @@ final class DiffMappingBuilderImpl implements DiffMappingBuilder {
 
         metadatas.put(field, diffMetadata);
 
-        return new DiffQueryMappingBuilderImpl(diffMetadata, this, metadatas);
+        return new DiffQueryMappingBuilderImpl<>(diffMetadata, this, metadatas);
+    }
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection) {
+        return mappingCollection(fieldCollection, null, new IndexComparator<>());
+    }
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     * @param elementClass implementation that define how two objects will be check for equality.
+     * @param comparator
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public <E> DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection, Class<E> elementClass, DiffComparator<E> comparator) {
+        return new DiffMappingCollectionBuilderImpl<>(classMap, fieldCollection, comparator, metadatas);
     }
 
     /**

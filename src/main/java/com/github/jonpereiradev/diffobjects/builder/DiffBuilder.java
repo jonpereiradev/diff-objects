@@ -2,7 +2,6 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
 import java.lang.reflect.Field;
@@ -20,12 +19,12 @@ import java.util.Objects;
  * @see DiffConfiguration
  * @since 1.0
  */
-public final class DiffBuilder implements DiffInstanceBuilder {
+public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
 
-    private final Class<?> classMap;
+    private final Class<T> classMap;
     private final Map<String, DiffMetadata> metadatas;
 
-    private DiffBuilder(Class<?> classMap) {
+    private DiffBuilder(Class<T> classMap) {
         this.classMap = classMap;
         this.metadatas = new LinkedHashMap<>();
     }
@@ -37,9 +36,9 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      *
      * @return the diff instance instance.
      */
-    public static DiffBuilder map(Class<?> clazz) {
+    public static <T> DiffBuilder<T> map(Class<T> clazz) {
         Objects.requireNonNull(clazz, "Class is required.");
-        return new DiffBuilder(clazz);
+        return new DiffBuilder<>(clazz);
     }
 
     /**
@@ -72,8 +71,8 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      * @return the instance of this mapping instance.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field) {
-        return mapping(field, new EqualsComparator());
+    public DiffQueryMappingBuilder<T> mapping(String field) {
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field);
     }
 
     /**
@@ -85,8 +84,34 @@ public final class DiffBuilder implements DiffInstanceBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, DiffComparator comparator) {
-        return new DiffMappingBuilderImpl(classMap, metadatas).mapping(field, comparator);
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field, fieldClass, comparator);
+    }
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection) {
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mappingCollection(fieldCollection);
+    }
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     * @param element implementation that define how two objects will be check for equality.
+     * @param comparator
+     *
+     * @return the instance of this mapping.
+     */
+    @Override
+    public <E> DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection, Class<E> element, DiffComparator<E> comparator) {
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mappingCollection(fieldCollection, element, comparator);
     }
 
     Map<String, DiffMetadata> getMetadatas() {

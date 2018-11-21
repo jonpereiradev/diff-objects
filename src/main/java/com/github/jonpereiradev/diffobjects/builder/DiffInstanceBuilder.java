@@ -12,7 +12,7 @@ import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
  * @see DiffConfiguration
  * @since 1.0
  */
-public interface DiffInstanceBuilder {
+public interface DiffInstanceBuilder<T> {
 
     /**
      * Maps all the field of a class.
@@ -28,7 +28,7 @@ public interface DiffInstanceBuilder {
      *
      * @return the instance of this mapping.
      */
-    DiffQueryMappingBuilder mapping(String field);
+    DiffQueryMappingBuilder<T> mapping(String field);
 
     /**
      * Maps the getter of the field for the class.
@@ -38,6 +38,25 @@ public interface DiffInstanceBuilder {
      *
      * @return the instance of this mapping.
      */
-    DiffQueryMappingBuilder mapping(String field, DiffComparator comparator);
+    <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator);
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     *
+     * @return the instance of this mapping.
+     */
+    DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection);
+
+    /**
+     * Maps the getter of the field for the class.
+     *
+     * @param fieldCollection name of the field that will me used to find the getter method.
+     * @param element implementation that define how two objects will be check for equality.
+     *
+     * @return the instance of this mapping.
+     */
+    <E> DiffMappingCollectionBuilder<T> mappingCollection(String fieldCollection, Class<E> element, DiffComparator<E> comparator);
 
 }

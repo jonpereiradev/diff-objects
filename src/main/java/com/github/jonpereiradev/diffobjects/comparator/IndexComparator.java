@@ -1,13 +1,12 @@
 package com.github.jonpereiradev.diffobjects.comparator;
 
 /**
- * Contract to compare the equality from two objects of same type. Must have a public no args constructor.
+ * Check two objects for equality using the equals method implementation.
  *
  * @author Jonathan Pereira
  * @since 1.1
  */
-@FunctionalInterface
-public interface DiffTypedComparator<T> {
+public class IndexComparator<T> implements DiffComparator<T> {
 
     /**
      * Check the equality of two objects.
@@ -17,6 +16,8 @@ public interface DiffTypedComparator<T> {
      *
      * @return {@code true} if the two objects are equals.
      */
-    boolean equals(T o1, T o2);
-
+    @Override
+    public boolean equals(T o1, T o2) {
+        throw new UnsupportedOperationException();
+    }
 }

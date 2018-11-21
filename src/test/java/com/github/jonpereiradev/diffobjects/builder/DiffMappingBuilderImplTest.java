@@ -9,14 +9,15 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class DiffMappingBuilderImplTest {
 
     @Test
     public void testMustMapFieldWithSingleStrategy() {
         HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, metadatas);
+        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
 
         diffMappingBuilder.mapping("parent");
 
@@ -30,7 +31,7 @@ public class DiffMappingBuilderImplTest {
     @Test
     public void testMustMapFieldWithDeepStrategy() {
         HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, metadatas);
+        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
 
         diffMappingBuilder.mapping("objectElement.name");
 
@@ -44,7 +45,7 @@ public class DiffMappingBuilderImplTest {
     @Test
     public void testMustMapFieldWithCollectionStrategy() {
         HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, metadatas);
+        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
 
         diffMappingBuilder.mapping("objectElementList.name");
 
@@ -57,13 +58,13 @@ public class DiffMappingBuilderImplTest {
 
     @Test(expected = DiffException.class)
     public void testMustThrowExceptionWhenMethodNotPublic() {
-        DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, new HashMap<String, DiffMetadata>());
+        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, new HashMap<>());
         diffMappingBuilder.mapping("notAccessible");
     }
 
     @Test(expected = DiffException.class)
     public void testMustThrowExceptionWhenMethodNotNoArgs() {
-        DiffMappingBuilder diffMappingBuilder = new DiffMappingBuilderImpl(ComplexElement.class, new HashMap<String, DiffMetadata>());
+        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, new HashMap<>());
         diffMappingBuilder.mapping("withArgs");
     }
 

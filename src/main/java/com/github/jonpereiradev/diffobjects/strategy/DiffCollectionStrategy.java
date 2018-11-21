@@ -4,10 +4,14 @@ package com.github.jonpereiradev.diffobjects.strategy;
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
+import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -30,6 +34,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
     @Override
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
         DiffComparator comparator = diffMetadata.getComparator();
+        DiffComparator collection = diffMetadata.getCollection();
         Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
         Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
 
@@ -42,32 +47,68 @@ final class DiffCollectionStrategy implements DiffStrategy {
             return new DiffResult(beforeCollection, afterCollection, false);
         }
 
-        Iterator<?> beforeIterator = beforeCollection.iterator();
-        Iterator<?> afterIterator = afterCollection.iterator();
+        List<?> afterCopy = new ArrayList<>(afterCollection);
+        Iterator<?> iterator = afterCollection.iterator();
 
-        while (beforeIterator.hasNext() && afterIterator.hasNext()) {
-            Object beforeObject = beforeIterator.next();
-            Object afterObject = afterIterator.next();
+        for (Object currentBefore : beforeCollection) {
+            Object currentAfter = retrieveAfterObject(collection, afterCollection, iterator, currentBefore);
 
-            // if has value property evaluation
+            // check the elements that exist on beforeState and not exists on afterState
+            if (currentAfter == null) {
+                return new DiffResult(beforeCollection, afterCollection, false);
+            }
+
+            afterCopy.remove(currentAfter);
+
+            // check the elements that exist on both collections
             if (!diffMetadata.getValue().isEmpty()) {
                 String value = diffMetadata.getValue();
-                String nextValue = value.contains(".") ? value.substring(value.indexOf(".")) : null;
+                String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : null;
                 DiffStrategyType diffStrategyType = DiffStrategyType.defineByValue(nextValue);
-                Method method = DiffReflections.discoverGetter(beforeObject.getClass(), value);
-                DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator);
+                Method method = DiffReflections.discoverGetter(currentBefore.getClass(), value);
+                DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator, collection);
                 DiffStrategy strategy = metadata.getStrategy();
-                DiffResult single = strategy.diff(beforeObject, afterObject, metadata);
+                DiffResult single = strategy.diff(currentBefore, currentAfter, metadata);
 
                 if (!single.isEquals()) {
                     return new DiffResult(beforeCollection, afterCollection, false);
                 }
-            } else if (!beforeObject.equals(afterObject)) {
+            } else if (!currentBefore.equals(currentAfter)) {
+                return new DiffResult(beforeCollection, afterCollection, false);
+            }
+        }
+
+        // check the elements that exist on afterState and not exists on beforeState
+        for (Object currentAfter : afterCopy) {
+            Stream<?> stream = beforeCollection.stream().filter((o) -> collection.equals(o, currentAfter));
+            Object currentBefore = stream.findFirst().orElse(null);
+
+            if (currentBefore == null) {
                 return new DiffResult(beforeCollection, afterCollection, false);
             }
         }
 
         return new DiffResult(beforeCollection, afterCollection, true);
+    }
+
+    /**
+     * Find the after element to be compare.
+     *
+     * @param collection the comparator to get the after element.
+     * @param afterCollection the collection to find the element.
+     * @param iterator the iterator to find the next element.
+     * @param currentBefore the current before to compare with comparator.
+     *
+     * @return the next after element to compare.
+     */
+    private Object retrieveAfterObject(DiffComparator collection, Collection<?> afterCollection, Iterator<?> iterator, Object currentBefore) {
+        Object currentAfter = iterator.next();
+
+        if (!(collection instanceof IndexComparator)) {
+            Stream<?> stream = afterCollection.stream().filter((o) -> collection.equals(currentBefore, o));
+            currentAfter = stream.findFirst().orElse(null);
+        }
+        return currentAfter;
     }
 
     /**
@@ -97,14 +138,6 @@ final class DiffCollectionStrategy implements DiffStrategy {
      * @return {@code false} if the collection has not the same size.
      */
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
-        if (beforeCollection == null && afterCollection != null) {
-            return false;
-        }
-
-        if (beforeCollection != null && afterCollection == null) {
-            return false;
-        }
-
-        return beforeCollection.size() == afterCollection.size();
+        return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
     }
 }

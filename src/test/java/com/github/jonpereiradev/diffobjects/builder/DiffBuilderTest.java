@@ -92,8 +92,8 @@ public class DiffBuilderTest {
     public void testDiffBuilderSingleStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffBuilder
             .map(ObjectElement.class)
-            .mapping("name")
-            .mapping("parent")
+            .mapping("name", String.class, new EqualsComparator<>())
+            .mapping("parent", String.class)
             .configuration()
             .build();
 

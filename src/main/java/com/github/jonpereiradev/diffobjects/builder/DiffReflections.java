@@ -12,6 +12,7 @@ import org.apache.commons.lang.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 
 /**
@@ -30,7 +31,7 @@ public final class DiffReflections {
      * @return the diff mappings of the class.
      */
     public static DiffConfiguration mapAnnotations(Class<?> diffClass) {
-        DiffBuilder builder = DiffBuilder.map(diffClass);
+        DiffBuilder<?> builder = DiffBuilder.map(diffClass);
 
         if (diffClass.isAnnotationPresent(DiffMappings.class)) {
             mapAllMethods(diffClass, builder);
@@ -79,7 +80,7 @@ public final class DiffReflections {
         if (instance == null) {
             return null;
         }
-        
+
         try {
             return (T) method.invoke(instance);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -93,9 +94,9 @@ public final class DiffReflections {
      * @param diffClass the class that has the methods.
      * @param builder the builder that creates the metadata.
      */
-    private static DiffConfiguration mapAllMethods(Class<?> diffClass, DiffBuilder builder) {
+    private static DiffConfiguration mapAllMethods(Class<?> diffClass, DiffBuilder<?> builder) {
         for (Method method : diffClass.getMethods()) {
-            if (method.isAnnotationPresent(DiffIgnore.class)) {
+            if (!method.isAnnotationPresent(DiffIgnore.class)) {
                 builder.mapping(method.getName());
             }
         }
@@ -109,41 +110,56 @@ public final class DiffReflections {
      * @param diffClass the class that has the annotations.
      * @param builder the builder that creates the metadata.
      */
-    private static DiffConfiguration mapAnnotationsMethods(Class<?> diffClass, DiffBuilder builder) {
+    private static DiffConfiguration mapAnnotationsMethods(Class<?> diffClass, DiffBuilder<?> builder) {
         for (Method method : diffClass.getMethods()) {
             if (method.isAnnotationPresent(DiffMapping.class)) {
-                DiffMapping diffMapping = method.getAnnotation(DiffMapping.class);
-                DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
-                String field = method.getName();
-
-                if (!diffMapping.value().isEmpty()) {
-                    field += "." + diffMapping.value();
-                }
-
-                DiffQueryMappingBuilder query = builder.mapping(field, diffComparator);
-
-                for (DiffProperty diffProperty : diffMapping.properties()) {
-                    query.property(diffProperty.key(), diffProperty.value());
-                }
+                mapping(builder, method, method.getAnnotation(DiffMapping.class));
             } else if (method.isAnnotationPresent(DiffMappings.class)) {
                 for (DiffMapping diffMapping : method.getAnnotation(DiffMappings.class).value()) {
-                    DiffComparator diffComparator = DiffReflections.newInstance(diffMapping.comparator());
-                    String field = method.getName();
-
-                    if (!diffMapping.value().isEmpty()) {
-                        field += "." + diffMapping.value();
-                    }
-
-                    DiffQueryMappingBuilder query = builder.mapping(field, diffComparator);
-
-                    for (DiffProperty diffProperty : diffMapping.properties()) {
-                        query.property(diffProperty.key(), diffProperty.value());
-                    }
+                    mapping(builder, method, diffMapping);
                 }
             }
         }
 
         return new DiffConfigurationImpl(builder.getMetadatas());
+    }
+
+    private static void mapping(DiffBuilder builder, Method method, DiffMapping diffMapping) {
+        if (Collection.class.isAssignableFrom(method.getReturnType())) {
+            mappingCollection(builder, method, diffMapping);
+        } else {
+            mappingField(builder, method, diffMapping);
+        }
+    }
+
+    private static void mappingField(DiffBuilder builder, Method method, DiffMapping diffMapping) {
+        String field = method.getName();
+        DiffComparator comparator = DiffReflections.newInstance(diffMapping.comparator());
+
+        if (!diffMapping.value().isEmpty()) {
+            field += "." + diffMapping.value();
+        }
+
+        DiffQueryMappingBuilder query = builder.mapping(field, method.getReturnType(), comparator);
+
+        for (DiffProperty diffProperty : diffMapping.properties()) {
+            query.property(diffProperty.key(), diffProperty.value());
+        }
+    }
+
+    private static void mappingCollection(DiffBuilder builder, Method method, DiffMapping diffMapping) {
+        DiffComparator collection = DiffReflections.newInstance(diffMapping.collection());
+        DiffComparator comparator = DiffReflections.newInstance(diffMapping.comparator());
+        DiffMappingCollectionBuilder collectionBuilder = builder.mappingCollection(method.getName(), method.getReturnType(), collection);
+
+        if (!diffMapping.value().isEmpty()) {
+            collectionBuilder.mapping(diffMapping.value(), method.getReturnType(), comparator);
+        }
+
+        collectionBuilder.apply();
+//        for (DiffProperty diffProperty : diffMapping.properties()) {
+//            query.property(diffProperty.key(), diffProperty.value());
+//        }
     }
 
     /**

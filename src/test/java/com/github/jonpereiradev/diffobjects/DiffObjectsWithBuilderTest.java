@@ -166,7 +166,7 @@ public class DiffObjectsWithBuilderTest {
 
         DiffObjects<ObjectElement2> diffObjects = DiffObjects.forClass(ObjectElement2.class);
         DiffBuilder diffBuilder = DiffBuilder.map(ObjectElement2.class);
-        DiffConfiguration configuration = diffBuilder.mapping("name").mapping("name2").configuration();
+        DiffConfiguration configuration = diffBuilder.mapping("name").mapping("name2", String.class).configuration();
 
         List<DiffResult> results = diffObjects.diff(a, b, configuration, (o1, o2) -> o1.getName().equals(o2.getName()));
 
@@ -188,5 +188,19 @@ public class DiffObjectsWithBuilderTest {
         ObjectElement objectB = new ObjectElement("Object B");
 
         Assert.assertFalse(diffObjects.isEquals(objectA, objectB, configuration));
+    }
+
+    @Test
+    public void testDiffObjectsWithEqualsComplexElementMustReturnEquals() {
+        DiffConfiguration configuration = DiffBuilder
+            .map(ComplexElement.class)
+            .mappingCollection("objectElementList", ObjectElement.class, (o1, o2) -> o1.getName().equals(o2.getName()))
+            .mapping("name")
+            .mapping("parent")
+            .mappingBuilder()
+            .mapping("objectElement")
+            .configuration();
+
+        System.out.println(configuration.build().toString());
     }
 }

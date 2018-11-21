@@ -2,6 +2,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
+import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 
 import java.util.Map;
@@ -16,13 +17,13 @@ import java.util.Map;
  * @see DiffConfiguration
  * @since 1.0
  */
-final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
+final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T> {
 
     private final DiffMetadata diffMetadata;
-    private final DiffMappingBuilder diffMappingBuilder;
+    private final DiffMappingBuilder<T> diffMappingBuilder;
     private final Map<String, DiffMetadata> metadatas;
 
-    DiffQueryMappingBuilderImpl(DiffMetadata diffMetadata, DiffMappingBuilder diffMappingBuilder, Map<String, DiffMetadata> metadatas) {
+    DiffQueryMappingBuilderImpl(DiffMetadata diffMetadata, DiffMappingBuilder<T> diffMappingBuilder, Map<String, DiffMetadata> metadatas) {
         this.diffMetadata = diffMetadata;
         this.diffMappingBuilder = diffMappingBuilder;
         this.metadatas = metadatas;
@@ -37,7 +38,7 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder property(String key, String value) {
+    public DiffQueryMappingBuilder<T> property(String key, String value) {
         diffMetadata.getProperties().put(key, value);
         return this;
     }
@@ -48,7 +49,7 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      * @return the instance of this builder.
      */
     @Override
-    public DiffMappingBuilder unmapping() {
+    public DiffMappingBuilder<T> unmapping() {
         metadatas.remove(diffMetadata.getProperties().get("field"));
         return diffMappingBuilder;
     }
@@ -61,8 +62,8 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field) {
-        return diffMappingBuilder.mapping(field);
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass) {
+        return diffMappingBuilder.mapping(field, fieldClass, new EqualsComparator<>());
     }
 
     /**
@@ -74,8 +75,8 @@ final class DiffQueryMappingBuilderImpl implements DiffQueryMappingBuilder {
      * @return the instance of this mapping.
      */
     @Override
-    public DiffQueryMappingBuilder mapping(String field, DiffComparator comparator) {
-        return diffMappingBuilder.mapping(field, comparator);
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
+        return diffMappingBuilder.mapping(field, fieldClass, comparator);
     }
 
     /**

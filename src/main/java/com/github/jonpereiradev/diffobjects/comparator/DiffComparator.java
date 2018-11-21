@@ -7,7 +7,7 @@ package com.github.jonpereiradev.diffobjects.comparator;
  * @since 1.1
  */
 @FunctionalInterface
-public interface DiffComparator {
+public interface DiffComparator<T> {
 
     /**
      * Check the equality of two objects.
@@ -17,6 +17,6 @@ public interface DiffComparator {
      *
      * @return {@code true} if the two objects are equals.
      */
-    boolean equals(Object o1, Object o2);
+    boolean equals(T o1, T o2);
 
 }

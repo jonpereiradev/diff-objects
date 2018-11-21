@@ -3,7 +3,7 @@ package com.github.jonpereiradev.diffobjects;
 
 import com.github.jonpereiradev.diffobjects.builder.DiffConfiguration;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
-import com.github.jonpereiradev.diffobjects.comparator.DiffTypedComparator;
+import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategy;
 
@@ -97,7 +97,7 @@ public final class DiffObjects<T> {
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffTypedComparator<T> matcher) {
+    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffComparator<T> matcher) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
 
@@ -114,7 +114,7 @@ public final class DiffObjects<T> {
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffTypedComparator<T> matcher) {
+    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffComparator<T> matcher) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
@@ -209,7 +209,7 @@ public final class DiffObjects<T> {
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffTypedComparator<T> matcher) {
+    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffComparator<T> matcher) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
 
@@ -225,7 +225,7 @@ public final class DiffObjects<T> {
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffTypedComparator<T> matcher) {
+    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffComparator<T> matcher) {
         Objects.requireNonNull(beforeState, "Before state is required.");
         Objects.requireNonNull(afterState, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
