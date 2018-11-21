@@ -137,11 +137,13 @@ final class DiffCollectionStrategy implements DiffStrategy {
 
     private DiffResult getDiffResult(DiffMetadata diffMetadata, DiffComparator comparator, DiffComparator collection, Object currentBefore, Object currentAfter) {
         String value = diffMetadata.getValue();
-        String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : null;
-        DiffStrategyType diffStrategyType = DiffStrategyType.defineByValue(nextValue);
-        Method method = DiffReflections.discoverGetter(currentBefore.getClass(), value);
+        String currentValue = value.contains(".") ? value.substring(0, value.indexOf(".")) : value;
+        String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : "";
+        DiffStrategyType diffStrategyType = nextValue.isEmpty() ? DiffStrategyType.SINGLE : DiffStrategyType.NESTED;
+        Method method = DiffReflections.discoverGetter(currentBefore.getClass(), currentValue);
         DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator, collection);
         DiffStrategy strategy = metadata.getStrategy();
+
         return strategy.diff(currentBefore, currentAfter, metadata);
     }
 }
