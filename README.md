@@ -64,7 +64,7 @@ public class Main {
             .mapping("emails", "description")
             .configuration();
         
-        List<DiffResult> diffs = DiffObjects.diff(u1, u2, configuration);
+        List<DiffResult> diffs = DiffObjects.forClass(User.class).diff(u1, u2, configuration);
         
         for (DiffResult diff : diffs) {
             if (!diff.isEquals()) {
@@ -129,7 +129,7 @@ public class Main {
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
         
-        List<DiffResult> diffs = DiffObjects.diff(u1, u2);
+        List<DiffResult> diffs = (DiffObjects).forClass(User.class).diff(u1, u2);
         
         for (DiffResult diff : diffs) {
             if (!diff.isEquals()) {
@@ -189,11 +189,6 @@ public class Main {
     }
 }
 ```
-
-## Future implementations
-
-- Enable only different object for diff result;
-- Collection with value working with nested fields (Ex: "emails.principal.description");
 
 # License
 
