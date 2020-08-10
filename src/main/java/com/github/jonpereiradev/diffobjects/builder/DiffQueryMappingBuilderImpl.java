@@ -16,11 +16,11 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
  */
 final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T> {
 
-    private final DiffMetadata diffMetadata;
+    private final DiffMetadata metadata;
     private final DiffMappingBuilderImpl<T> diffMappingBuilder;
 
-    DiffQueryMappingBuilderImpl(DiffMetadata diffMetadata, DiffMappingBuilderImpl<T> diffMappingBuilder) {
-        this.diffMetadata = diffMetadata;
+    DiffQueryMappingBuilderImpl(DiffMetadata metadata, DiffMappingBuilderImpl<T> diffMappingBuilder) {
+        this.metadata = metadata;
         this.diffMappingBuilder = diffMappingBuilder;
     }
 
@@ -34,7 +34,7 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      */
     @Override
     public DiffQueryMappingBuilder<T> property(String key, String value) {
-        diffMetadata.getProperties().put(key, value);
+        metadata.getProperties().put(key, value);
         return this;
     }
 
@@ -45,7 +45,7 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      */
     @Override
     public DiffMappingBuilder<T> unmapping() {
-        diffMappingBuilder.getMetadatas().remove(diffMetadata.getProperties().get("field"));
+        diffMappingBuilder.getMetadatas().remove(metadata.getProperties().get("field"));
         return diffMappingBuilder;
     }
 

@@ -25,18 +25,18 @@ final class DiffCollectionStrategy implements DiffStrategy {
     /**
      * Check the difference between two objects for the diffMetadata configuration.
      *
-     * @param before object that is considered a state before the after object.
-     * @param after object that is considered the before object updated.
-     * @param diffMetadata the diffMetadata that is mapped to make the instance.
+     * @param expected object that is considered a state before the after object.
+     * @param current object that is considered the before object updated.
+     * @param metadata the diffMetadata that is mapped to make the instance.
      *
      * @return the instance result between the two objects.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
-        DiffComparator fieldComparator = diffMetadata.getComparator();
-        Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
-        Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
+    public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
+        DiffComparator fieldComparator = metadata.getComparator();
+        Collection<?> beforeCollection = initializeCollection(expected, metadata.getMethod());
+        Collection<?> afterCollection = initializeCollection(current, metadata.getMethod());
 
         if (beforeCollection == null && afterCollection == null) {
             return new DiffResult(null, null, true);
@@ -61,9 +61,9 @@ final class DiffCollectionStrategy implements DiffStrategy {
             afterCopy.remove(currentAfter);
 
             // check the elements that exist on both collections
-            if (!diffMetadata.getValue().isEmpty()) {
+            if (!metadata.getValue().isEmpty()) {
                 DiffResult single = checkDiff(
-                    diffMetadata,
+                    metadata,
                     fieldComparator,
                     currentBefore,
                     currentAfter

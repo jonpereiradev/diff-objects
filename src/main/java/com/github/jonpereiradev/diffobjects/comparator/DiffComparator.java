@@ -12,11 +12,11 @@ public interface DiffComparator<T> {
     /**
      * Check the equality of two objects.
      *
-     * @param o1 first instance to compare the equality.
-     * @param o2 second instance to compare the equality.
+     * @param expected the object with the expected state.
+     * @param current the object with the current state.
      *
      * @return {@code true} if the two objects are equals.
      */
-    boolean equals(T o1, T o2);
+    boolean equals(T expected, T current);
 
 }

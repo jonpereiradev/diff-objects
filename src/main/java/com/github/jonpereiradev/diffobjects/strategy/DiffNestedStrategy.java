@@ -19,36 +19,36 @@ final class DiffNestedStrategy implements DiffStrategy {
     private static final String REGEX_PROPERTY_SEPARATOR = "\\.";
 
     /**
-     * Check the difference between two objects for the diffMetadata configuration.
+     * Check the difference between two objects using the metadata configuration.
      *
-     * @param before object that is considered a state before the after object.
-     * @param after object that is considered the before object updated.
-     * @param diffMetadata the diffMetadata that is mapped to make the instance.
+     * @param expected object that represents the expected state of the object.
+     * @param current object that represents the current state of the object.
+     * @param metadata the metadata with the configuration for the diff.
      *
-     * @return the instance result between the two objects.
+     * @return the diff result between the two objects.
      */
     @Override
-    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
-        DiffComparator comparator = diffMetadata.getComparator();
-        Method beforeMethod = diffMetadata.getMethod();
-        Method afterMethod = diffMetadata.getMethod();
-        Object beforeObject = DiffReflections.invoke(before, beforeMethod);
-        Object afterObject = DiffReflections.invoke(after, afterMethod);
+    public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
+        DiffComparator comparator = metadata.getComparator();
+        Method expectedMethod = metadata.getMethod();
+        Method currentMethod = metadata.getMethod();
+        Object expectedObject = DiffReflections.invoke(expected, expectedMethod);
+        Object currentObject = DiffReflections.invoke(current, currentMethod);
 
-        if (beforeObject != null || afterObject != null) {
-            for (String property : diffMetadata.getValue().split(REGEX_PROPERTY_SEPARATOR)) {
-                if (beforeObject != null) {
-                    beforeMethod = DiffReflections.discoverGetter(beforeObject.getClass(), property);
-                    beforeObject = DiffReflections.invoke(beforeObject, beforeMethod);
+        if (expectedObject != null || currentObject != null) {
+            for (String property : metadata.getValue().split(REGEX_PROPERTY_SEPARATOR)) {
+                if (expectedObject != null) {
+                    expectedMethod = DiffReflections.discoverGetter(expectedObject.getClass(), property);
+                    expectedObject = DiffReflections.invoke(expectedObject, expectedMethod);
                 }
 
-                if (afterObject != null) {
-                    afterMethod = DiffReflections.discoverGetter(afterObject.getClass(), property);
-                    afterObject = DiffReflections.invoke(afterObject, afterMethod);
+                if (currentObject != null) {
+                    currentMethod = DiffReflections.discoverGetter(currentObject.getClass(), property);
+                    currentObject = DiffReflections.invoke(currentObject, currentMethod);
                 }
             }
         }
 
-        return new DiffResult(beforeObject, afterObject, comparator.equals(beforeObject, afterObject));
+        return new DiffResult(expectedObject, currentObject, comparator.equals(expectedObject, currentObject));
     }
 }

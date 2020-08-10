@@ -15,20 +15,20 @@ import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 final class DiffSingleStrategy implements DiffStrategy {
 
     /**
-     * Check the difference between two objects for the diffMetadata configuration.
+     * Check the difference between two objects using the metadata configuration.
      *
-     * @param before object that is considered a state before the after object.
-     * @param after object that is considered the before object updated.
-     * @param diffMetadata the metadata with the configuration for the diff.
+     * @param expected object that represents the expected state of the object.
+     * @param current object that represents the current state of the object.
+     * @param metadata the metadata with the configuration for the diff.
      *
      * @return the diff result between the two objects.
      */
     @Override
-    public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
-        Object beforeValue = DiffReflections.invoke(before, diffMetadata.getMethod());
-        Object afterValue = DiffReflections.invoke(after, diffMetadata.getMethod());
-        DiffComparator comparator = diffMetadata.getComparator();
+    public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
+        Object expectedValue = DiffReflections.invoke(expected, metadata.getMethod());
+        Object currentValue = DiffReflections.invoke(current, metadata.getMethod());
+        DiffComparator comparator = metadata.getComparator();
 
-        return new DiffResult(beforeValue, afterValue, comparator.equals(beforeValue, afterValue));
+        return new DiffResult(expectedValue, currentValue, comparator.equals(expectedValue, currentValue));
     }
 }
