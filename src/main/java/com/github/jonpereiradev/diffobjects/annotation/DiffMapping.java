@@ -3,7 +3,6 @@ package com.github.jonpereiradev.diffobjects.annotation;
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
-import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -38,8 +37,4 @@ public @interface DiffMapping {
      */
     Class<? extends DiffComparator> comparator() default EqualsComparator.class;
 
-    /**
-     * @return define the comparator that checks how the objects in a collection will be compare.
-     */
-    Class<? extends DiffComparator> collection() default IndexComparator.class;
 }

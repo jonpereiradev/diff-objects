@@ -148,9 +148,8 @@ public final class DiffReflections {
     }
 
     private static void mappingCollection(DiffBuilder builder, Method method, DiffMapping diffMapping) {
-        DiffComparator collection = DiffReflections.newInstance(diffMapping.collection());
         DiffComparator comparator = DiffReflections.newInstance(diffMapping.comparator());
-        DiffQueryMappingBuilder collectionBuilder = builder.mapping(method.getName(), method.getReturnType(), collection);
+        DiffQueryMappingBuilder collectionBuilder = builder.mapping(method.getName(), method.getReturnType(), comparator);
 
         if (!diffMapping.value().isEmpty()) {
             collectionBuilder.mapping(method.getName() + "." + diffMapping.value(), method.getReturnType(), comparator);
@@ -167,7 +166,7 @@ public final class DiffReflections {
      *
      * @throws UnsupportedOperationException if no default constructor exists.
      */
-    public static <T> T newInstance(Class<T> clazz) {
+    private static <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

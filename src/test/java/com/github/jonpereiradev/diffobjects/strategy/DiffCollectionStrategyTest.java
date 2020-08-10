@@ -87,6 +87,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testCollectionStrategyDifferentObjectsDifferentSizeList() {
         ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement(new ArrayList<>());
@@ -111,6 +112,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testCollectionStrategyDifferentObjectsSameSizeList() {
         ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement(new ArrayList<>());
@@ -133,6 +135,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testCollectionStrategySameObjectsSameSizeList() {
         ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement(new ArrayList<>());
@@ -156,6 +159,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testCollectionStrategySameObjectsByNameSameSizeList() {
         ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement(new ArrayList<>());
@@ -178,6 +182,7 @@ public class DiffCollectionStrategyTest extends BaseStrategyTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testCollectionStrategyDifferentObjectsByNameSameSizeList() {
         ComplexElement complexA = new ComplexElement(new ArrayList<>());
         ComplexElement complexB = new ComplexElement(new ArrayList<>());

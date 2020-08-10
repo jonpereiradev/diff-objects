@@ -32,9 +32,9 @@ final class DiffCollectionStrategy implements DiffStrategy {
      * @return the instance result between the two objects.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public DiffResult diff(Object before, Object after, DiffMetadata diffMetadata) {
-        DiffComparator comparator = diffMetadata.getComparator();
-        DiffComparator collection = diffMetadata.getCollectionComparator();
+        DiffComparator fieldComparator = diffMetadata.getComparator();
         Collection<?> beforeCollection = initializeCollection(before, diffMetadata.getMethod());
         Collection<?> afterCollection = initializeCollection(after, diffMetadata.getMethod());
 
@@ -51,7 +51,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
         Iterator<?> iterator = afterCollection.iterator();
 
         for (Object currentBefore : beforeCollection) {
-            Object currentAfter = retrieveAfterObject(collection, afterCollection, iterator, currentBefore);
+            Object currentAfter = retrieveAfterObject(fieldComparator, afterCollection, iterator, currentBefore);
 
             // check the elements that exist on beforeState and not exists on afterState
             if (currentAfter == null) {
@@ -62,22 +62,28 @@ final class DiffCollectionStrategy implements DiffStrategy {
 
             // check the elements that exist on both collections
             if (!diffMetadata.getValue().isEmpty()) {
-                DiffResult single = getDiffResult(diffMetadata, comparator, collection, currentBefore, currentAfter);
+                DiffResult single = checkDiff(
+                    diffMetadata,
+                    fieldComparator,
+                    currentBefore,
+                    currentAfter
+                );
 
                 if (!single.isEquals()) {
                     return new DiffResult(beforeCollection, afterCollection, false);
                 }
-            } else if (!currentBefore.equals(currentAfter)) {
+            } else if (!fieldComparator.equals(currentBefore, currentAfter)) {
                 return new DiffResult(beforeCollection, afterCollection, false);
             }
         }
 
         // check the elements that exist on afterState and not exists on beforeState
         for (Object currentAfter : afterCopy) {
-            Stream<?> stream = beforeCollection.stream().filter((o) -> collection.equals(o, currentAfter));
-            Object currentBefore = stream.findFirst().orElse(null);
+            boolean noneMatch = beforeCollection
+                .stream()
+                .noneMatch((o) -> fieldComparator.equals(o, currentAfter));
 
-            if (currentBefore == null) {
+            if (noneMatch) {
                 return new DiffResult(beforeCollection, afterCollection, false);
             }
         }
@@ -95,7 +101,11 @@ final class DiffCollectionStrategy implements DiffStrategy {
      *
      * @return the next after element to compare.
      */
-    private Object retrieveAfterObject(DiffComparator collection, Collection<?> afterCollection, Iterator<?> iterator, Object currentBefore) {
+    private Object retrieveAfterObject(
+        DiffComparator collection,
+        Collection<?> afterCollection,
+        Iterator<?> iterator,
+        Object currentBefore) {
         Object currentAfter = iterator.next();
 
         if (!(collection instanceof IndexComparator)) {
@@ -135,13 +145,17 @@ final class DiffCollectionStrategy implements DiffStrategy {
         return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
     }
 
-    private DiffResult getDiffResult(DiffMetadata diffMetadata, DiffComparator comparator, DiffComparator collection, Object currentBefore, Object currentAfter) {
+    private DiffResult checkDiff(
+        DiffMetadata diffMetadata,
+        DiffComparator fieldComparator,
+        Object currentBefore,
+        Object currentAfter) {
         String value = diffMetadata.getValue();
         String currentValue = value.contains(".") ? value.substring(0, value.indexOf(".")) : value;
         String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : "";
         DiffStrategyType diffStrategyType = nextValue.isEmpty() ? DiffStrategyType.SINGLE : DiffStrategyType.NESTED;
         Method method = DiffReflections.discoverGetter(currentBefore.getClass(), currentValue);
-        DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, comparator, collection);
+        DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, fieldComparator);
         DiffStrategy strategy = metadata.getStrategy();
 
         return strategy.diff(currentBefore, currentAfter, metadata);

@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,12 +29,10 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
 
     private final Class<T> classMap;
     private final Map<String, DiffMetadata> metadatas;
-    private final Map<String, DiffMetadata> collections;
 
     DiffMappingBuilderImpl(Class<T> classMap, Map<String, DiffMetadata> metadatas) {
         this.classMap = classMap;
         this.metadatas = metadatas;
-        this.collections = new HashMap<>();
     }
 
     /**
@@ -61,39 +58,45 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param comparator implementation that define how two objects will be check for equality.
+     * @param fieldClass field class type used by the comparator.
+     * @param fieldComparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
     @Override
-    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
+    public <F> DiffQueryMappingBuilder<T> mapping(
+        String field,
+        Class<F> fieldClass,
+        DiffComparator<F> fieldComparator) {
         Objects.requireNonNull(field, "Field name is required.");
 
-        String nestedField = StringUtils.EMPTY;
+        String nestedFields = StringUtils.EMPTY;
         String[] fields = field.split(REGEX_PROPERTY_SEPARATOR);
         Method method = DiffReflections.discoverGetter(classMap, fields[0]);
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;
-        DiffComparator<?> collection = collections.containsKey(fields[0]) ? collections.get(fields[0]).getComparator() : null;
 
         if (fields.length > 1) {
             diffStrategyType = DiffStrategyType.NESTED;
-            nestedField = field.substring(field.indexOf(".") + 1);
+            nestedFields = field.substring(field.indexOf(".") + 1);
         }
 
-        if (Collection.class.isAssignableFrom(method.getReturnType())) {
+        boolean isCollectionType = Collection.class.isAssignableFrom(method.getReturnType());
+
+        if (isCollectionType) {
             diffStrategyType = DiffStrategyType.COLLECTION;
-            collection = collection != null ? collection : new IndexComparator<>();
         }
 
-        DiffMetadata diffMetadata = new DiffMetadata(nestedField, method, diffStrategyType, comparator, collection);
+        DiffMetadata diffMetadata = new DiffMetadata(
+            nestedFields,
+            method,
+            diffStrategyType,
+            fieldComparator
+        );
+
         diffMetadata.getProperties().put("field", field);
 
-        if (Collection.class.isAssignableFrom(method.getReturnType())) {
-            if (nestedField.isEmpty()) {
-                collections.put(fields[0], diffMetadata);
-            } else {
-                metadatas.remove(fields[0]);
-            }
+        if (isCollectionType && !nestedFields.isEmpty()) {
+            metadatas.remove(fields[0]);
         }
 
         metadatas.put(field, diffMetadata);
