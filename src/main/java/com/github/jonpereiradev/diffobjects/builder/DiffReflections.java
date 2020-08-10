@@ -19,7 +19,7 @@ import java.util.Collection;
  * Common reflections operations to execute the diff.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffReflections {
 

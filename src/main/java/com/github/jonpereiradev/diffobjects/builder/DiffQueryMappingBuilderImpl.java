@@ -12,7 +12,7 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T> {
 

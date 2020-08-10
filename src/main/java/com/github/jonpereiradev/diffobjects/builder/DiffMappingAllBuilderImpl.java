@@ -13,7 +13,7 @@ import java.util.Map;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffMappingAllBuilderImpl implements DiffMappingAllBuilder {
 

@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * Responsible for check the difference between two collections.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffCollectionStrategy implements DiffStrategy {
 

@@ -5,7 +5,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
  * The strategies types provided for the API to execute the diff operation.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public enum DiffStrategyType {
 

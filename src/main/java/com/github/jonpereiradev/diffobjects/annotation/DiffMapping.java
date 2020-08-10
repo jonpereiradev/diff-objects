@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * will be evaluated for equality.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

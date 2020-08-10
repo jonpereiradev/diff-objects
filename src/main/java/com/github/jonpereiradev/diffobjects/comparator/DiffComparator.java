@@ -4,7 +4,7 @@ package com.github.jonpereiradev.diffobjects.comparator;
  * Contract to compare the equality from two objects of same type. Must have a public no args constructor.
  *
  * @author Jonathan Pereira
- * @since 1.1
+ * @since 1.1.0
  */
 @FunctionalInterface
 public interface DiffComparator<T> {

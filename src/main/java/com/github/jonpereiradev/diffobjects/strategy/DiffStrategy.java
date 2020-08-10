@@ -11,7 +11,7 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
  * @see DiffSingleStrategy
  * @see DiffNestedStrategy
  * @see DiffCollectionStrategy
- * @since 1.0
+ * @since 1.0.0
  */
 public interface DiffStrategy {
 

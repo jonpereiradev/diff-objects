@@ -6,7 +6,7 @@ import java.util.Objects;
  * Check two objects for equality using the equals method implementation.
  *
  * @author Jonathan Pereira
- * @since 1.1
+ * @since 1.1.0
  */
 public class EqualsComparator<T> implements DiffComparator<T> {
 

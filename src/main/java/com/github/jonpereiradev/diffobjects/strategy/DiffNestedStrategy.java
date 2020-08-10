@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * Responsible for check the difference between two objects where value navigates into object properties.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffNestedStrategy implements DiffStrategy {
 

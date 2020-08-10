@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * @param <T> type of object been compared.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffObjects<T> {
 

@@ -4,7 +4,7 @@ package com.github.jonpereiradev.diffobjects.comparator;
  * Check two objects for equality using the equals method implementation.
  *
  * @author Jonathan Pereira
- * @since 1.1
+ * @since 1.1.0
  */
 @Deprecated
 public class IndexComparator<T> implements DiffComparator<T> {

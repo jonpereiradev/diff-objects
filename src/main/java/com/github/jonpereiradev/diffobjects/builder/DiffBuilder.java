@@ -17,7 +17,7 @@ import java.util.Objects;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
 

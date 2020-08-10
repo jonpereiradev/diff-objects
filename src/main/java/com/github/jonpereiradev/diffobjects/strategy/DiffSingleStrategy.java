@@ -10,7 +10,7 @@ import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
  * Responsible for check the difference between two simple objects (with no nested property).
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffSingleStrategy implements DiffStrategy {
 

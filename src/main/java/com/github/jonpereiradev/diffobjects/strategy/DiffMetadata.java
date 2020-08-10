@@ -14,7 +14,7 @@ import java.util.Objects;
  * Metadata with the information of a field/method to compare on diff execution.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 
