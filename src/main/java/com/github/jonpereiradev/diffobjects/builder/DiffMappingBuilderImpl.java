@@ -48,17 +48,16 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
         Method method = DiffReflections.discoverGetter(classMap, fields[0]);
 
         if (Collection.class.isAssignableFrom(method.getReturnType()) && fields.length == 1) {
-            return mapping(field, method.getReturnType(), new IndexComparator<>());
+            return mapping(field, new IndexComparator<>());
         }
 
-        return mapping(field, method.getReturnType(), new EqualsComparator<>());
+        return mapping(field, new EqualsComparator<>());
     }
 
     /**
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param fieldClass field class type used by the comparator.
      * @param fieldComparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
@@ -66,7 +65,6 @@ final class DiffMappingBuilderImpl<T> implements DiffMappingBuilder<T> {
     @Override
     public <F> DiffQueryMappingBuilder<T> mapping(
         String field,
-        Class<F> fieldClass,
         DiffComparator<F> fieldComparator) {
         Objects.requireNonNull(field, "Field name is required.");
 

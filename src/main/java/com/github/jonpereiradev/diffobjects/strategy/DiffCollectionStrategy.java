@@ -4,14 +4,12 @@ package com.github.jonpereiradev.diffobjects.strategy;
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 /**
@@ -51,7 +49,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
         Iterator<?> iterator = afterCollection.iterator();
 
         for (Object currentBefore : beforeCollection) {
-            Object currentAfter = retrieveAfterObject(fieldComparator, afterCollection, iterator, currentBefore);
+            Object currentAfter = iterator.next();
 
             // check the elements that exist on beforeState and not exists on afterState
             if (currentAfter == null) {
@@ -72,7 +70,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
                 if (!single.isEquals()) {
                     return new DiffResult(beforeCollection, afterCollection, false);
                 }
-            } else if (!fieldComparator.equals(currentBefore, currentAfter)) {
+            } else if (!fieldComparator.isEquals(currentBefore, currentAfter)) {
                 return new DiffResult(beforeCollection, afterCollection, false);
             }
         }
@@ -81,7 +79,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
         for (Object currentAfter : afterCopy) {
             boolean noneMatch = beforeCollection
                 .stream()
-                .noneMatch((o) -> fieldComparator.equals(o, currentAfter));
+                .noneMatch((o) -> fieldComparator.isEquals(o, currentAfter));
 
             if (noneMatch) {
                 return new DiffResult(beforeCollection, afterCollection, false);
@@ -89,30 +87,6 @@ final class DiffCollectionStrategy implements DiffStrategy {
         }
 
         return new DiffResult(beforeCollection, afterCollection, true);
-    }
-
-    /**
-     * Find the after element to be compare.
-     *
-     * @param collection the comparator to get the after element.
-     * @param afterCollection the collection to find the element.
-     * @param iterator the iterator to find the next element.
-     * @param currentBefore the current before to compare with comparator.
-     *
-     * @return the next after element to compare.
-     */
-    private Object retrieveAfterObject(
-        DiffComparator collection,
-        Collection<?> afterCollection,
-        Iterator<?> iterator,
-        Object currentBefore) {
-        Object currentAfter = iterator.next();
-
-        if (!(collection instanceof IndexComparator)) {
-            Stream<?> stream = afterCollection.stream().filter((o) -> collection.equals(currentBefore, o));
-            currentAfter = stream.findFirst().orElse(null);
-        }
-        return currentAfter;
     }
 
     /**

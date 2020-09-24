@@ -29,6 +29,6 @@ final class DiffSingleStrategy implements DiffStrategy {
         Object currentValue = DiffReflections.invoke(current, metadata.getMethod());
         DiffComparator comparator = metadata.getComparator();
 
-        return new DiffResult(expectedValue, currentValue, comparator.equals(expectedValue, currentValue));
+        return new DiffResult(expectedValue, currentValue, comparator.isEquals(expectedValue, currentValue));
     }
 }

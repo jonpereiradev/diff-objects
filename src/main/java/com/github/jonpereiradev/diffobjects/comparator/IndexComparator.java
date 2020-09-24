@@ -6,7 +6,6 @@ package com.github.jonpereiradev.diffobjects.comparator;
  * @author Jonathan Pereira
  * @since 1.1.0
  */
-@Deprecated
 public class IndexComparator<T> implements DiffComparator<T> {
 
     /**
@@ -18,7 +17,7 @@ public class IndexComparator<T> implements DiffComparator<T> {
      * @return {@code true} if the two objects are equals.
      */
     @Override
-    public boolean equals(T expected, T current) {
+    public boolean isEquals(T expected, T current) {
         throw new UnsupportedOperationException();
     }
 }

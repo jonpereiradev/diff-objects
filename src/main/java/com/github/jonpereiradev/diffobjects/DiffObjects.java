@@ -124,7 +124,7 @@ public final class DiffObjects<T> {
         List<DiffResult> results = new ArrayList<>();
 
         for (T expected : expectedCollection) {
-            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.equals(expected, current));
+            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.isEquals(expected, current));
             T after = stream.findFirst().orElse(null);
 
             // check the elements that exist on expectedCollection and not exists on currentCollection
@@ -151,7 +151,7 @@ public final class DiffObjects<T> {
 
         // check the elements that exist on currentCollection and not exists on expectedCollection
         for (T current : currentCollection) {
-            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.equals(current, expected));
+            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
             T expected = stream.findFirst().orElse(null);
 
             if (expected == null) {
@@ -242,7 +242,7 @@ public final class DiffObjects<T> {
         List<T> currentCollectionCopy = new ArrayList<>(currentCollection);
 
         for (T expected : expectedCollection) {
-            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.equals(expected, current));
+            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.isEquals(expected, current));
             T current = stream.findFirst().orElse(null);
 
             // check the elements that exist on expectedCollection and not exists on currentCollection
@@ -260,7 +260,7 @@ public final class DiffObjects<T> {
 
         // check the elements that exist on currentCollection and not exists on expectedCollection
         for (T current : currentCollectionCopy) {
-            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.equals(current, expected));
+            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
             T expected = stream.findFirst().orElse(null);
 
             if (expected == null) {

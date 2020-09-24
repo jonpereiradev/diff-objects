@@ -70,8 +70,8 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      * @return the instance of this mapping.
      */
     @Override
-    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
-        return diffMappingBuilder.mapping(field, fieldClass, comparator);
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, DiffComparator<F> comparator) {
+        return diffMappingBuilder.mapping(field, comparator);
     }
 
     /**

@@ -49,6 +49,6 @@ final class DiffNestedStrategy implements DiffStrategy {
             }
         }
 
-        return new DiffResult(expectedObject, currentObject, comparator.equals(expectedObject, currentObject));
+        return new DiffResult(expectedObject, currentObject, comparator.isEquals(expectedObject, currentObject));
     }
 }

@@ -19,7 +19,7 @@ public class EqualsComparator<T> implements DiffComparator<T> {
      * @return {@code true} if the two objects are equals.
      */
     @Override
-    public boolean equals(T expected, T current) {
+    public boolean isEquals(T expected, T current) {
         return Objects.equals(expected, current);
     }
 

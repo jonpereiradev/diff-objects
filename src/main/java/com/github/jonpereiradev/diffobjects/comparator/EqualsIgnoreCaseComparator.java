@@ -17,8 +17,8 @@ public class EqualsIgnoreCaseComparator implements DiffComparator<String> {
      * @return {@code true} if the two objects are equals.
      */
     @Override
-    public boolean equals(String expected, String current) {
-        return expected.equalsIgnoreCase(current);
+    public boolean isEquals(String expected, String current) {
+        return expected != null && expected.equalsIgnoreCase(current);
     }
 
 }

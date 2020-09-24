@@ -80,7 +80,6 @@ public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param fieldClass field class type that is used by the fieldComparator.
      * @param fieldComparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
@@ -88,9 +87,8 @@ public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
     @Override
     public <F> DiffQueryMappingBuilder<T> mapping(
         String field,
-        Class<F> fieldClass,
         DiffComparator<F> fieldComparator) {
-        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field, fieldClass, fieldComparator);
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field, fieldComparator);
     }
 
     Map<String, DiffMetadata> getMetadatas() {

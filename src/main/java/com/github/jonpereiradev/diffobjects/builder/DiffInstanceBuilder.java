@@ -37,11 +37,10 @@ public interface DiffInstanceBuilder<T> {
      *
      * @param <F> the type of object been mapped for the field.
      * @param field name of the field that will me used to find the getter method.
-     * @param fieldClass the class type of the field been mapped.
      * @param comparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
-    <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator);
+    <F> DiffQueryMappingBuilder<T> mapping(String field, DiffComparator<F> comparator);
 
 }
