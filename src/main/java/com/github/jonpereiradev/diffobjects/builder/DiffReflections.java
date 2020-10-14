@@ -7,8 +7,8 @@ import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
 import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.reflect.MethodUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

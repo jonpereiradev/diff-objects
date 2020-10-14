@@ -6,7 +6,7 @@ import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

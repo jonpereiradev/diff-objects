@@ -2,7 +2,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
