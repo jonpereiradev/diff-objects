@@ -123,8 +123,8 @@ public class DiffObjectsWithBuilderTest {
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
         Assert.assertTrue(results.get(0).isEquals());
-        Assert.assertEquals("Object", results.get(0).getBefore());
-        Assert.assertEquals("Object", results.get(0).getAfter());
+        Assert.assertEquals("Object", results.get(0).getExpected());
+        Assert.assertEquals("Object", results.get(0).getCurrent());
     }
 
     @Test
@@ -153,8 +153,8 @@ public class DiffObjectsWithBuilderTest {
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
         Assert.assertFalse(results.get(0).isEquals());
-        Assert.assertEquals("Object A", results.get(0).getBefore());
-        Assert.assertEquals("Object B", results.get(0).getAfter());
+        Assert.assertEquals("Object A", results.get(0).getExpected());
+        Assert.assertEquals("Object B", results.get(0).getCurrent());
     }
 
     @Test

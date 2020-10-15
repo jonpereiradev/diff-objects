@@ -8,27 +8,27 @@ import java.util.Map;
  * Result of a diff with the before and after state.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffResult {
 
-    private final Object before;
-    private final Object after;
+    private final Object expected;
+    private final Object current;
     private final boolean equals;
     private Map<String, String> properties;
 
-    public DiffResult(Object before, Object after, boolean equals) {
-        this.before = before;
-        this.after = after;
+    public DiffResult(Object expected, Object current, boolean equals) {
+        this.expected = expected;
+        this.current = current;
         this.equals = equals;
     }
 
-    public Object getBefore() {
-        return before;
+    public Object getExpected() {
+        return expected;
     }
 
-    public Object getAfter() {
-        return after;
+    public Object getCurrent() {
+        return current;
     }
 
     public boolean isEquals() {
@@ -42,4 +42,5 @@ public final class DiffResult {
     void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
+
 }

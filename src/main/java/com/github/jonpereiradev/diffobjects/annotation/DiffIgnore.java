@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Annotation to ignore a mapping when using {@link DiffMappings} on a class to map all fields.
  *
  * @author Jonathan Pereira
- * @since 1.1
+ * @since 1.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

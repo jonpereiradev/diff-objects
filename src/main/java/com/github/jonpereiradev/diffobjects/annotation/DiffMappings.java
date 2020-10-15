@@ -11,10 +11,10 @@ import java.lang.annotation.Target;
  * Annotation to group multiple mappings on a method or to enable all methods if is used on a class.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 public @interface DiffMappings {
 
     /**

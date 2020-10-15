@@ -12,15 +12,15 @@ import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T> {
 
-    private final DiffMetadata diffMetadata;
+    private final DiffMetadata metadata;
     private final DiffMappingBuilderImpl<T> diffMappingBuilder;
 
-    DiffQueryMappingBuilderImpl(DiffMetadata diffMetadata, DiffMappingBuilderImpl<T> diffMappingBuilder) {
-        this.diffMetadata = diffMetadata;
+    DiffQueryMappingBuilderImpl(DiffMetadata metadata, DiffMappingBuilderImpl<T> diffMappingBuilder) {
+        this.metadata = metadata;
         this.diffMappingBuilder = diffMappingBuilder;
     }
 
@@ -34,7 +34,7 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      */
     @Override
     public DiffQueryMappingBuilder<T> property(String key, String value) {
-        diffMetadata.getProperties().put(key, value);
+        metadata.getProperties().put(key, value);
         return this;
     }
 
@@ -45,7 +45,7 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      */
     @Override
     public DiffMappingBuilder<T> unmapping() {
-        diffMappingBuilder.getMetadatas().remove(diffMetadata.getProperties().get("field"));
+        diffMappingBuilder.getMetadatas().remove(metadata.getProperties().get("field"));
         return diffMappingBuilder;
     }
 
@@ -70,8 +70,8 @@ final class DiffQueryMappingBuilderImpl<T> implements DiffQueryMappingBuilder<T>
      * @return the instance of this mapping.
      */
     @Override
-    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
-        return diffMappingBuilder.mapping(field, fieldClass, comparator);
+    public <F> DiffQueryMappingBuilder<T> mapping(String field, DiffComparator<F> comparator) {
+        return diffMappingBuilder.mapping(field, comparator);
     }
 
     /**

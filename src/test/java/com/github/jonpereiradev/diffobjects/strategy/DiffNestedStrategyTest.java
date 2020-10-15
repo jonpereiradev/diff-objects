@@ -1,8 +1,8 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
 
-import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ComplexElement;
+import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.ObjectElement;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,8 +30,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertTrue(diffObject.isEquals());
-        Assert.assertEquals("Object A", diffObject.getBefore());
-        Assert.assertEquals("Object A", diffObject.getAfter());
+        Assert.assertEquals("Object A", diffObject.getExpected());
+        Assert.assertEquals("Object A", diffObject.getCurrent());
     }
 
     @Test
@@ -42,8 +42,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertEquals("Object A", diffObject.getBefore());
-        Assert.assertEquals("Object B", diffObject.getAfter());
+        Assert.assertEquals("Object A", diffObject.getExpected());
+        Assert.assertEquals("Object B", diffObject.getCurrent());
     }
 
     @Test
@@ -53,8 +53,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertEquals("Object A", diffObject.getBefore());
-        Assert.assertNull(diffObject.getAfter());
+        Assert.assertEquals("Object A", diffObject.getExpected());
+        Assert.assertNull(diffObject.getCurrent());
     }
 
     @Test
@@ -65,8 +65,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertEquals("Object A", diffObject.getBefore());
-        Assert.assertNull(diffObject.getAfter());
+        Assert.assertEquals("Object A", diffObject.getExpected());
+        Assert.assertNull(diffObject.getCurrent());
     }
 
     @Test
@@ -77,8 +77,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertEquals("Object A", diffObject.getBefore());
-        Assert.assertNull(diffObject.getAfter());
+        Assert.assertEquals("Object A", diffObject.getExpected());
+        Assert.assertNull(diffObject.getCurrent());
     }
 
     @Test
@@ -88,8 +88,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertNull(diffObject.getBefore());
-        Assert.assertEquals("Object B", diffObject.getAfter());
+        Assert.assertNull(diffObject.getExpected());
+        Assert.assertEquals("Object B", diffObject.getCurrent());
     }
 
     @Test
@@ -100,8 +100,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertNull(diffObject.getBefore());
-        Assert.assertEquals("Object B", diffObject.getAfter());
+        Assert.assertNull(diffObject.getExpected());
+        Assert.assertEquals("Object B", diffObject.getCurrent());
     }
 
     @Test
@@ -112,8 +112,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertFalse(diffObject.isEquals());
-        Assert.assertNull(diffObject.getBefore());
-        Assert.assertEquals("Object B", diffObject.getAfter());
+        Assert.assertNull(diffObject.getExpected());
+        Assert.assertEquals("Object B", diffObject.getCurrent());
     }
 
     @Test
@@ -124,8 +124,8 @@ public class DiffNestedStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffObject);
         Assert.assertTrue(diffObject.isEquals());
-        Assert.assertNull(diffObject.getBefore());
-        Assert.assertNull(diffObject.getAfter());
+        Assert.assertNull(diffObject.getExpected());
+        Assert.assertNull(diffObject.getCurrent());
     }
 
 }

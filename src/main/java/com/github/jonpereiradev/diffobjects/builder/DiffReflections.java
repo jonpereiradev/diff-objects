@@ -7,8 +7,8 @@ import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import com.github.jonpereiradev.diffobjects.annotation.DiffMappings;
 import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.reflect.MethodUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.util.Collection;
  * Common reflections operations to execute the diff.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffReflections {
 
@@ -140,7 +140,7 @@ public final class DiffReflections {
             field += "." + diffMapping.value();
         }
 
-        DiffQueryMappingBuilder query = builder.mapping(field, method.getReturnType(), comparator);
+        DiffQueryMappingBuilder query = builder.mapping(field, comparator);
 
         for (DiffProperty diffProperty : diffMapping.properties()) {
             query.property(diffProperty.key(), diffProperty.value());
@@ -148,12 +148,11 @@ public final class DiffReflections {
     }
 
     private static void mappingCollection(DiffBuilder builder, Method method, DiffMapping diffMapping) {
-        DiffComparator collection = DiffReflections.newInstance(diffMapping.collection());
         DiffComparator comparator = DiffReflections.newInstance(diffMapping.comparator());
-        DiffQueryMappingBuilder collectionBuilder = builder.mapping(method.getName(), method.getReturnType(), collection);
+        DiffQueryMappingBuilder collectionBuilder = builder.mapping(method.getName(), comparator);
 
         if (!diffMapping.value().isEmpty()) {
-            collectionBuilder.mapping(method.getName() + "." + diffMapping.value(), method.getReturnType(), comparator);
+            collectionBuilder.mapping(method.getName() + "." + diffMapping.value(), comparator);
         }
     }
 
@@ -167,7 +166,7 @@ public final class DiffReflections {
      *
      * @throws UnsupportedOperationException if no default constructor exists.
      */
-    public static <T> T newInstance(Class<T> clazz) {
+    private static <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

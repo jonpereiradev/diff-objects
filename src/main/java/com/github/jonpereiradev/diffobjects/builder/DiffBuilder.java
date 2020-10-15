@@ -17,7 +17,7 @@ import java.util.Objects;
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
 
@@ -80,13 +80,15 @@ public final class DiffBuilder<T> implements DiffInstanceBuilder<T> {
      * Maps the getter of the field for the class.
      *
      * @param field name of the field that will me used to find the getter method.
-     * @param comparator implementation that define how two objects will be check for equality.
+     * @param fieldComparator implementation that define how two objects will be check for equality.
      *
      * @return the instance of this mapping.
      */
     @Override
-    public <F> DiffQueryMappingBuilder<T> mapping(String field, Class<F> fieldClass, DiffComparator<F> comparator) {
-        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field, fieldClass, comparator);
+    public <F> DiffQueryMappingBuilder<T> mapping(
+        String field,
+        DiffComparator<F> fieldComparator) {
+        return new DiffMappingBuilderImpl<>(classMap, metadatas).mapping(field, fieldComparator);
     }
 
     Map<String, DiffMetadata> getMetadatas() {
