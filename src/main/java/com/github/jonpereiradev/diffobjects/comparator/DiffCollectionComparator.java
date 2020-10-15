@@ -1,5 +1,6 @@
 package com.github.jonpereiradev.diffobjects.comparator;
 
+
 /**
  * Contract to compare the equality from two objects of same type. Must have a public no args constructor.
  *
@@ -17,6 +18,6 @@ public interface DiffCollectionComparator<T> {
      *
      * @return {@code true} if the two objects are equals.
      */
-    boolean equals(T expected, T current);
+    boolean isEquals(T expected, T current);
 
 }
