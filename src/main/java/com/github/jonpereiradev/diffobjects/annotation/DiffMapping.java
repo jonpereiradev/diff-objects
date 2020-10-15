@@ -3,9 +3,9 @@ package com.github.jonpereiradev.diffobjects.annotation;
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
-import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -17,10 +17,11 @@ import java.lang.annotation.Target;
  * will be evaluated for equality.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
+@Repeatable(DiffMappings.class)
 public @interface DiffMapping {
 
     /**
@@ -38,8 +39,4 @@ public @interface DiffMapping {
      */
     Class<? extends DiffComparator> comparator() default EqualsComparator.class;
 
-    /**
-     * @return define the comparator that checks how the objects in a collection will be compare.
-     */
-    Class<? extends DiffComparator> collection() default IndexComparator.class;
 }

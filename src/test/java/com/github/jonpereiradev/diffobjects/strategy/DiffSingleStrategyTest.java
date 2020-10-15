@@ -27,8 +27,8 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
-        Assert.assertNull(diffResult.getBefore());
-        Assert.assertNull(diffResult.getAfter());
+        Assert.assertNull(diffResult.getExpected());
+        Assert.assertNull(diffResult.getCurrent());
     }
 
     @Test
@@ -37,8 +37,8 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
-        Assert.assertNull(diffResult.getBefore());
-        Assert.assertNotNull(diffResult.getAfter());
+        Assert.assertNull(diffResult.getExpected());
+        Assert.assertNotNull(diffResult.getCurrent());
     }
 
     @Test
@@ -47,8 +47,8 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
-        Assert.assertNotNull(diffResult.getBefore());
-        Assert.assertNull(diffResult.getAfter());
+        Assert.assertNotNull(diffResult.getExpected());
+        Assert.assertNull(diffResult.getCurrent());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffResult);
         Assert.assertTrue(diffResult.isEquals());
-        Assert.assertEquals("Object A", diffResult.getBefore());
-        Assert.assertEquals("Object A", diffResult.getAfter());
+        Assert.assertEquals("Object A", diffResult.getExpected());
+        Assert.assertEquals("Object A", diffResult.getCurrent());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class DiffSingleStrategyTest extends BaseStrategyTest {
 
         Assert.assertNotNull(diffResult);
         Assert.assertFalse(diffResult.isEquals());
-        Assert.assertEquals("Object A", diffResult.getBefore());
-        Assert.assertEquals("Object B", diffResult.getAfter());
+        Assert.assertEquals("Object A", diffResult.getExpected());
+        Assert.assertEquals("Object B", diffResult.getCurrent());
     }
 }

@@ -8,7 +8,7 @@ package com.github.jonpereiradev.diffobjects.builder;
  * @see DiffBuilder
  * @see DiffInstanceBuilder
  * @see DiffConfiguration
- * @since 1.0
+ * @since 1.0.0
  */
 public interface DiffQueryBuilder {
 

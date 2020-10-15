@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * @param <T> type of object been compared.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffObjects<T> {
 
@@ -46,30 +46,30 @@ public final class DiffObjects<T> {
     /**
      * Execute the diff between two objects using annotations.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expected the expected object state to compare with current object.
+     * @param current the current object state to compare with expected object.
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(T beforeState, T afterState) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
+    public List<DiffResult> diff(T expected, T current) {
+        Objects.requireNonNull(expected, "Expected state is required.");
+        Objects.requireNonNull(current, "Current state is required.");
 
-        return diff(beforeState, afterState, annotations);
+        return diff(expected, current, annotations);
     }
 
     /**
      * Execute the diff between two objects using a configuration.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expected the expected object state to compare with after object.
+     * @param current the current object state to compare with before object.
      * @param configuration the configuration of the diff.
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(T beforeState, T afterState, DiffConfiguration configuration) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
+    public List<DiffResult> diff(T expected, T current, DiffConfiguration configuration) {
+        Objects.requireNonNull(expected, "Expected state is required.");
+        Objects.requireNonNull(current, "Current state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
 
         List<DiffMetadata> metadatas = configuration.build();
@@ -77,7 +77,7 @@ public final class DiffObjects<T> {
 
         for (DiffMetadata metadata : metadatas) {
             DiffStrategy strategy = metadata.getStrategy();
-            DiffResult diff = strategy.diff(beforeState, afterState, metadata);
+            DiffResult diff = strategy.diff(expected, current, metadata);
 
             diff.setProperties(Collections.unmodifiableMap(metadata.getProperties()));
 
@@ -90,43 +90,46 @@ public final class DiffObjects<T> {
     /**
      * Execute the diff between two objects using annotations.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expected the expected object state to compare with after object.
+     * @param current the current object state to compare with before object.
      * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffComparator<T> matcher) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
-
-        return diff(beforeState, afterState, annotations, matcher);
+    public List<DiffResult> diff(Collection<T> expected, Collection<T> current, DiffComparator<T> matcher) {
+        Objects.requireNonNull(expected, "Expected state is required.");
+        Objects.requireNonNull(current, "Current state is required.");
+        return diff(expected, current, annotations, matcher);
     }
 
     /**
      * Execute the diff between two objects using a configuration.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expectedCollection the expected object state to compare with after object.
+     * @param currentCollection the current object state to compare with before object.
      * @param configuration the configuration of the diff.
      * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return a list with the results of the diff.
      */
-    public List<DiffResult> diff(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffComparator<T> matcher) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
+    public List<DiffResult> diff(
+        Collection<T> expectedCollection,
+        Collection<T> currentCollection,
+        DiffConfiguration configuration,
+        DiffComparator<T> matcher) {
+        Objects.requireNonNull(expectedCollection, "Before state is required.");
+        Objects.requireNonNull(currentCollection, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
 
         List<DiffResult> results = new ArrayList<>();
 
-        for (T before : beforeState) {
-            Stream<T> stream = afterState.stream().filter((after) -> matcher.equals(before, after));
+        for (T expected : expectedCollection) {
+            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.isEquals(expected, current));
             T after = stream.findFirst().orElse(null);
 
-            // check the elements that exist on beforeState and not exists on afterState
+            // check the elements that exist on expectedCollection and not exists on currentCollection
             if (after == null) {
-                results.add(new DiffResult(before, null, false));
+                results.add(new DiffResult(expected, null, false));
                 continue;
             }
 
@@ -135,7 +138,7 @@ public final class DiffObjects<T> {
             // check the elements that exist on both collections
             for (DiffMetadata metadata : configuration.build()) {
                 DiffStrategy strategy = metadata.getStrategy();
-                DiffResult diff = strategy.diff(before, after, metadata);
+                DiffResult diff = strategy.diff(expected, after, metadata);
 
                 if (!diff.isEquals()) {
                     equals = false;
@@ -143,16 +146,16 @@ public final class DiffObjects<T> {
                 }
             }
 
-            results.add(new DiffResult(before, after, equals));
+            results.add(new DiffResult(expected, after, equals));
         }
 
-        // check the elements that exist on afterState and not exists on beforeState
-        for (T after : afterState) {
-            Stream<T> stream = beforeState.stream().filter((before) -> matcher.equals(after, before));
-            T before = stream.findFirst().orElse(null);
+        // check the elements that exist on currentCollection and not exists on expectedCollection
+        for (T current : currentCollection) {
+            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
+            T expected = stream.findFirst().orElse(null);
 
-            if (before == null) {
-                results.add(new DiffResult(null, after, false));
+            if (expected == null) {
+                results.add(new DiffResult(null, current, false));
             }
         }
 
@@ -162,35 +165,34 @@ public final class DiffObjects<T> {
     /**
      * Check if exists any difference between the two objects using annotations.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expected the expected object state to compare with after object.
+     * @param current the current object state to compare with before object.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(T beforeState, T afterState) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
-
-        return isEquals(beforeState, afterState, annotations);
+    public boolean isEquals(T expected, T current) {
+        Objects.requireNonNull(expected, "Expected state is required.");
+        Objects.requireNonNull(current, "Current state is required.");
+        return isEquals(expected, current, annotations);
     }
 
     /**
      * Check if exists any difference between the two objects.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expected the expected object state to compare with after object.
+     * @param current the current object state to compare with before object.
      * @param configuration the configuration of the diff.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(T beforeState, T afterState, DiffConfiguration configuration) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
+    public boolean isEquals(T expected, T current, DiffConfiguration configuration) {
+        Objects.requireNonNull(expected, "Before state is required.");
+        Objects.requireNonNull(current, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
 
         for (DiffMetadata metadata : configuration.build()) {
             DiffStrategy strategy = metadata.getStrategy();
-            DiffResult result = strategy.diff(beforeState, afterState, metadata);
+            DiffResult result = strategy.diff(expected, current, metadata);
 
             if (!result.isEquals()) {
                 return false;
@@ -203,59 +205,65 @@ public final class DiffObjects<T> {
     /**
      * Check if exists any difference between the two objects using annotations.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expectedCollection the expected object state to compare with after object.
+     * @param currentCollection the current object state to compare with before object.
      * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffComparator<T> matcher) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
-
-        return isEquals(beforeState, afterState, annotations, matcher);
+    public boolean isEquals(
+        Collection<T> expectedCollection,
+        Collection<T> currentCollection,
+        DiffComparator<T> matcher) {
+        Objects.requireNonNull(expectedCollection, "Expected Collection state is required.");
+        Objects.requireNonNull(currentCollection, "Current Collection state is required.");
+        return isEquals(expectedCollection, currentCollection, annotations, matcher);
     }
 
     /**
      * Check if exists any difference between the two objects.
      *
-     * @param beforeState the before object state to compare with after object.
-     * @param afterState the after object state to compare with before object.
+     * @param expectedCollection the expected object state to compare with after object.
+     * @param currentCollection the current object state to compare with before object.
      * @param configuration the configuration of the diff.
      * @param matcher the matcher that will define how an object from list is equals to other.
      *
      * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
      */
-    public boolean isEquals(Collection<T> beforeState, Collection<T> afterState, DiffConfiguration configuration, DiffComparator<T> matcher) {
-        Objects.requireNonNull(beforeState, "Before state is required.");
-        Objects.requireNonNull(afterState, "After state is required.");
+    public boolean isEquals(
+        Collection<T> expectedCollection,
+        Collection<T> currentCollection,
+        DiffConfiguration configuration,
+        DiffComparator<T> matcher) {
+        Objects.requireNonNull(expectedCollection, "Before state is required.");
+        Objects.requireNonNull(currentCollection, "After state is required.");
         Objects.requireNonNull(configuration, "Configuration is required.");
 
-        List<T> afterCopy = new ArrayList<>(afterState);
+        List<T> currentCollectionCopy = new ArrayList<>(currentCollection);
 
-        for (T before : beforeState) {
-            Stream<T> stream = afterState.stream().filter((after) -> matcher.equals(before, after));
-            T after = stream.findFirst().orElse(null);
+        for (T expected : expectedCollection) {
+            Stream<T> stream = currentCollection.stream().filter((current) -> matcher.isEquals(expected, current));
+            T current = stream.findFirst().orElse(null);
 
-            // check the elements that exist on beforeState and not exists on afterState
-            if (after == null) {
+            // check the elements that exist on expectedCollection and not exists on currentCollection
+            if (current == null) {
                 return false;
             }
 
-            afterCopy.remove(after);
+            currentCollectionCopy.remove(current);
 
             // check the elements that exist on both collections
-            if (!isEquals(before, after, configuration)) {
+            if (!isEquals(expected, current, configuration)) {
                 return false;
             }
         }
 
-        // check the elements that exist on afterState and not exists on beforeState
-        for (T after : afterCopy) {
-            Stream<T> stream = beforeState.stream().filter((before) -> matcher.equals(after, before));
-            T before = stream.findFirst().orElse(null);
+        // check the elements that exist on currentCollection and not exists on expectedCollection
+        for (T current : currentCollectionCopy) {
+            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
+            T expected = stream.findFirst().orElse(null);
 
-            if (before == null) {
+            if (expected == null) {
                 return false;
             }
         }

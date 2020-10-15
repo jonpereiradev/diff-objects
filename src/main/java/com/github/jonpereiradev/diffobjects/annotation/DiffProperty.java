@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Maps a property on a mapping to be used on result.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE})

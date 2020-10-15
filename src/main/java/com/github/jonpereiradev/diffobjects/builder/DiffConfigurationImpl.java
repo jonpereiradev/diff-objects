@@ -17,7 +17,7 @@ import java.util.Map;
  * @see DiffBuilder
  * @see DiffInstanceBuilder
  * @see DiffMappingBuilder
- * @since 1.0
+ * @since 1.0.0
  */
 final class DiffConfigurationImpl implements DiffConfiguration {
 

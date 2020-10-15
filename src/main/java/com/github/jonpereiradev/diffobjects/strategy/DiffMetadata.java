@@ -2,7 +2,7 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * Metadata with the information of a field/method to compare on diff execution.
  *
  * @author Jonathan Pereira
- * @since 1.0
+ * @since 1.0.0
  */
 public final class DiffMetadata implements Comparable<DiffMetadata> {
 
@@ -25,7 +25,6 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
     private final DiffStrategy strategy;
     private final DiffComparator<?> comparator;
     private final Map<String, String> properties;
-    private final DiffComparator<?> collectionComparator;
 
     private int order;
 
@@ -34,20 +33,10 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
         Method method,
         DiffStrategyType diffStrategyType,
         DiffComparator<?> comparator) {
-        this(value, method, diffStrategyType, comparator, null);
-    }
-
-    public DiffMetadata(
-        String value,
-        Method method,
-        DiffStrategyType diffStrategyType,
-        DiffComparator<?> comparator,
-        DiffComparator<?> collectionComparator) {
         this.value = StringUtils.trimToEmpty(value);
         this.method = Objects.requireNonNull(method);
         this.strategy = diffStrategyType == null ? DEFAULT_STRATEGY : diffStrategyType.getStrategy();
         this.comparator = Objects.requireNonNull(comparator);
-        this.collectionComparator = collectionComparator;
         this.properties = new HashMap<>();
     }
 
@@ -91,10 +80,6 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
 
     public DiffComparator<?> getComparator() {
         return comparator;
-    }
-
-    public DiffComparator<?> getCollectionComparator() {
-        return collectionComparator;
     }
 
     public Map<String, String> getProperties() {
