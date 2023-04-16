@@ -24,11 +24,13 @@ final class DiffSingleStrategy implements DiffStrategy {
      * @return the diff result between the two objects.
      */
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
         Object expectedValue = DiffReflections.invoke(expected, metadata.getMethod());
         Object currentValue = DiffReflections.invoke(current, metadata.getMethod());
         DiffComparator comparator = metadata.getComparator();
+        boolean equals = comparator.isEquals(expectedValue, currentValue);
 
-        return new DiffResult(expectedValue, currentValue, comparator.isEquals(expectedValue, currentValue));
+        return DiffResult.forValue(expectedValue, currentValue, equals, metadata.getProperties());
     }
 }

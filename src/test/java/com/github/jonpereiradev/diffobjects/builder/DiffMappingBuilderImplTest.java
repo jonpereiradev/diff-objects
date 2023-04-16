@@ -1,13 +1,11 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
-import com.github.jonpereiradev.diffobjects.ComplexElement;
 import com.github.jonpereiradev.diffobjects.DiffException;
 import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
+import com.github.jonpereiradev.diffobjects.model.ComplexElement;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -16,12 +14,12 @@ public class DiffMappingBuilderImplTest {
 
     @Test
     public void testMustMapFieldWithSingleStrategy() {
-        HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
+        DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
-        diffMappingBuilder.mapping("parent");
+        diffMappingBuilder.map("parent");
 
-        DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
+        DiffMetadata diffMetadata = diffMappingBuilder.build().build().get(0);
 
         assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadata.getStrategy());
         assertEquals(EqualsComparator.class, diffMetadata.getComparator().getClass());
@@ -30,12 +28,12 @@ public class DiffMappingBuilderImplTest {
 
     @Test
     public void testMustMapFieldWithDeepStrategy() {
-        HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
+        DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
-        diffMappingBuilder.mapping("objectElement.name");
+        diffMappingBuilder.map("objectElement.name");
 
-        DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
+        DiffMetadata diffMetadata = diffMappingBuilder.build().build().get(0);
 
         assertSame(DiffStrategyType.NESTED.getStrategy(), diffMetadata.getStrategy());
         assertEquals(EqualsComparator.class, diffMetadata.getComparator().getClass());
@@ -44,12 +42,12 @@ public class DiffMappingBuilderImplTest {
 
     @Test
     public void testMustMapFieldWithCollectionStrategy() {
-        HashMap<String, DiffMetadata> metadatas = new HashMap<>();
-        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, metadatas);
+        DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
-        diffMappingBuilder.mapping("objectElementList.name");
+        diffMappingBuilder.map("objectElementList.name");
 
-        DiffMetadata diffMetadata = diffMappingBuilder.configuration().build().get(0);
+        DiffMetadata diffMetadata = diffMappingBuilder.build().build().get(0);
 
         assertSame(DiffStrategyType.COLLECTION.getStrategy(), diffMetadata.getStrategy());
         assertEquals(EqualsComparator.class, diffMetadata.getComparator().getClass());
@@ -58,14 +56,16 @@ public class DiffMappingBuilderImplTest {
 
     @Test(expected = DiffException.class)
     public void testMustThrowExceptionWhenMethodNotPublic() {
-        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, new HashMap<>());
-        diffMappingBuilder.mapping("notAccessible");
+        DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
+        diffMappingBuilder.map("notAccessible");
     }
 
     @Test(expected = DiffException.class)
     public void testMustThrowExceptionWhenMethodNotNoArgs() {
-        DiffMappingBuilder<?> diffMappingBuilder = new DiffMappingBuilderImpl<>(ComplexElement.class, new HashMap<>());
-        diffMappingBuilder.mapping("withArgs");
+        DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
+        diffMappingBuilder.map("withArgs");
     }
 
 }

@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.model;
 
 
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;

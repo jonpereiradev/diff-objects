@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * A method annotated with this will be checked for difference between two objects. When annotated on a method without
- * value(), the equals method of this object will be executed. When annotated on a method with value(), the property
- * will be evaluated for equality.
+ * A field or method annotated with this will be checked for difference between two objects.
+ * When annotated on a method without value(), the equals method of this object will be executed.
+ * When annotated on a method with value(), the property will be evaluated for equality.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -25,7 +25,10 @@ import java.lang.annotation.Target;
 public @interface DiffMapping {
 
     /**
-     * @return defines the property that will be evaluated for equality. It can be nested property like user.address.id.
+     * Defines the property that will be evaluated for equality.
+     * It can be nested property like user.address.id.
+     * 
+     * @return path to the property
      */
     String value() default "";
 

@@ -1,46 +1,25 @@
 package com.github.jonpereiradev.diffobjects;
 
-
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
 
-/**
- * Result of a diff with the before and after state.
- *
- * @author Jonathan Pereira
- * @since 1.0.0
- */
-public final class DiffResult {
+public interface DiffResult {
 
-    private final Object expected;
-    private final Object current;
-    private final boolean equals;
-    private Map<String, String> properties;
-
-    public DiffResult(Object expected, Object current, boolean equals) {
-        this.expected = expected;
-        this.current = current;
-        this.equals = equals;
+    static DiffResult forValue(Object expected, Object current, boolean equals) {
+        return new DiffResultImpl(expected, current, equals, emptyMap());
     }
 
-    public Object getExpected() {
-        return expected;
+    static DiffResult forValue(Object expected, Object current, boolean equals, Map<String, String> properties) {
+        return new DiffResultImpl(expected, current, equals, unmodifiableMap(properties));
     }
 
-    public Object getCurrent() {
-        return current;
-    }
+    Object getExpected();
 
-    public boolean isEquals() {
-        return equals;
-    }
+    Object getCurrent();
 
-    public Map<String, String> getProperties() {
-        return properties;
-    }
+    boolean isEquals();
 
-    void setProperties(Map<String, String> properties) {
-        this.properties = properties;
-    }
-
+    Map<String, String> getProperties();
 }

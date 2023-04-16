@@ -28,6 +28,7 @@ final class DiffNestedStrategy implements DiffStrategy {
      * @return the diff result between the two objects.
      */
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
         DiffComparator comparator = metadata.getComparator();
         Method expectedMethod = metadata.getMethod();
@@ -49,6 +50,7 @@ final class DiffNestedStrategy implements DiffStrategy {
             }
         }
 
-        return new DiffResult(expectedObject, currentObject, comparator.isEquals(expectedObject, currentObject));
+        boolean equals = comparator.isEquals(expectedObject, currentObject);
+        return DiffResult.forValue(expectedObject, currentObject, equals, metadata.getProperties());
     }
 }
