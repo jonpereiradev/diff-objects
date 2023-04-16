@@ -1,6 +1,8 @@
 package com.github.jonpereiradev.diffobjects;
 
 
+import com.github.jonpereiradev.diffobjects.model.ObjectElement;
+import com.github.jonpereiradev.diffobjects.model.ObjectElement2;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 
 public class DiffObjectsWithAnnotationsTest {
@@ -85,13 +86,13 @@ public class DiffObjectsWithAnnotationsTest {
     public void testDiffObjectsWithEqualsObjectElementMustReturnDiffWithEquals() {
         ObjectElement objectA = new ObjectElement("Object");
         ObjectElement objectB = new ObjectElement("Object");
-        List<DiffResult> results = diffObjects.diff(objectA, objectB);
+        DiffResults results = diffObjects.diff(objectA, objectB);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
-        Assert.assertTrue(results.get(0).isEquals());
-        Assert.assertEquals("Object", results.get(0).getExpected());
-        Assert.assertEquals("Object", results.get(0).getCurrent());
+        Assert.assertTrue(results.getResults().get(0).isEquals());
+        Assert.assertEquals("Object", results.getResults().get(0).getExpected());
+        Assert.assertEquals("Object", results.getResults().get(0).getCurrent());
     }
 
     @Test
@@ -106,25 +107,25 @@ public class DiffObjectsWithAnnotationsTest {
         Collection<ObjectElement2> a = Arrays.asList(objectA, objectB);
         Collection<ObjectElement2> b = Arrays.asList(objectC, objectD);
 
-        List<DiffResult> results = diffObjects.diff(a, b, (o1, o2) -> o1.getName().equals(o2.getName()));
+        DiffResults results = diffObjects.diff(a, b, (o1, o2) -> o1.getName().equals(o2.getName()));
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(2, results.size());
-        Assert.assertTrue(results.get(0).isEquals());
-        Assert.assertTrue(results.get(1).isEquals());
+        Assert.assertTrue(results.getResults().get(0).isEquals());
+        Assert.assertTrue(results.getResults().get(1).isEquals());
     }
 
     @Test
     public void testDiffObjectsWithDifferentObjectElementMustReturnDiffWithDifference() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
-        List<DiffResult> results = diffObjects.diff(objectA, objectB);
+        DiffResults results = diffObjects.diff(objectA, objectB);
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(1, results.size());
-        Assert.assertFalse(results.get(0).isEquals());
-        Assert.assertEquals("Object A", results.get(0).getExpected());
-        Assert.assertEquals("Object B", results.get(0).getCurrent());
+        Assert.assertFalse(results.getResults().get(0).isEquals());
+        Assert.assertEquals("Object A", results.getResults().get(0).getExpected());
+        Assert.assertEquals("Object B", results.getResults().get(0).getCurrent());
     }
 
     @Test
@@ -139,12 +140,12 @@ public class DiffObjectsWithAnnotationsTest {
         Collection<ObjectElement2> cA = Arrays.asList(objectA, objectB);
         Collection<ObjectElement2> cB = Arrays.asList(objectC, objectD);
 
-        List<DiffResult> results = diffObjects.diff(cA, cB, (a, b) -> a.getName().equals(b.getName()));
+        DiffResults results = diffObjects.diff(cA, cB, (a, b) -> a.getName().equals(b.getName()));
 
         Assert.assertFalse(results.isEmpty());
         Assert.assertEquals(2, results.size());
-        Assert.assertTrue(results.get(0).isEquals());
-        Assert.assertFalse(results.get(1).isEquals());
+        Assert.assertTrue(results.getResults().get(0).isEquals());
+        Assert.assertFalse(results.getResults().get(1).isEquals());
     }
 
     @Test
@@ -154,10 +155,10 @@ public class DiffObjectsWithAnnotationsTest {
         Collection<ObjectElement> a = Collections.singletonList(objectA);
         Collection<ObjectElement> b = Collections.singletonList(objectB);
 
-        List<DiffResult> results = diffObjects.diff(a, b, (o1, o2) -> o1.getName().equals(o2.getName()));
+        DiffResults results = diffObjects.diff(a, b, (o1, o2) -> o1.getName().equals(o2.getName()));
 
-        Assert.assertFalse(results.get(0).isEquals());
-        Assert.assertFalse(results.get(1).isEquals());
+        Assert.assertFalse(results.getResults().get(0).isEquals());
+        Assert.assertFalse(results.getResults().get(1).isEquals());
     }
 
     @Test

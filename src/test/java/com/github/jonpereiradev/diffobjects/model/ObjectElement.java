@@ -1,10 +1,9 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.model;
 
 
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 
 public class ObjectElement extends ParentObjectElement {
 

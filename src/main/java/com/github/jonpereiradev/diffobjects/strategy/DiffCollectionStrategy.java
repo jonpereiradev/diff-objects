@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,19 +31,20 @@ final class DiffCollectionStrategy implements DiffStrategy {
      * @return the instance result between the two objects.
      */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public DiffResult diff(Object expected, Object current, DiffMetadata metadata) {
         DiffComparator fieldComparator = metadata.getComparator();
         Collection<?> beforeCollection = initializeCollection(expected, metadata.getMethod());
         Collection<?> afterCollection = initializeCollection(current, metadata.getMethod());
+        Map<String, String> properties = metadata.getProperties();
 
         if (beforeCollection == null && afterCollection == null) {
-            return new DiffResult(null, null, true);
+            return DiffResult.forValue(null, null, true, properties);
         }
 
-        // if has not the same size, so they are different
+        // if it has not the same size, so they are different
         if (!isEqualsSize(beforeCollection, afterCollection)) {
-            return new DiffResult(beforeCollection, afterCollection, false);
+            return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
         }
 
         List<?> afterCopy = new ArrayList<>(afterCollection);
@@ -53,7 +55,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
 
             // check the elements that exist on beforeState and not exists on afterState
             if (currentAfter == null) {
-                return new DiffResult(beforeCollection, afterCollection, false);
+                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
             }
 
             afterCopy.remove(currentAfter);
@@ -68,10 +70,10 @@ final class DiffCollectionStrategy implements DiffStrategy {
                 );
 
                 if (!single.isEquals()) {
-                    return new DiffResult(beforeCollection, afterCollection, false);
+                    return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
                 }
             } else if (!fieldComparator.isEquals(currentBefore, currentAfter)) {
-                return new DiffResult(beforeCollection, afterCollection, false);
+                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
             }
         }
 
@@ -82,11 +84,11 @@ final class DiffCollectionStrategy implements DiffStrategy {
                 .noneMatch((o) -> fieldComparator.isEquals(o, currentAfter));
 
             if (noneMatch) {
-                return new DiffResult(beforeCollection, afterCollection, false);
+                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
             }
         }
 
-        return new DiffResult(beforeCollection, afterCollection, true);
+        return DiffResult.forValue(beforeCollection, afterCollection, true, properties);
     }
 
     /**
@@ -124,6 +126,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
         DiffComparator fieldComparator,
         Object currentBefore,
         Object currentAfter) {
+
         String value = diffMetadata.getValue();
         String currentValue = value.contains(".") ? value.substring(0, value.indexOf(".")) : value;
         String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : "";

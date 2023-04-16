@@ -1,4 +1,4 @@
-package com.github.jonpereiradev.diffobjects;
+package com.github.jonpereiradev.diffobjects.model;
 
 
 public abstract class ParentObjectElement {
