@@ -14,7 +14,7 @@ this project in two ways:
 <dependency>
     <groupId>com.github.jonpereiradev</groupId>
     <artifactId>diff-objects</artifactId>
-    <version>1.1.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -48,24 +48,26 @@ public class Email {
 ```
 
 ```java
+import com.github.jonpereiradev.diffobjects.DiffConfig;
+
 public class Main {
-    
+
     public static void main(String[] args) {
         User u1 = new User("user1", "123456", LocalDate.now().minusDays(1), true);
         User u2 = new User("user2", "12345678", LocalDate.now(), true);
-        
+
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
-        
-        DiffConfiguration configuration = DiffBuilder
-            .map(User.class)
-            .mapping("login")
-            .mapping("password")
-            .mapping("emails", "description")
-            .configuration();
-        
+
+        DiffConfig configuration = DiffBuilder
+                .map(User.class)
+                .mapping("login")
+                .mapping("password")
+                .mapping("emails", "description")
+                .configuration();
+
         List<DiffResult> diffs = DiffObjects.forClass(User.class).diff(u1, u2, configuration);
-        
+
         for (DiffResult diff : diffs) {
             if (!diff.isEquals()) {
                 System.out.println("Field: " + diff.getProperties().get("field"));
