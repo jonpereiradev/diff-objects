@@ -25,20 +25,19 @@ import java.lang.annotation.Target;
 public @interface DiffMapping {
 
     /**
-     * Defines the property that will be evaluated for equality.
-     * It can be nested property like user.address.id.
-     * 
+     * Defines the property evaluated for equality. It can be a nested property (e.g. user.address.id).
+     *
      * @return path to the property
      */
     String value() default "";
 
     /**
-     * @return additional properties that will be on the diff result object.
+     * @return additional properties available on result object.
      */
     DiffProperty[] properties() default {};
 
     /**
-     * @return define the comparator that checks the equality of two objects.
+     * @return comparator to check the equality of two objects.
      */
     Class<? extends DiffComparator> comparator() default EqualsComparator.class;
 

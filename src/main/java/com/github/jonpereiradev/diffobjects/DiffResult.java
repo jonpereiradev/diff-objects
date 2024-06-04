@@ -15,11 +15,18 @@ public interface DiffResult {
         return new DiffResultImpl(expected, current, equals, unmodifiableMap(properties));
     }
 
+    String getField();
+
     Object getExpected();
 
     Object getCurrent();
 
     boolean isEquals();
 
-    Map<String, String> getProperties();
+    boolean containsProperty(String name);
+
+    String getProperty(String name);
+
+    String getProperty(String name, String defaultValue);
+
 }

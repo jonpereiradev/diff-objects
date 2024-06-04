@@ -2,7 +2,6 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public final class DiffMetadata implements Comparable<DiffMetadata> {
         Method method,
         DiffStrategyType diffStrategyType,
         DiffComparator<?> comparator) {
-        this.value = StringUtils.trimToEmpty(value);
+        this.value = value == null ? "" : value.trim();
         this.method = Objects.requireNonNull(method);
         this.strategy = diffStrategyType == null ? DEFAULT_STRATEGY : diffStrategyType.getStrategy();
         this.comparator = Objects.requireNonNull(comparator);

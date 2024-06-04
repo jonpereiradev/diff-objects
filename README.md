@@ -1,12 +1,9 @@
 # Diff Objects
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/353f1180b49a4a219205b01ac30ac938)](https://app.codacy.com/app/jonpereiradev/diff-objects?utm_source=github.com&utm_medium=referral&utm_content=jonpereiradev/diff-objects&utm_campaign=Badge_Grade_Settings)
+This project helps you to build features to show the differences between two objects. You can use it in two ways:
 
-This project helps you to build functionalities that needs to show the differences between two objects. You can use 
-this project in two ways:
-
-- using the annotations @DiffMappings, @DiffMapping and @DiffProperty;
-- using the DiffBuilder to map the properties of a class;
+- using the annotations to map the class fields;
+- using the builder to manually map the class fields;
 
 ## Installation
 
@@ -18,22 +15,22 @@ this project in two ways:
 </dependency>
 ```
 
-## DiffBuilder
+## Builder
 
-The DiffBuilder provides an API to map an object without the use of annotations:
+The Builder is called by DiffBuilder. It provides an API to map an object without the use of annotations:
 
-**Example**
+**Usage example**
 
 ```java
 public class User {
-    
+
     private final String login;
     private final String password;
     private final LocalDate birthday;
     private final Boolean active;
     private final List<Email> emails;
-    
-    // getters and constructor ommited ...
+
+    // getters and constructor omitted ...
 }
 ```
 
@@ -43,36 +40,41 @@ public class Email {
     private final String description;
     private final Boolean active;
     
-    // getters and constructor ommited ...
+    // getters and constructor omitted ...
 }
 ```
 
 ```java
 import com.github.jonpereiradev.diffobjects.DiffConfig;
+import com.github.jonpereiradev.diffobjects.DiffObjects;
+import com.github.jonpereiradev.diffobjects.DiffResults;
+import com.github.jonpereiradev.diffobjects.DiffResult;
+import com.github.jonpereiradev.diffobjects.builder.DiffConfigBuilder;
 
 public class Main {
 
     public static void main(String[] args) {
         User u1 = new User("user1", "123456", LocalDate.now().minusDays(1), true);
-        User u2 = new User("user2", "12345678", LocalDate.now(), true);
+        User u2 = new User("user2", "654321", LocalDate.now(), false);
 
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
 
-        DiffConfig configuration = DiffBuilder
-                .map(User.class)
-                .mapping("login")
-                .mapping("password")
-                .mapping("emails", "description")
-                .configuration();
+        DiffConfig diffConfig = DiffConfigBuilder
+            .forClass(User.class)
+            .mapping()
+            .fields()
+            .map("login")
+            .map("password")
+            .build();
 
-        List<DiffResult> diffs = DiffObjects.forClass(User.class).diff(u1, u2, configuration);
+        DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2, diffConfig);
 
-        for (DiffResult diff : diffs) {
-            if (!diff.isEquals()) {
-                System.out.println("Field: " + diff.getProperties().get("field"));
-                System.out.println("Before: " + diff.getBefore());
-                System.out.println("After: " + diff.getAfter());
+        for (DiffResult diffResult : diffResults) {
+            if (!diffResult.isEquals()) {
+                System.out.println("Field: " + diffResult.getField());
+                System.out.println("Current: " + diffResult.getCurrent());
+                System.out.println("Expected: " + diffResult.getExpected());
             }
         }
     }
@@ -83,11 +85,12 @@ public class Main {
 
 The annotations provided by the diff objects are:
 
-- __DiffMappings:__ to map multiple properties of an object relationship;
-- __DiffMapping:__ to map a method of an object;
-- __DiffProperty:__ to add properties that will be on the diff result for access;
+- __DiffMapping:__ maps an object, a field or a method for comparison;
+- __DiffProperty:__ add properties available on the diff result object;
+- __DiffIgnore:__ ignores a property from the auto scanning when using DiffMapping on a class;
+- __DiffOrder:__ defines an order of evaluation for the object properties;
 
-**Example**
+**Usage example**
 
 ```java
 public class User {
@@ -114,7 +117,7 @@ public class User {
         return active;
     }
     
-    @DiffMapping(value = "description")
+    @DiffMapping("description")
     public List<Email> getEmails() {
         return emails;
     }
@@ -122,22 +125,26 @@ public class User {
 ```
 
 ```java
+import com.github.jonpereiradev.diffobjects.DiffObjects;
+import com.github.jonpereiradev.diffobjects.DiffResults;
+import com.github.jonpereiradev.diffobjects.DiffResult;
+
 public class Main {
     
     public static void main(String[] args) {
         User u1 = new User("user1", "123456", LocalDate.now().minusDays(1), true);
-        User u2 = new User("user2", "12345678", LocalDate.now(), true);
+        User u2 = new User("user2", "654321", LocalDate.now(), true);
         
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
         
-        List<DiffResult> diffs = (DiffObjects).forClass(User.class).diff(u1, u2);
+        DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2);
         
-        for (DiffResult diff : diffs) {
-            if (!diff.isEquals()) {
-                System.out.println("Field: " + diff.getProperties().get("field"));
-                System.out.println("Before: " + diff.getBefore());
-                System.out.println("After: " + diff.getAfter());
+        for (DiffResult diffResult : diffResults) {
+            if (!diffResult.isEquals()) {
+                System.out.println("Field: " + diffResult.getField());
+                System.out.println("Before: " + diffResult.getBefore());
+                System.out.println("After: " + diffResult.getAfter());
             }
         }
     }
@@ -146,14 +153,17 @@ public class Main {
 
 ### @DiffProperty
 
-This annotations is used to provide information in the DiffResult about the field. All objects already have the 
+This annotation is used to provide more information in the DiffResult about the field. All objects already have the 
 property "field" with the field name as value.
 
 `@DiffProperty(key = "field", value = "{{fieldName}}")`
 
-**Example**
+**Usage example**
 
 ```java
+import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
+import com.github.jonpereiradev.diffobjects.annotation.DiffProperty;
+
 public class User {
     
     // code ommited ...
@@ -169,23 +179,27 @@ public class User {
 ```
 
 ```java
+import com.github.jonpereiradev.diffobjects.DiffObjects;
+import com.github.jonpereiradev.diffobjects.DiffResults;
+import com.github.jonpereiradev.diffobjects.DiffResult;
+
 public class Main {
     
     public static void main(String[] args) {
         // code omitted ...
         
-        List<DiffResult> diffs = DiffObjects.diff(u1, u2);
+        DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2);
         
-        for (DiffResult diff : diffs) {
-            if (diff.getProperties().containsKey("id")) {
-                String id = diff.getProperties().get("id");
-                String maxlength = diff.getProperties().get("maxlength");
-            
+        for (DiffResult diffResult : diffResults) {
+            if (diffResult.containsProperty("id")) {
+                String id = diffResult.getProperty("id");
+                String maxlength = diffResult.getProperty("maxlength");
+
                 System.out.println("Id: " + id);
                 System.out.println("Maxlength: " + maxlength);
-                System.out.println("Field: " + diff.getProperties().get("field"));
-                System.out.println("Before: " + diff.getBefore());
-                System.out.println("After: " + diff.getAfter());
+                System.out.println("Field: " + diffResult.getField());
+                System.out.println("Current: " + diffResult.getCurrent());
+                System.out.println("Expected: " + diffResult.getExpected());
             }
         }
     }

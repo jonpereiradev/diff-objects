@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to ignore a mapping when using {@link DiffMappings} on a class to map all fields.
+ * Annotation to ignore a mapping when using {@link DiffMapping} on a class to map all fields.
  *
  * @author Jonathan Pereira
  * @since 1.1.0

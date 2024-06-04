@@ -2,8 +2,6 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 import com.github.jonpereiradev.diffobjects.DiffException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,6 +15,8 @@ import java.lang.reflect.Method;
  */
 public final class DiffReflections {
 
+    private static final String GET_METHOD_PREFIX = "get";
+
     /**
      * Discover the public non-args method for access a field value.
      *
@@ -27,17 +27,30 @@ public final class DiffReflections {
     public static Method discoverGetter(Class<?> diffClass, String fieldOrMethodName) {
         String possibleAccessMethodName = fieldOrMethodName;
 
-        if (!fieldOrMethodName.startsWith("get")) {
-            possibleAccessMethodName = "get" + StringUtils.capitalize(fieldOrMethodName);
+        if (!fieldOrMethodName.startsWith(GET_METHOD_PREFIX)) {
+            possibleAccessMethodName = GET_METHOD_PREFIX + capitalize(fieldOrMethodName);
         }
 
-        Method method = MethodUtils.getMatchingAccessibleMethod(diffClass, possibleAccessMethodName);
+        Method method = quietlyGetMethod(diffClass, possibleAccessMethodName);
 
         if (method == null) {
             throw new DiffException("Method " + possibleAccessMethodName + " not found or is not public and non-args in class " + diffClass.getName());
         }
 
         return method;
+    }
+
+    private static String capitalize(String fieldOrMethodName) {
+        char firstLetter = fieldOrMethodName.charAt(0);
+        return Character.toUpperCase(firstLetter) + fieldOrMethodName.substring(1);
+    }
+
+    private static Method quietlyGetMethod(Class<?> diffClass, String methodName) {
+        try {
+            return diffClass.getMethod(methodName);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
     }
 
     /**
@@ -71,9 +84,10 @@ public final class DiffReflections {
      */
     public static <T> T newInstance(Class<T> clazz) {
         try {
-            return clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new UnsupportedOperationException(e);
         }
     }
+
 }
