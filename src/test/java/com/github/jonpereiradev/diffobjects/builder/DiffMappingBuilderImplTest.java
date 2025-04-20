@@ -5,15 +5,16 @@ import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.model.ComplexElement;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DiffMappingBuilderImplTest {
+class DiffMappingBuilderImplTest {
 
     @Test
-    public void testMustMapFieldWithSingleStrategy() {
+    void testMustMapFieldWithSingleStrategy() {
         DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
         DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
@@ -27,7 +28,7 @@ public class DiffMappingBuilderImplTest {
     }
 
     @Test
-    public void testMustMapFieldWithDeepStrategy() {
+    void testMustMapFieldWithDeepStrategy() {
         DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
         DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
@@ -41,7 +42,7 @@ public class DiffMappingBuilderImplTest {
     }
 
     @Test
-    public void testMustMapFieldWithCollectionStrategy() {
+    void testMustMapFieldWithCollectionStrategy() {
         DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
         DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
 
@@ -54,18 +55,18 @@ public class DiffMappingBuilderImplTest {
         assertEquals("getObjectElementList", diffMetadata.getMethod().getName());
     }
 
-    @Test(expected = DiffException.class)
-    public void testMustThrowExceptionWhenMethodNotPublic() {
+    @Test
+    void testMustThrowExceptionWhenMethodNotPublic() {
         DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
         DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
-        diffMappingBuilder.map("notAccessible");
+        assertThrows(DiffException.class, () -> diffMappingBuilder.map("notAccessible"));
     }
 
-    @Test(expected = DiffException.class)
-    public void testMustThrowExceptionWhenMethodNotNoArgs() {
+    @Test
+    void testMustThrowExceptionWhenMethodNotNoArgs() {
         DiffBuilderContext<ComplexElement> context = new DiffBuilderContext<>(ComplexElement.class);
         DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
-        diffMappingBuilder.map("withArgs");
+        assertThrows(DiffException.class, () -> diffMappingBuilder.map("withArgs"));
     }
 
 }
