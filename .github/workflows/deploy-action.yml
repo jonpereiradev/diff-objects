@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy Sonatype
         run: mvn -P deploy --batch-mode deploy -DskipTests
-        with:
+        env:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
