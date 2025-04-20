@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
- * Result of a diff with the before and after state.
+ * Represents the result of a diff, showing the before and after state.
  *
  * @author Jonathan Pereira
  * @since 1.0.0

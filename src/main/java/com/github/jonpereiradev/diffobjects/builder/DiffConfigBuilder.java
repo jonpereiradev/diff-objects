@@ -4,9 +4,9 @@ package com.github.jonpereiradev.diffobjects.builder;
 import java.util.Objects;
 
 /**
- * Diff config builder contract to create a configuration for a diff operation.
+ * Diff config builder contract for creating a configuration for a diff operation.
  *
- * @param <T> the type of object associated to the builder.
+ * @param <T> the type of object associated with the builder.
  *
  * @author Jonathan Pereira
  * @version 1.2.0
@@ -17,8 +17,8 @@ public interface DiffConfigBuilder<T> {
     /**
      * Creates a diff builder to map the diff elements of a class.
      *
-     * @param <T> the type of class the builder will create the mappings.
-     * @param ofType the class that will be registry to make diffs.
+     * @param <T> the type of class for which the builder will create mappings.
+     * @param ofType the class that will be registered to create diffs.
      *
      * @return the diff config builder instance.
      */

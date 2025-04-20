@@ -7,7 +7,7 @@ import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 
 /**
- * Responsible for check the difference between two simple objects (with no nested property).
+ * Responsible for checking the difference between two simple objects (without nested properties).
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -15,11 +15,11 @@ import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 final class DiffSingleStrategy implements DiffStrategy {
 
     /**
-     * Check the difference between two objects using the metadata configuration.
+     * Checks the difference between two objects using the metadata configuration.
      *
-     * @param expected object that represents the expected state of the object.
-     * @param current object that represents the current state of the object.
-     * @param metadata the metadata with the configuration for the diff.
+     * @param expected the object representing the expected state.
+     * @param current the object representing the current state.
+     * @param metadata the metadata containing the configuration for the diff.
      *
      * @return the diff result between the two objects.
      */

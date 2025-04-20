@@ -10,7 +10,7 @@ import java.util.Objects;
 
 
 /**
- * Metadata with the information of a field/method to compare on diff execution.
+ * Metadata containing information about a field or method to be compared during the diff execution.
  *
  * @author Jonathan Pereira
  * @since 1.0.0

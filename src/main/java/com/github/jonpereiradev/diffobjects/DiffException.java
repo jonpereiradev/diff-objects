@@ -2,7 +2,7 @@ package com.github.jonpereiradev.diffobjects;
 
 
 /**
- * Exception for any generic error found in the diff execution.
+ * Exception thrown for any generic error encountered during the diff execution.
  *
  * @author Jonathan Pereira
  * @since 1.0.0

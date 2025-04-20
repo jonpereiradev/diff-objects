@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 
 /**
- * Common reflections operations to execute the diff.
+ * Common reflection operations used to execute the diff.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -18,11 +18,12 @@ public final class DiffReflections {
     private static final String GET_METHOD_PREFIX = "get";
 
     /**
-     * Discover the public non-args method for access a field value.
+     * Discovers the public no-argument method to access a field value.
      *
-     * @param diffClass         the class that has the getter method.
-     * @param fieldOrMethodName the name of the field for discover or the name of the getter method.
-     * @return the getter method to get the value.
+     * @param diffClass the class that contains the getter method.
+     * @param fieldOrMethodName the name of the field to discover or the name of the getter method.
+     *
+     * @return the getter method to retrieve the value.
      */
     public static Method discoverGetter(Class<?> diffClass, String fieldOrMethodName) {
         String possibleAccessMethodName = fieldOrMethodName;
@@ -54,11 +55,12 @@ public final class DiffReflections {
     }
 
     /**
-     * Calls the method for the object and returns the value.
+     * Invokes the method on the object and returns the value.
      *
-     * @param instance the object instance that have the method.
-     * @param method   the getter method to get the value.
-     * @param <T>      the type of value returned by the method.
+     * @param instance the object instance that contains the method.
+     * @param method the getter method to retrieve the value.
+     * @param <T> the type of the value returned by the method.
+     *
      * @return the value returned by the getter method.
      */
     @SuppressWarnings("unchecked")
@@ -75,17 +77,20 @@ public final class DiffReflections {
     }
 
     /**
-     * Create a class instance.
+     * Creates an instance of the specified class.
      *
-     * @param clazz class that will be used for create an instance.
-     * @param <T>   object type that will be returned by the class.
-     * @return created object.
-     * @throws UnsupportedOperationException if no default constructor exists.
+     * @param clazz the class type used to create an instance.
+     * @param <T> the type of the object to be returned by the class.
+     *
+     * @return the created object.
+     *
+     * @throws UnsupportedOperationException if the class does not have a default constructor.
      */
     public static <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new UnsupportedOperationException(e);
         }
     }
