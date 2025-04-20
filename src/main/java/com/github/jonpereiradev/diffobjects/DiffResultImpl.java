@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
- * Result of a diff with the before and after state.
+ * Represents the result of a diff, showing the before and after state.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -25,6 +25,26 @@ final class DiffResultImpl implements DiffResult {
     }
 
     @Override
+    public String getField() {
+        return getProperty("field");
+    }
+
+    @Override
+    public boolean containsProperty(String name) {
+        return properties.containsKey(name);
+    }
+
+    @Override
+    public String getProperty(String name) {
+        return properties.get(name);
+    }
+
+    @Override
+    public String getProperty(String name, String defaultValue) {
+        return properties.getOrDefault(name, defaultValue);
+    }
+
+    @Override
     public Object getExpected() {
         return expected;
     }
@@ -39,9 +59,5 @@ final class DiffResultImpl implements DiffResult {
         return equals;
     }
 
-    @Override
-    public Map<String, String> getProperties() {
-        return properties;
-    }
 
 }

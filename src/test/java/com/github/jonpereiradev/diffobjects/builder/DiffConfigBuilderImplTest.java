@@ -7,26 +7,27 @@ import com.github.jonpereiradev.diffobjects.model.ComplexElement;
 import com.github.jonpereiradev.diffobjects.model.ObjectElement;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DiffConfigBuilderImplTest {
+class DiffConfigBuilderImplTest {
 
-    @Test(expected = NullPointerException.class)
-    public void testDiffBuilderNullClassParameter() {
-        DiffConfigBuilder.forClass(null);
+    @Test
+    void testDiffBuilderNullClassParameter() {
+        assertThrows(NullPointerException.class, () -> DiffConfigBuilder.forClass(null));
     }
 
     @Test
-    public void testDiffBuilderMappingAll() {
+    void testDiffBuilderMappingAll() {
         List<DiffMetadata> metadata = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()
@@ -41,13 +42,13 @@ public class DiffConfigBuilderImplTest {
         assertEquals("getParent", metadata.get(1).getMethod().getName());
     }
 
-    @Test(expected = DiffException.class)
-    public void testDiffBuilderMappingNotFound() {
-        DiffConfigBuilder.forClass(ObjectElement.class).mapping().fields().map("notExists");
+    @Test
+    void testDiffBuilderMappingNotFound() {
+        assertThrows(DiffException.class, () -> DiffConfigBuilder.forClass(ObjectElement.class).mapping().fields().map("notExists"));
     }
 
     @Test
-    public void testDiffBuilderMappingFieldName() {
+    void testDiffBuilderMappingFieldName() {
         List<DiffMetadata> metadata = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()
@@ -63,7 +64,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderMappingFieldParent() {
+    void testDiffBuilderMappingFieldParent() {
         List<DiffMetadata> metadata = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()
@@ -79,7 +80,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderMappingWithQueryProperty() {
+    void testDiffBuilderMappingWithQueryProperty() {
         List<DiffMetadata> metadata = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()
@@ -100,7 +101,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderSingleStrategyType() {
+    void testDiffBuilderSingleStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()
@@ -120,7 +121,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderDeepStrategyType() {
+    void testDiffBuilderDeepStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffConfigBuilder
             .forClass(ComplexElement.class)
             .mapping()
@@ -137,7 +138,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderCollectionStrategyType() {
+    void testDiffBuilderCollectionStrategyType() {
         List<DiffMetadata> diffMetadatas = DiffConfigBuilder
             .forClass(ComplexElement.class)
             .mapping()
@@ -154,7 +155,7 @@ public class DiffConfigBuilderImplTest {
     }
 
     @Test
-    public void testDiffBuilderDefaultEqualsComparator() {
+    void testDiffBuilderDefaultEqualsComparator() {
         List<DiffMetadata> diffMetadata = DiffConfigBuilder
             .forClass(ObjectElement.class)
             .mapping()

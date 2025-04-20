@@ -5,7 +5,7 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
 
 
 /**
- * Defines a strategy to compare two objects and create the result for the diff.
+ * Defines a strategy to compare two objects and generate the diff result.
  *
  * @author Jonathan Pereira
  * @see DiffSingleStrategy
@@ -16,11 +16,11 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
 public interface DiffStrategy {
 
     /**
-     * Check the difference between two objects using the metadata configuration.
+     * Checks the difference between two objects using the metadata configuration.
      *
-     * @param expected object that represents the expected state of the object.
-     * @param current object that represents the current state of the object.
-     * @param metadata the metadata with the configuration for the diff.
+     * @param expected the object representing the expected state.
+     * @param current the object representing the current state.
+     * @param metadata the metadata containing the configuration for the diff.
      *
      * @return the diff result between the two objects.
      */

@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 /**
- * Responsible for check the difference between two collections.
+ * Responsible for checking the difference between two collections.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -22,13 +22,13 @@ import java.util.Map;
 final class DiffCollectionStrategy implements DiffStrategy {
 
     /**
-     * Check the difference between two objects for the diffMetadata configuration.
+     * Checks the difference between two objects based on the diffMetadata configuration.
      *
-     * @param expected object that is considered a state before the after object.
-     * @param current object that is considered the before object updated.
-     * @param metadata the diffMetadata that is mapped to make the instance.
+     * @param expected the object that is considered the state before the {@code current} object
+     * @param current the object that is considered the updated state after the {@code expected} object
+     * @param metadata the diffMetadata used to map and create the instance
      *
-     * @return the instance result between the two objects.
+     * @return the result of comparing the two objects
      */
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -92,12 +92,12 @@ final class DiffCollectionStrategy implements DiffStrategy {
     }
 
     /**
-     * Initialize the collection with the value of method from object.
+     * Initializes the collection with the value from the method of the object.
      *
-     * @param object the object instance that has the method.
-     * @param method the method from object that has the collection value.
+     * @param object the object instance that contains the method
+     * @param method the method of the object that provides the collection value
      *
-     * @return the collection value from object.
+     * @return the collection value from the object
      */
     private Collection<?> initializeCollection(Object object, Method method) {
         Collection<?> collection = DiffReflections.invoke(object, method);
@@ -110,12 +110,12 @@ final class DiffCollectionStrategy implements DiffStrategy {
     }
 
     /**
-     * Validates if the collection has the same size.
+     * Validates if the collections have the same size.
      *
-     * @param beforeCollection the before collection from before object.
-     * @param afterCollection the after collection from after object.
+     * @param beforeCollection the collection from the before object
+     * @param afterCollection the collection from the after object
      *
-     * @return {@code false} if the collection has not the same size.
+     * @return {@code false} if the collections do not have the same size
      */
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
         return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
@@ -123,7 +123,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
 
     private DiffResult checkDiff(
         DiffMetadata diffMetadata,
-        DiffComparator fieldComparator,
+        DiffComparator<?> fieldComparator,
         Object currentBefore,
         Object currentAfter) {
 

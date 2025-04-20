@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotation to group multiple mappings on a method or to enable all methods if is used on a class.
+ * Used to group multiple {@link DiffMapping} annotations on a method, or to enable mapping for all methods when applied to a class.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -18,7 +18,9 @@ import java.lang.annotation.Target;
 public @interface DiffMappings {
 
     /**
-     * @return a group of mappings to make multiple diffs on a single method.
+     * Returns a group of mappings that allow performing multiple difference checks on a single method.
+     *
+     * @return the group of mappings
      */
     DiffMapping[] value() default {};
 

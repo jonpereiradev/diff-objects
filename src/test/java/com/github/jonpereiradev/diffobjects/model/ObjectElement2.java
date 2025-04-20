@@ -2,8 +2,8 @@ package com.github.jonpereiradev.diffobjects.model;
 
 
 import com.github.jonpereiradev.diffobjects.annotation.DiffMapping;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.Objects;
 
 
 public class ObjectElement2 {
@@ -28,25 +28,15 @@ public class ObjectElement2 {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         ObjectElement2 that = (ObjectElement2) o;
-
-        return new EqualsBuilder()
-            .append(getName(), that.getName())
-            .isEquals();
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-            .append(getName())
-            .toHashCode();
+        return Objects.hash(name);
     }
+
 }

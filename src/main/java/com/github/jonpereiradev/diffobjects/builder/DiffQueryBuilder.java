@@ -2,7 +2,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 /**
- * Builder responsible for modify the queried field of a class to create a configuration of diff.
+ * Builder responsible for modifying the queried fields of a class to create a diff configuration.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -10,7 +10,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 public interface DiffQueryBuilder<T> {
 
     /**
-     * Gets the object responsible for query mappings for change.
+     * Gets the object responsible for querying mappings for changes.
      *
      * @param name the name of the object mapped in the builder.
      *

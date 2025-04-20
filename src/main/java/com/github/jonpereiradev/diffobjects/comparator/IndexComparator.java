@@ -20,4 +20,5 @@ public class IndexComparator<T> implements DiffComparator<T> {
     public boolean isEquals(T expected, T current) {
         throw new UnsupportedOperationException();
     }
+
 }

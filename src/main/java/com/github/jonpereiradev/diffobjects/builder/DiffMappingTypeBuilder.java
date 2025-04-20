@@ -2,7 +2,7 @@ package com.github.jonpereiradev.diffobjects.builder;
 
 
 /**
- * Responsible for make available the supported types of mappings.
+ * Responsible for making available the supported types of mappings.
  *
  * @author Jonathan Pereira
  * @version 1.2.0
@@ -11,23 +11,23 @@ package com.github.jonpereiradev.diffobjects.builder;
 public interface DiffMappingTypeBuilder<T> {
 
     /**
-     * Identifies and maps all fields from a class using Reflection.
+     * Identifies and maps all fields of a class using Reflection.
      *
-     * @return instance with all the fields mapped.
+     * @return an instance with all the fields mapped.
      */
     DiffMappingBuilder<T> all();
 
     /**
-     * Identifies and maps all fields from a class with supported annotations.
+     * Identifies and maps all fields of a class with supported annotations.
      *
-     * @return instance with all the fields with supported annotations mapped.
+     * @return an instance with all the fields with supported annotations mapped.
      */
     DiffMappingBuilder<T> annotations();
 
     /**
-     * Make available a manually mapping of fields.
+     * Makes a manual mapping of fields available.
      *
-     * @return instance for manully configure mappings for fields.
+     * @return an instance for manually configuring mappings for fields.
      */
     DiffManualMappingBuilder<T> fields();
 

@@ -12,33 +12,38 @@ import java.lang.annotation.Target;
 
 
 /**
- * A field or method annotated with this will be checked for difference between two objects.
- * When annotated on a method without value(), the equals method of this object will be executed.
- * When annotated on a method with value(), the property will be evaluated for equality.
+ * Indicates that a field or method should be checked for differences between two objects.
+ * <p>
+ * When applied to a method without a {@code value()}, the method's return value will be compared using its {@code equals()} method.
+ * When applied to a method with a {@code value()}, the specified property will be evaluated for equality.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
  */
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Repeatable(DiffMappings.class)
 public @interface DiffMapping {
 
     /**
-     * Defines the property that will be evaluated for equality.
-     * It can be nested property like user.address.id.
-     * 
-     * @return path to the property
+     * Defines the property to be evaluated for equality. Can be a nested property (e.g., {@code user.address.id}).
+     *
+     * @return the path to the property
      */
     String value() default "";
 
     /**
-     * @return additional properties that will be on the diff result object.
+     * Returns additional properties that will be included in the result object.
+     *
+     * @return the additional properties
      */
     DiffProperty[] properties() default {};
 
     /**
-     * @return define the comparator that checks the equality of two objects.
+     * Returns the comparator used to determine whether two objects are equal.
+     *
+     * @return the equality comparator
      */
     Class<? extends DiffComparator> comparator() default EqualsComparator.class;
 

@@ -15,9 +15,9 @@ import static java.util.Objects.requireNonNull;
 
 
 /**
- * Responsible for check the difference between two objects.
+ * Responsible for checking the difference between two objects.
  *
- * @param <T> type of object being compared.
+ * @param <T> type of the object being compared
  *
  * @author Jonathan Pereira
  * @since 1.0.0
