@@ -8,7 +8,6 @@ import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
 import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -41,7 +40,7 @@ final class DiffMappingFieldBuilderImpl<T> implements DiffManualMappingBuilder<T
     public <F> DiffManualMappingBuilder<T> map(String name, DiffComparator<F> comparator) {
         Objects.requireNonNull(name, "Field name is required.");
 
-        String nestedFields = StringUtils.EMPTY;
+        String nestedFields = "";
         String[] fields = name.split(REGEX_PROPERTY_SEPARATOR);
         Method method = DiffReflections.discoverGetter(context.getOfType(), fields[0]);
         DiffStrategyType diffStrategyType = DiffStrategyType.SINGLE;

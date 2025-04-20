@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Defines an order for the method if necessary.
+ * Specifies the evaluation order for the method, if ordering is required.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 public @interface DiffOrder {
 
     /**
-     * @return a number order for the method.
+     * @return the numerical order assigned to the method
      */
     int value();
 

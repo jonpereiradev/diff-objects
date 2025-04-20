@@ -5,7 +5,7 @@ import com.github.jonpereiradev.diffobjects.DiffConfig;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 /**
- * Responsible for modify a mapped property.
+ * Responsible for modifying a mapped property.
  *
  * @author Jonathan Pereira
  * @version 1.2.0
@@ -19,7 +19,7 @@ public interface DiffQueryMappingBuilder<T> {
      * @param key the identifier of the property.
      * @param value the value of the property.
      *
-     * @return instance of the mapped property with the new metadata property.
+     * @return the instance of the mapped property with the new metadata property.
      */
     DiffQueryMappingBuilder<T> property(String key, String value);
 
@@ -28,7 +28,7 @@ public interface DiffQueryMappingBuilder<T> {
      *
      * @param name the name that identifies the property for mapping.
      *
-     * @return instance of the mapped property.
+     * @return the instance of the mapped property.
      */
     DiffQueryMappingBuilder<T> map(String name);
 
@@ -36,16 +36,17 @@ public interface DiffQueryMappingBuilder<T> {
      * Maps a property by name using a custom comparator.
      *
      * @param name the name that identifies the property for mapping.
-     * @param comparator custom comparator that checks a property for equality.
+     * @param comparator the custom comparator used to check equality of the property.
      *
-     * @return instance of the mapped property.
+     * @return the instance of the mapped property.
      */
     <F> DiffQueryMappingBuilder<T> map(String name, DiffComparator<F> comparator);
 
     /**
      * Constructs the final configuration object with the mapped fields.
      *
-     * @return instance of the configuration for the mapped fields.
+     * @return an instance of the configuration containing the mapped fields.
      */
     DiffConfig build();
+
 }

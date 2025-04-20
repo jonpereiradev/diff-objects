@@ -3,75 +3,75 @@ package com.github.jonpereiradev.diffobjects.strategy;
 
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.model.ObjectElement;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
-public class DiffSingleStrategyTest extends BaseStrategyTest {
+class DiffSingleStrategyTest extends BaseStrategyTest {
 
     private DiffStrategy diffStrategy;
     private DiffMetadata diffMetadata;
 
-    @Before
-    public void beforeTest() {
+    @BeforeEach
+    void beforeEach() {
         diffStrategy = DiffStrategyType.SINGLE.getStrategy();
         diffMetadata = discoverByName(ObjectElement.class, "getName");
-        Assert.assertNotNull(diffStrategy);
-        Assert.assertNotNull(diffMetadata);
+        Assertions.assertNotNull(diffStrategy);
+        Assertions.assertNotNull(diffMetadata);
     }
 
     @Test
-    public void testSingleStrategyEqualsNullObjects() {
+    void testSingleStrategyEqualsNullObjects() {
         DiffResult diffResult = diffStrategy.diff(null, null, diffMetadata);
 
-        Assert.assertNotNull(diffResult);
-        Assert.assertTrue(diffResult.isEquals());
-        Assert.assertNull(diffResult.getExpected());
-        Assert.assertNull(diffResult.getCurrent());
+        Assertions.assertNotNull(diffResult);
+        Assertions.assertTrue(diffResult.isEquals());
+        Assertions.assertNull(diffResult.getExpected());
+        Assertions.assertNull(diffResult.getCurrent());
     }
 
     @Test
-    public void testSingleStrategyDifferentNullObjectA() {
+    void testSingleStrategyDifferentNullObjectA() {
         DiffResult diffResult = diffStrategy.diff(null, new ObjectElement("Object B"), diffMetadata);
 
-        Assert.assertNotNull(diffResult);
-        Assert.assertFalse(diffResult.isEquals());
-        Assert.assertNull(diffResult.getExpected());
-        Assert.assertNotNull(diffResult.getCurrent());
+        Assertions.assertNotNull(diffResult);
+        Assertions.assertFalse(diffResult.isEquals());
+        Assertions.assertNull(diffResult.getExpected());
+        Assertions.assertNotNull(diffResult.getCurrent());
     }
 
     @Test
-    public void testSingleStrategyDifferentNullObjectB() {
+    void testSingleStrategyDifferentNullObjectB() {
         DiffResult diffResult = diffStrategy.diff(new ObjectElement("Object A"), null, diffMetadata);
 
-        Assert.assertNotNull(diffResult);
-        Assert.assertFalse(diffResult.isEquals());
-        Assert.assertNotNull(diffResult.getExpected());
-        Assert.assertNull(diffResult.getCurrent());
+        Assertions.assertNotNull(diffResult);
+        Assertions.assertFalse(diffResult.isEquals());
+        Assertions.assertNotNull(diffResult.getExpected());
+        Assertions.assertNull(diffResult.getCurrent());
     }
 
     @Test
-    public void testSingleStrategyEquals() {
+    void testSingleStrategyEquals() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object A");
         DiffResult diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
-        Assert.assertNotNull(diffResult);
-        Assert.assertTrue(diffResult.isEquals());
-        Assert.assertEquals("Object A", diffResult.getExpected());
-        Assert.assertEquals("Object A", diffResult.getCurrent());
+        Assertions.assertNotNull(diffResult);
+        Assertions.assertTrue(diffResult.isEquals());
+        Assertions.assertEquals("Object A", diffResult.getExpected());
+        Assertions.assertEquals("Object A", diffResult.getCurrent());
     }
 
     @Test
-    public void testSingleStrategyDifferent() {
+    void testSingleStrategyDifferent() {
         ObjectElement objectA = new ObjectElement("Object A");
         ObjectElement objectB = new ObjectElement("Object B");
         DiffResult diffResult = diffStrategy.diff(objectA, objectB, diffMetadata);
 
-        Assert.assertNotNull(diffResult);
-        Assert.assertFalse(diffResult.isEquals());
-        Assert.assertEquals("Object A", diffResult.getExpected());
-        Assert.assertEquals("Object B", diffResult.getCurrent());
+        Assertions.assertNotNull(diffResult);
+        Assertions.assertFalse(diffResult.isEquals());
+        Assertions.assertEquals("Object A", diffResult.getExpected());
+        Assertions.assertEquals("Object B", diffResult.getCurrent());
     }
 }

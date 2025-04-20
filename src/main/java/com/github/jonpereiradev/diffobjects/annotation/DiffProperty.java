@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Maps a property on a mapping to be used on result.
+ * Maps a property to be included in the result of the mapping.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -18,12 +18,16 @@ import java.lang.annotation.Target;
 public @interface DiffProperty {
 
     /**
-     * @return identifier of the property.
+     * Returns the identifier for the property.
+     *
+     * @return the property identifier
      */
     String key();
 
     /**
-     * @return value of the property.
+     * Returns the value of the property.
+     *
+     * @return the property value
      */
     String value();
 

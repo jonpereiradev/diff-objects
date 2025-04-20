@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 
 
 /**
- * Responsible for check the difference between two objects where value navigates into object properties.
+ * Responsible for checking the difference between two objects, where the value navigates through the object's properties.
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -19,11 +19,11 @@ final class DiffNestedStrategy implements DiffStrategy {
     private static final String REGEX_PROPERTY_SEPARATOR = "\\.";
 
     /**
-     * Check the difference between two objects using the metadata configuration.
+     * Checks the difference between two objects using the metadata configuration.
      *
-     * @param expected object that represents the expected state of the object.
-     * @param current object that represents the current state of the object.
-     * @param metadata the metadata with the configuration for the diff.
+     * @param expected the object that represents the expected state.
+     * @param current the object that represents the current state.
+     * @param metadata the metadata containing the configuration for the diff.
      *
      * @return the diff result between the two objects.
      */

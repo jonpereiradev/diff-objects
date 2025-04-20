@@ -36,4 +36,5 @@ public interface DiffResults extends Iterable<DiffResult> {
     default Spliterator<DiffResult> spliterator() {
         return getResults().spliterator();
     }
+
 }

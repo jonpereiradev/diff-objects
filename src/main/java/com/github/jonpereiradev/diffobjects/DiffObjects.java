@@ -7,9 +7,9 @@ import java.util.Collection;
 
 
 /**
- * Responsible for check the difference between two objects.
+ * Responsible for checking the difference between two objects.
  *
- * @param <T> type of object being compared.
+ * @param <T> the type of object being compared
  *
  * @author Jonathan Pereira
  * @see DiffObjectsImpl
@@ -18,111 +18,111 @@ import java.util.Collection;
 public interface DiffObjects<T> {
 
     /**
-     * Creates a DiffObjects for a specific class.
+     * Creates a DiffObjects instance for a specific class.
      *
-     * @param clazz class type of this DiffObjects.
-     * @param <T> type of the class.
+     * @param clazz the class type for this DiffObjects.
+     * @param <T> the type of the class.
      *
-     * @return the DiffObjects for the class.
+     * @return the DiffObjects instance for the class
      */
     static <T> DiffObjects<T> forClass(Class<T> clazz) {
         return new DiffObjectsImpl<>(clazz);
     }
 
     /**
-     * Execute the diff between two objects.
+     * Executes the diff between two objects.
      * <p>
-     * If the class supports annotation diff configuration, it's used in the diff context.
-     * Otherwise, makes the diff using all fields of the class.
+     * If the class supports annotation-based diff configuration, it is used in the diff context.
+     * Otherwise, the diff is performed using all fields of the class.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
      *
-     * @return the diff result with all configured fields checked.
+     * @return the diff result with all configured fields checked
      */
     DiffResults diff(T expected, T current);
 
     /**
-     * Execute the diff between two objects using a configuration.
+     * Executes the diff between two objects using a configuration.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param config the diff configuration metadata.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
+     * @param config the diff configuration metadata
      *
-     * @return the diff result with all configured fields checked.
+     * @return the diff result with all configured fields checked
      */
     DiffResults diff(T expected, T current, DiffConfig config);
 
     /**
-     * Execute the diff between two collection of objects.
+     * Executes the diff between two collections of objects.
      * <p>
-     * If the class supports annotation diff configuration, it's used in the diff context.
-     * Otherwise, makes the diff using all fields of the class.
+     * If the class supports annotation-based diff configuration, it is used in the diff context.
+     * Otherwise, the diff is performed using all fields of the class.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param matcher compares if one object from the expected collection is representable by one in the current.
+     * @param expected the expected state of the objects in the collection to check for differences
+     * @param current the current state of the objects in the collection to check for differences
+     * @param matcher compares whether an object from the expected collection is represented by an object in the current collection
      *
-     * @return the diff result with all configured fields checked.
+     * @return the diff result with all configured fields checked
      */
     DiffResults diff(Collection<T> expected, Collection<T> current, DiffComparator<T> matcher);
 
     /**
-     * Execute the diff between two collection of objects using the diff config metadata.
+     * Executes the diff between two collections of objects using the diff configuration metadata.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param config the diff configuration metadata.
-     * @param matcher compares if one object from the expected collection is representable by one in the current.
+     * @param expected the expected state of the objects in the collection to check for differences
+     * @param current the current state of the objects in the collection to check for differences
+     * @param config the diff configuration metadata
+     * @param matcher compares whether an object from the expected collection is represented by an object in the current collection
      *
-     * @return the diff result with all configured fields checked.
+     * @return the diff result with all configured fields checked
      */
     DiffResults diff(Collection<T> expected, Collection<T> current, DiffConfig config, DiffComparator<T> matcher);
 
     /**
-     * Check if exists the expected and current state are equals.
+     * Checks if the expected and current states are equal.
      * <p>
-     * If the class supports annotation diff configuration, it's used in the diff context.
-     * Otherwise, makes the diff using all fields of the class.
+     * If the class supports annotation-based diff configuration, it is used in the diff context.
+     * Otherwise, the diff is performed using all fields of the class.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
      *
-     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
+     * @return {@code true} if no difference exists between the objects, {@code false} otherwise
      */
     boolean isEquals(T expected, T current);
 
     /**
-     * Check if exists the expected and current state are equals.
+     * Checks if the expected and current states are equal.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param config the diff configuration metadata.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
+     * @param config the diff configuration metadata
      *
-     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
+     * @return {@code true} if no difference exists between the objects, {@code false} otherwise
      */
     boolean isEquals(T expected, T current, DiffConfig config);
 
     /**
-     * Check if exists the expected and current state are equals.
+     * Checks if the expected and current states are equal.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param matcher compares if one object from the expected collection is representable by one in the current.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
+     * @param matcher compares whether an object from the expected collection is represented by an object in the current collection
      *
-     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
+     * @return {@code true} if no difference exists between the objects, {@code false} otherwise
      */
     boolean isEquals(Collection<T> expected, Collection<T> current, DiffComparator<T> matcher);
 
     /**
-     * Check if exists the expected and current state are equals.
+     * Checks if the expected and current states are equal.
      *
-     * @param expected the expected object state to check for diff.
-     * @param current the current object state to check for diff.
-     * @param config the diff configuration metadata.
-     * @param matcher compares if one object from the expected collection is representable by one in the current.
+     * @param expected the expected state of the object to check for differences
+     * @param current the current state of the object to check for differences
+     * @param config the diff configuration metadata
+     * @param matcher compares whether an object from the expected collection is represented by an object in the current collection
      *
-     * @return {@code true} if no difference exists between the objects or {@code false} otherwise.
+     * @return {@code true} if no difference exists between the objects, {@code false} otherwise
      */
     boolean isEquals(Collection<T> expected, Collection<T> current, DiffConfig config, DiffComparator<T> matcher);
 
