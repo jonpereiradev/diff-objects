@@ -54,12 +54,11 @@ import com.github.jonpereiradev.diffobjects.builder.DiffConfigBuilder;
 public class Main {
 
     public static void main(String[] args) {
+        // creates 2 users for this example
         User u1 = new User("user1", "123456", LocalDate.now().minusDays(1), true);
         User u2 = new User("user2", "654321", LocalDate.now(), false);
 
-        u1.getEmails().add(new Email("user@gmail.com", true));
-        u2.getEmails().add(new Email("user@gmail.com", false));
-
+        // creates the configuration for the diff
         DiffConfig diffConfig = DiffConfigBuilder
             .forClass(User.class)
             .mapping()
@@ -68,8 +67,10 @@ public class Main {
             .map("password")
             .build();
 
+        // executes the diff
         DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2, diffConfig);
 
+        // iterates over the results to show the differences
         for (DiffResult diffResult : diffResults) {
             if (!diffResult.isEquals()) {
                 System.out.println("Field: " + diffResult.getField());
@@ -132,14 +133,18 @@ import com.github.jonpereiradev.diffobjects.DiffResult;
 public class Main {
     
     public static void main(String[] args) {
+        // creates 2 users for this example
         User u1 = new User("user1", "123456", LocalDate.now().minusDays(1), true);
         User u2 = new User("user2", "654321", LocalDate.now(), true);
-        
+
+        // creates 2 emails for this example
         u1.getEmails().add(new Email("user@gmail.com", true));
         u2.getEmails().add(new Email("user@gmail.com", false));
         
+        // executes the diff
         DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2);
-        
+
+        // iterates over the results to show the differences
         for (DiffResult diffResult : diffResults) {
             if (!diffResult.isEquals()) {
                 System.out.println("Field: " + diffResult.getField());
@@ -153,10 +158,10 @@ public class Main {
 
 ### @DiffProperty
 
-This annotation is used to provide more information in the DiffResult about the field. All objects already have the 
-property "field" with the field name as value.
+This annotation is used to provide more information in the DiffResult about the field.
 
-`@DiffProperty(key = "field", value = "{{fieldName}}")`
+All objects already have the property "field" with the field name as value.
+E.g. `@DiffProperty(key = "field", value = "{{fieldName}}")`
 
 **Usage example**
 
@@ -188,8 +193,10 @@ public class Main {
     public static void main(String[] args) {
         // code omitted ...
         
+        // executes the diff
         DiffResults diffResults = DiffObjects.forClass(User.class).diff(u1, u2);
         
+        // iterates over the results to show the differences
         for (DiffResult diffResult : diffResults) {
             if (diffResult.containsProperty("id")) {
                 String id = diffResult.getProperty("id");
