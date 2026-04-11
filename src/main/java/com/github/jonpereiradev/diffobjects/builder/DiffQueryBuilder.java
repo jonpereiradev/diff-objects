@@ -1,8 +1,13 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
-
 /**
- * Builder responsible for modifying the queried fields of a class to create a diff configuration.
+ * Builder interface responsible for modifying the queried fields of a class to create a diff configuration.
+ * <p>
+ * Provides methods to locate and modify field mappings by name, enabling fine-grained control over
+ * which fields are included or excluded in the diff configuration.
+ * </p>
+ *
+ * @param <T> the type of object being configured for diff operations
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -10,11 +15,11 @@ package com.github.jonpereiradev.diffobjects.builder;
 public interface DiffQueryBuilder<T> {
 
     /**
-     * Gets the object responsible for querying mappings for changes.
+     * Finds the mapping for a field by its name and returns a builder for further modifications.
      *
-     * @param name the name of the object mapped in the builder.
+     * @param name the name of the field mapped in the builder
      *
-     * @return the instance of the builder.
+     * @return a {@link DiffQueryFoundBuilder} instance for modifying the found field mapping
      */
     DiffQueryFoundBuilder<T> find(String name);
 

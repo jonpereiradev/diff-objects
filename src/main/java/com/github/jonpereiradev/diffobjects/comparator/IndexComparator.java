@@ -1,7 +1,14 @@
 package com.github.jonpereiradev.diffobjects.comparator;
 
 /**
- * Check two objects for equality using the equals method implementation.
+ * Comparator implementation intended to check two objects for equality using their {@code equals} method.
+ * <p>
+ * This class is a placeholder for index-based comparison logic in diff operations.
+ * The {@link #isEquals(Object, Object)} method is not implemented and will throw
+ * {@link UnsupportedOperationException} if called.
+ * </p>
+ *
+ * @param <T> the type of objects to compare
  *
  * @author Jonathan Pereira
  * @since 1.1.0
@@ -9,12 +16,17 @@ package com.github.jonpereiradev.diffobjects.comparator;
 public class IndexComparator<T> implements DiffComparator<T> {
 
     /**
-     * Check the equality of two objects.
+     * Checks the equality of two objects.
+     * <p>
+     * This method is not implemented and will always throw {@link UnsupportedOperationException}.
+     * </p>
      *
-     * @param expected first instance to compare the equality.
-     * @param current second instance to compare the equality.
+     * @param expected the first instance to compare for equality
+     * @param current the second instance to compare for equality
      *
-     * @return {@code true} if the two objects are equals.
+     * @return never returns normally
+     *
+     * @throws UnsupportedOperationException always thrown to indicate the method is not implemented
      */
     @Override
     public boolean isEquals(T expected, T current) {

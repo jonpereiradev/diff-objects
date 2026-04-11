@@ -1,10 +1,15 @@
 package com.github.jonpereiradev.diffobjects.builder;
 
-
 import com.github.jonpereiradev.diffobjects.DiffConfig;
 
 /**
- * Builder responsible for modifying the queried field of a class to create a diff configuration.
+ * Builder interface responsible for modifying a specific queried field mapping in a diff configuration.
+ * <p>
+ * Allows setting custom properties for the field, removing the field from the mapping,
+ * and building the resulting {@link DiffConfig} instance.
+ * </p>
+ *
+ * @param <T> the type of object being configured for diff operations
  *
  * @author Jonathan Pereira
  * @see DiffConfigBuilderImpl
@@ -15,26 +20,26 @@ import com.github.jonpereiradev.diffobjects.DiffConfig;
 public interface DiffQueryFoundBuilder<T> extends DiffQueryBuilder<T> {
 
     /**
-     * Defines a property for the last mapping.
+     * Sets a custom property for the last mapped field in the diff configuration.
      *
-     * @param key the identifier of the property.
-     * @param value the value of the property.
+     * @param key the identifier of the property
+     * @param value the value of the property
      *
-     * @return the instance of this builder.
+     * @return this builder instance for fluent chaining
      */
     DiffQueryFoundBuilder<T> property(String key, String value);
 
     /**
-     * Removes the mapping that this current query represents.
+     * Removes the mapping for the field represented by this query from the diff configuration.
      *
-     * @return the instance of this builder.
+     * @return a {@link DiffQueryBuilder} instance for further configuration
      */
     DiffQueryBuilder<T> ignore();
 
     /**
-     * Gets the configuration instance that generates the configuration for this instance.
+     * Builds and returns the {@link DiffConfig} instance representing the current configuration.
      *
-     * @return a configuration instance.
+     * @return a {@link DiffConfig} instance with the applied modifications
      */
     DiffConfig build();
 

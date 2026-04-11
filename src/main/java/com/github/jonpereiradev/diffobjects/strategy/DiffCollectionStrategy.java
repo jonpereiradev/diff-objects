@@ -1,20 +1,19 @@
 package com.github.jonpereiradev.diffobjects.strategy;
 
-
 import com.github.jonpereiradev.diffobjects.DiffResult;
 import com.github.jonpereiradev.diffobjects.builder.DiffReflections;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 /**
- * Responsible for checking the difference between two collections.
+ * Strategy implementation responsible for checking the difference between two collections.
+ * <p>
+ * Compares two collections extracted from the provided objects using the configured metadata.
+ * Handles element-wise comparison, size checks, and supports nested or single value diff strategies
+ * based on the metadata configuration.
+ * </p>
  *
  * @author Jonathan Pereira
  * @since 1.0.0
@@ -22,13 +21,18 @@ import java.util.Map;
 final class DiffCollectionStrategy implements DiffStrategy {
 
     /**
-     * Checks the difference between two objects based on the diffMetadata configuration.
+     * Compares two collections extracted from the given objects using the provided diff metadata.
+     * <p>
+     * The method checks for null or empty collections, compares collection sizes, and performs
+     * element-wise comparison using the configured comparator or nested diff strategies.
+     * Returns a {@link DiffResult} indicating whether the collections are considered equal.
+     * </p>
      *
-     * @param expected the object that is considered the state before the {@code current} object
-     * @param current the object that is considered the updated state after the {@code expected} object
-     * @param metadata the diffMetadata used to map and create the instance
+     * @param expected the object representing the state before the change
+     * @param current the object representing the updated state after the change
+     * @param metadata the diff metadata used to map and create the instance
      *
-     * @return the result of comparing the two objects
+     * @return the result of comparing the two collections
      */
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -42,7 +46,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
             return DiffResult.forValue(null, null, true, properties);
         }
 
-        // if it has not the same size, so they are different
+        // If collections do not have the same size, they are different
         if (!isEqualsSize(beforeCollection, afterCollection)) {
             return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
         }
@@ -53,14 +57,14 @@ final class DiffCollectionStrategy implements DiffStrategy {
         for (Object currentBefore : beforeCollection) {
             Object currentAfter = iterator.next();
 
-            // check the elements that exist on beforeState and not exists on afterState
+            // Check elements present in beforeCollection but not in afterCollection
             if (currentAfter == null) {
                 return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
             }
 
             afterCopy.remove(currentAfter);
 
-            // check the elements that exist on both collections
+            // Check elements present in both collections
             if (!metadata.getValue().isEmpty()) {
                 DiffResult single = checkDiff(
                     metadata,
@@ -77,7 +81,7 @@ final class DiffCollectionStrategy implements DiffStrategy {
             }
         }
 
-        // check the elements that exist on afterState and not exists on beforeState
+        // Check elements present in afterCollection but not in beforeCollection
         for (Object currentAfter : afterCopy) {
             boolean noneMatch = beforeCollection
                 .stream()
@@ -92,12 +96,13 @@ final class DiffCollectionStrategy implements DiffStrategy {
     }
 
     /**
-     * Initializes the collection with the value from the method of the object.
+     * Initializes the collection by invoking the specified method on the given object.
+     * Returns {@code null} if the collection is empty or the object is {@code null}.
      *
-     * @param object the object instance that contains the method
-     * @param method the method of the object that provides the collection value
+     * @param object the object instance containing the collection
+     * @param method the method to invoke to retrieve the collection
      *
-     * @return the collection value from the object
+     * @return the collection value from the object, or {@code null} if empty or not present
      */
     private Collection<?> initializeCollection(Object object, Method method) {
         Collection<?> collection = DiffReflections.invoke(object, method);
@@ -110,17 +115,27 @@ final class DiffCollectionStrategy implements DiffStrategy {
     }
 
     /**
-     * Validates if the collections have the same size.
+     * Checks if both collections are non-null and have the same size.
      *
-     * @param beforeCollection the collection from the before object
-     * @param afterCollection the collection from the after object
+     * @param beforeCollection the collection from the expected object
+     * @param afterCollection the collection from the current object
      *
-     * @return {@code false} if the collections do not have the same size
+     * @return {@code true} if both collections are non-null and have the same size; {@code false} otherwise
      */
     private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
         return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
     }
 
+    /**
+     * Performs a nested or single value diff check between two elements using the provided metadata and comparator.
+     *
+     * @param diffMetadata the diff metadata describing the property to compare
+     * @param fieldComparator the comparator to use for property-level equality
+     * @param currentBefore the element from the expected collection
+     * @param currentAfter the element from the current collection
+     *
+     * @return the {@link DiffResult} of the comparison
+     */
     private DiffResult checkDiff(
         DiffMetadata diffMetadata,
         DiffComparator<?> fieldComparator,
