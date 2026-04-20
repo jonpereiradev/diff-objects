@@ -42,88 +42,82 @@ final class DiffCollectionStrategy implements DiffStrategy {
         Collection<?> afterCollection = initializeCollection(current, metadata.getMethod());
         Map<String, String> properties = metadata.getProperties();
 
-        if (beforeCollection == null && afterCollection == null) {
+        // Both null or empty: considered equal
+        if (isNullOrEmpty(beforeCollection) && isNullOrEmpty(afterCollection)) {
             return DiffResult.forValue(null, null, true, properties);
         }
 
-        // If collections do not have the same size, they are different
-        if (!isEqualsSize(beforeCollection, afterCollection)) {
+        // One is null/empty, the other is not: not equal
+        if (isNullOrEmpty(beforeCollection) || isNullOrEmpty(afterCollection)) {
             return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
         }
 
-        List<?> afterCopy = new ArrayList<>(afterCollection);
-        Iterator<?> iterator = afterCollection.iterator();
+        // Size mismatch: not equal
+        if (beforeCollection.size() != afterCollection.size()) {
+            return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
+        }
 
-        for (Object currentBefore : beforeCollection) {
-            Object currentAfter = iterator.next();
+        // For matching, use lists for index-based comparison, or fallback to set-based matching
+        List<?> beforeList = (beforeCollection instanceof List) ? (List<?>) beforeCollection : new ArrayList<>(beforeCollection);
+        List<?> afterList = (afterCollection instanceof List) ? (List<?>) afterCollection : new ArrayList<>(afterCollection);
 
-            // Check elements present in beforeCollection but not in afterCollection
-            if (currentAfter == null) {
-                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
-            }
+        // Track matched indices in afterList
+        boolean[] matched = new boolean[afterList.size()];
 
-            afterCopy.remove(currentAfter);
+        outer:
+        for (Object beforeElem : beforeList) {
+            // Try to find a matching element in afterList
+            for (int j = 0; j < afterList.size(); j++) {
+                if (matched[j]) continue;
+                Object afterElem = afterList.get(j);
 
-            // Check elements present in both collections
-            if (!metadata.getValue().isEmpty()) {
-                DiffResult single = checkDiff(
-                    metadata,
-                    fieldComparator,
-                    currentBefore,
-                    currentAfter
-                );
-
-                if (!single.isEquals()) {
-                    return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
+                boolean equals;
+                if (!metadata.getValue().isEmpty()) {
+                    DiffResult single = checkDiff(metadata, fieldComparator, beforeElem, afterElem);
+                    equals = single.isEquals();
+                } else {
+                    equals = fieldComparator.isEquals(beforeElem, afterElem);
                 }
-            } else if (!fieldComparator.isEquals(currentBefore, currentAfter)) {
-                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
+
+                if (equals) {
+                    matched[j] = true;
+                    continue outer;
+                }
             }
+            // No match found for beforeElem
+            return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
         }
 
-        // Check elements present in afterCollection but not in beforeCollection
-        for (Object currentAfter : afterCopy) {
-            boolean noneMatch = beforeCollection
-                .stream()
-                .noneMatch((o) -> fieldComparator.isEquals(o, currentAfter));
-
-            if (noneMatch) {
-                return DiffResult.forValue(beforeCollection, afterCollection, false, properties);
-            }
-        }
-
+        // All elements matched
         return DiffResult.forValue(beforeCollection, afterCollection, true, properties);
     }
 
     /**
      * Initializes the collection by invoking the specified method on the given object.
-     * Returns {@code null} if the collection is empty or the object is {@code null}.
+     * Returns {@code null} if the object is {@code null} or the collection is null.
      *
      * @param object the object instance containing the collection
      * @param method the method to invoke to retrieve the collection
      *
-     * @return the collection value from the object, or {@code null} if empty or not present
+     * @return the collection value from the object, or {@code null} if not present
      */
     private Collection<?> initializeCollection(Object object, Method method) {
-        Collection<?> collection = DiffReflections.invoke(object, method);
-
-        if (collection != null && collection.isEmpty()) {
+        if (object == null || method == null) {
             return null;
         }
 
-        return collection;
+        return DiffReflections.invoke(object, method);
     }
 
     /**
-     * Checks if both collections are non-null and have the same size.
+     * Checks if the collection is null or empty.
      *
-     * @param beforeCollection the collection from the expected object
-     * @param afterCollection the collection from the current object
+     * @param collection the collection to check
      *
-     * @return {@code true} if both collections are non-null and have the same size; {@code false} otherwise
+     * @return true if null or empty, false otherwise
      */
-    private boolean isEqualsSize(Collection<?> beforeCollection, Collection<?> afterCollection) {
-        return beforeCollection != null && afterCollection != null && beforeCollection.size() == afterCollection.size();
+    private boolean isNullOrEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
     }
 
     /**
@@ -146,7 +140,10 @@ final class DiffCollectionStrategy implements DiffStrategy {
         String currentValue = value.contains(".") ? value.substring(0, value.indexOf(".")) : value;
         String nextValue = value.contains(".") ? value.substring(value.indexOf(".") + 1) : "";
         DiffStrategyType diffStrategyType = nextValue.isEmpty() ? DiffStrategyType.SINGLE : DiffStrategyType.NESTED;
-        Method method = DiffReflections.discoverGetter(currentBefore.getClass(), currentValue);
+        Method method = DiffReflections.discoverGetter(
+            currentBefore != null ? currentBefore.getClass() : Object.class,
+            currentValue
+        );
         DiffMetadata metadata = new DiffMetadata(nextValue, method, diffStrategyType, fieldComparator);
         DiffStrategy strategy = metadata.getStrategy();
 

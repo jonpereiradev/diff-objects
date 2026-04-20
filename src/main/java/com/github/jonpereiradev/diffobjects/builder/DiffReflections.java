@@ -4,6 +4,7 @@ import com.github.jonpereiradev.diffobjects.DiffException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Utility class providing common reflection operations used during diff execution.
@@ -19,6 +20,11 @@ public final class DiffReflections {
 
     private static final String GET_METHOD_PREFIX = "get";
 
+    // Prevent instantiation
+    private DiffReflections() {
+        throw new AssertionError("Utility class should not be instantiated");
+    }
+
     /**
      * Discovers the public no-argument getter method for a given field or method name in the specified class.
      * <p>
@@ -26,14 +32,20 @@ public final class DiffReflections {
      * Throws a {@link DiffException} if the method cannot be found or is not public and no-args.
      * </p>
      *
-     * @param diffClass the class containing the getter method
-     * @param fieldOrMethodName the name of the field or the getter method
+     * @param diffClass the class containing the getter method (must not be null)
+     * @param fieldOrMethodName the name of the field or the getter method (must not be null or empty)
      *
      * @return the discovered getter {@link Method}
      *
      * @throws DiffException if the method is not found or is not public and no-args
      */
     public static Method discoverGetter(Class<?> diffClass, String fieldOrMethodName) {
+        Objects.requireNonNull(diffClass, "diffClass must not be null");
+
+        if (fieldOrMethodName == null || fieldOrMethodName.isEmpty()) {
+            throw new IllegalArgumentException("fieldOrMethodName must not be null or empty");
+        }
+
         String possibleAccessMethodName = fieldOrMethodName;
 
         if (!fieldOrMethodName.startsWith(GET_METHOD_PREFIX)) {
@@ -43,7 +55,7 @@ public final class DiffReflections {
         Method method = quietlyGetMethod(diffClass, possibleAccessMethodName);
 
         if (method == null) {
-            throw new DiffException("Method " + possibleAccessMethodName + " not found or is not public and non-args in class " + diffClass.getName());
+            throw new DiffException("Method " + possibleAccessMethodName + " not found or is not public and no-args in class " + diffClass.getName());
         }
 
         return method;
@@ -52,11 +64,19 @@ public final class DiffReflections {
     /**
      * Capitalizes the first letter of the provided field or method name.
      *
-     * @param fieldOrMethodName the name to capitalize
+     * @param fieldOrMethodName the name to capitalize (must not be null or empty)
      *
      * @return the capitalized name
      */
     private static String capitalize(String fieldOrMethodName) {
+        if (fieldOrMethodName == null || fieldOrMethodName.isEmpty()) {
+            throw new IllegalArgumentException("fieldOrMethodName must not be null or empty");
+        }
+
+        if (fieldOrMethodName.length() == 1) {
+            return fieldOrMethodName.toUpperCase();
+        }
+
         char firstLetter = fieldOrMethodName.charAt(0);
         return Character.toUpperCase(firstLetter) + fieldOrMethodName.substring(1);
     }
@@ -65,8 +85,8 @@ public final class DiffReflections {
      * Attempts to retrieve a public no-argument method by name from the specified class.
      * Returns {@code null} if the method is not found.
      *
-     * @param diffClass the class to search for the method
-     * @param methodName the name of the method to retrieve
+     * @param diffClass the class to search for the method (must not be null)
+     * @param methodName the name of the method to retrieve (must not be null or empty)
      *
      * @return the {@link Method} if found, or {@code null} otherwise
      */
@@ -86,7 +106,7 @@ public final class DiffReflections {
      * </p>
      *
      * @param instance the object instance containing the method
-     * @param method the method to invoke
+     * @param method the method to invoke (must not be null)
      * @param <T> the type of the value returned by the method
      *
      * @return the value returned by the invoked method, or {@code null} if instance is {@code null}
@@ -98,31 +118,46 @@ public final class DiffReflections {
         if (instance == null) {
             return null;
         }
+        if (method == null) {
+            throw new IllegalArgumentException("method must not be null");
+        }
 
         try {
             return (T) method.invoke(instance);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new DiffException("Method " + method.getName() + " must be public and no-args.");
+        } catch (IllegalAccessException e) {
+            throw new DiffException("Cannot access method " + method.getName() + ": " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new DiffException("Illegal argument for method " + method.getName() + ": " + e.getMessage());
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            throw new DiffException("Exception thrown by method " + method.getName() + ": " + (cause != null ? cause.getMessage() : e.getMessage()));
         }
     }
 
     /**
      * Creates a new instance of the specified class using its default constructor.
      *
-     * @param clazz the class to instantiate
+     * @param clazz the class to instantiate (must not be null)
      * @param <T> the type of the object to be created
      *
      * @return a new instance of the specified class
      *
-     * @throws UnsupportedOperationException if the class does not have a default constructor
+     * @throws UnsupportedOperationException if the class does not have a default constructor or cannot be instantiated
      */
     public static <T> T newInstance(Class<T> clazz) {
+        Objects.requireNonNull(clazz, "clazz must not be null");
+
         try {
             return clazz.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
-                 InvocationTargetException e) {
-            throw new UnsupportedOperationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new UnsupportedOperationException("No default constructor for class " + clazz.getName(), e);
+        } catch (InstantiationException e) {
+            throw new UnsupportedOperationException("Cannot instantiate class " + clazz.getName(), e);
+        } catch (IllegalAccessException e) {
+            throw new UnsupportedOperationException("Cannot access default constructor of class " + clazz.getName(), e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            throw new UnsupportedOperationException("Constructor threw exception for class " + clazz.getName() + ": " + (cause != null ? cause.getMessage() : e.getMessage()), e);
         }
     }
-
 }
