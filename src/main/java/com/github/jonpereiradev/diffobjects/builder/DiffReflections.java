@@ -19,6 +19,7 @@ import java.util.Objects;
 public final class DiffReflections {
 
     private static final String GET_METHOD_PREFIX = "get";
+    private static final String IS_METHOD_PREFIX = "is";
 
     // Prevent instantiation
     private DiffReflections() {
@@ -28,7 +29,8 @@ public final class DiffReflections {
     /**
      * Discovers the public no-argument getter method for a given field or method name in the specified class.
      * <p>
-     * If the provided name does not start with "get", it prepends "get" and capitalizes the first letter.
+     * If the provided name does not start with "get" or "is", it prepends "get" (and capitalizes the first letter),
+     * and if not found, falls back to prepending "is".
      * Throws a {@link DiffException} if the method cannot be found or is not public and no-args.
      * </p>
      *
@@ -46,16 +48,22 @@ public final class DiffReflections {
             throw new IllegalArgumentException("fieldOrMethodName must not be null or empty");
         }
 
-        String possibleAccessMethodName = fieldOrMethodName;
+        Method method;
 
-        if (!fieldOrMethodName.startsWith(GET_METHOD_PREFIX)) {
-            possibleAccessMethodName = GET_METHOD_PREFIX + capitalize(fieldOrMethodName);
+        if (fieldOrMethodName.startsWith(GET_METHOD_PREFIX) || fieldOrMethodName.startsWith(IS_METHOD_PREFIX)) {
+            method = quietlyGetMethod(diffClass, fieldOrMethodName);
+        } else {
+            String getMethodName = GET_METHOD_PREFIX + capitalize(fieldOrMethodName);
+            method = quietlyGetMethod(diffClass, getMethodName);
+
+            if (method == null) {
+                String isMethodName = IS_METHOD_PREFIX + capitalize(fieldOrMethodName);
+                method = quietlyGetMethod(diffClass, isMethodName);
+            }
         }
 
-        Method method = quietlyGetMethod(diffClass, possibleAccessMethodName);
-
         if (method == null) {
-            throw new DiffException("Method " + possibleAccessMethodName + " not found or is not public and no-args in class " + diffClass.getName());
+            throw new DiffException("Method for property \"" + fieldOrMethodName + "\" not found or is not public and no-args in class " + diffClass.getName());
         }
 
         return method;

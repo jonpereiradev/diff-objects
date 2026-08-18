@@ -69,4 +69,26 @@ class DiffMappingBuilderImplTest {
         assertThrows(DiffException.class, () -> diffMappingBuilder.map("withArgs"));
     }
 
+    @Test
+    void testMustMapFieldWithBooleanIsGetter() {
+        DiffBuilderContext<BooleanElement> context = new DiffBuilderContext<>(BooleanElement.class);
+        DiffManualMappingBuilder<?> diffMappingBuilder = new DiffMappingFieldBuilderImpl<>(context);
+
+        diffMappingBuilder.map("active");
+
+        DiffMetadata diffMetadata = diffMappingBuilder.build().build().get(0);
+
+        assertSame(DiffStrategyType.SINGLE.getStrategy(), diffMetadata.getStrategy());
+        assertEquals(EqualsComparator.class, diffMetadata.getComparator().getClass());
+        assertEquals("isActive", diffMetadata.getMethod().getName());
+    }
+
+    private static class BooleanElement {
+        private boolean active;
+
+        public boolean isActive() {
+            return active;
+        }
+    }
+
 }

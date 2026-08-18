@@ -4,7 +4,6 @@ import com.github.jonpereiradev.diffobjects.DiffConfig;
 import com.github.jonpereiradev.diffobjects.DiffConfigImpl;
 import com.github.jonpereiradev.diffobjects.comparator.DiffComparator;
 import com.github.jonpereiradev.diffobjects.comparator.EqualsComparator;
-import com.github.jonpereiradev.diffobjects.comparator.IndexComparator;
 import com.github.jonpereiradev.diffobjects.strategy.DiffMetadata;
 import com.github.jonpereiradev.diffobjects.strategy.DiffStrategyType;
 
@@ -49,8 +48,7 @@ final class DiffMappingFieldBuilderImpl<T> implements DiffManualMappingBuilder<T
     /**
      * Maps a property by its name for inclusion in the diff operation.
      * <p>
-     * If the property is a collection and not nested, uses {@link IndexComparator}.
-     * Otherwise, uses {@link EqualsComparator}.
+     * Uses {@link EqualsComparator} by default for property comparison.
      * </p>
      *
      * @param name the name that identifies the property for mapping
@@ -63,7 +61,7 @@ final class DiffMappingFieldBuilderImpl<T> implements DiffManualMappingBuilder<T
         Method method = DiffReflections.discoverGetter(context.getOfType(), fields[0]);
 
         if (Collection.class.isAssignableFrom(method.getReturnType()) && fields.length == 1) {
-            return map(name, new IndexComparator<>());
+            return map(name, new EqualsComparator<>());
         }
 
         return map(name, new EqualsComparator<>());

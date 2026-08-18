@@ -16,6 +16,12 @@ package com.github.jonpereiradev.diffobjects.comparator;
 public class IndexComparator<T> implements DiffComparator<T> {
 
     /**
+     * Constructs a new {@code IndexComparator}.
+     */
+    public IndexComparator() {
+    }
+
+    /**
      * Checks the equality of two objects.
      * <p>
      * This method is not implemented and will always throw {@link UnsupportedOperationException}.

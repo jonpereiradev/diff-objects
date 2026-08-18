@@ -17,6 +17,12 @@ import java.util.Objects;
 public class EqualsComparator<T> implements DiffComparator<T> {
 
     /**
+     * Constructs a new {@code EqualsComparator}.
+     */
+    public EqualsComparator() {
+    }
+
+    /**
      * Checks the equality of two objects using {@link Objects#equals(Object, Object)}.
      *
      * @param expected the object with the expected state

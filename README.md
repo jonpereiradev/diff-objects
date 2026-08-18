@@ -148,8 +148,8 @@ public class Main {
         for (DiffResult diffResult : diffResults) {
             if (!diffResult.isEquals()) {
                 System.out.println("Field: " + diffResult.getField());
-                System.out.println("Before: " + diffResult.getBefore());
-                System.out.println("After: " + diffResult.getAfter());
+                System.out.println("Before: " + diffResult.getExpected());
+                System.out.println("After: " + diffResult.getCurrent());
             }
         }
     }

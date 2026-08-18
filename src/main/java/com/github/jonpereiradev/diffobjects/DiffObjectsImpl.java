@@ -169,13 +169,8 @@ final class DiffObjectsImpl<T> implements DiffObjects<T> {
 
         // Check elements present in currentCollection but not in expectedCollection
         for (T current : currentCollectionCopy) {
-            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
-            T expected = stream.findFirst().orElse(null);
-
-            if (expected == null) {
-                result = DiffResult.forValue(null, current, false);
-                results.add(result);
-            }
+            result = DiffResult.forValue(null, current, false);
+            results.add(result);
         }
 
         return new DiffResultsImpl(results);
@@ -295,17 +290,7 @@ final class DiffObjectsImpl<T> implements DiffObjects<T> {
             }
         }
 
-        // Check elements present in currentCollection but not in expectedCollection
-        for (T current : currentCollectionCopy) {
-            Stream<T> stream = expectedCollection.stream().filter((expected) -> matcher.isEquals(current, expected));
-            T expected = stream.findFirst().orElse(null);
-
-            if (expected == null) {
-                return false;
-            }
-        }
-
-        return true;
+        return currentCollectionCopy.isEmpty();
     }
 
     /**

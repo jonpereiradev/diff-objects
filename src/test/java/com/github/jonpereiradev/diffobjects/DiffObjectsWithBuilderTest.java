@@ -181,4 +181,24 @@ class DiffObjectsWithBuilderTest {
 
         Assertions.assertFalse(diffObjects.isEquals(objectA, objectB, configuration));
     }
+
+    @Test
+    void testDiffObjectsCollectionWithBuilderMustNotCrash() {
+        DiffObjects<com.github.jonpereiradev.diffobjects.model.ComplexElement> diffObjects = DiffObjects.forClass(com.github.jonpereiradev.diffobjects.model.ComplexElement.class);
+        DiffConfig configuration = DiffConfigBuilder.forClass(com.github.jonpereiradev.diffobjects.model.ComplexElement.class)
+            .mapping()
+            .fields()
+            .map("objectElementList")
+            .build();
+
+        com.github.jonpereiradev.diffobjects.model.ComplexElement elementA = new com.github.jonpereiradev.diffobjects.model.ComplexElement(new ArrayList<>());
+        com.github.jonpereiradev.diffobjects.model.ComplexElement elementB = new com.github.jonpereiradev.diffobjects.model.ComplexElement(new ArrayList<>());
+
+        elementA.getObjectElementList().add(new ObjectElement("Object"));
+        elementB.getObjectElementList().add(new ObjectElement("Object"));
+
+        DiffResults results = diffObjects.diff(elementA, elementB, configuration);
+        Assertions.assertFalse(results.isEmpty());
+        Assertions.assertTrue(results.getResults().get(0).isEquals());
+    }
 }

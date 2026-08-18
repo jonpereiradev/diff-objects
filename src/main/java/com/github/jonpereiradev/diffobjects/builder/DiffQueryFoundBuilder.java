@@ -20,7 +20,7 @@ import com.github.jonpereiradev.diffobjects.DiffConfig;
 public interface DiffQueryFoundBuilder<T> extends DiffQueryBuilder<T> {
 
     /**
-     * Sets a custom property for the last mapped field in the diff configuration.
+     * Sets a custom property for the currently queried field mapping in the diff configuration.
      *
      * @param key the identifier of the property
      * @param value the value of the property

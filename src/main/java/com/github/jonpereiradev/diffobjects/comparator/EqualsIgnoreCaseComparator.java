@@ -14,6 +14,12 @@ package com.github.jonpereiradev.diffobjects.comparator;
 public class EqualsIgnoreCaseComparator implements DiffComparator<String> {
 
     /**
+     * Constructs a new {@code EqualsIgnoreCaseComparator}.
+     */
+    public EqualsIgnoreCaseComparator() {
+    }
+
+    /**
      * Checks the equality of two strings, ignoring case considerations.
      *
      * @param expected the string with the expected state
@@ -23,6 +29,9 @@ public class EqualsIgnoreCaseComparator implements DiffComparator<String> {
      */
     @Override
     public boolean isEquals(String expected, String current) {
+        if (expected == null && current == null) {
+            return true;
+        }
         return expected != null && expected.equalsIgnoreCase(current);
     }
 
